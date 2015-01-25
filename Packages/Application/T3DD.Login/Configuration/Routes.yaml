@@ -1,0 +1,8 @@
+-
+  name: 'SSO Callback'
+  uriPattern: 'sso'
+  defaults:
+    '@package':    'TYPO3.Flow'
+    '@subpackage': 'Security\Authentication'
+    '@controller': 'Authentication'
+    '@action':     'authenticate'

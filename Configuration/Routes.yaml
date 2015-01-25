@@ -8,6 +8,15 @@
         'defaultUriSuffix': ''
 
 -
+  name: 'T3DD.Login'
+  uriPattern: '<T3DDLoginSubroutes>'
+  subRoutes:
+    'T3DDLoginSubroutes':
+      package: 'T3DD.Login'
+      variables:
+        'defaultUriSuffix': ''
+
+-
   name: 'Flow'
   uriPattern: '<FlowSubroutes>'
   defaults:
