@@ -1,0 +1,44 @@
+<link rel="import" href="../bower_components/firebase-element/firebase-element.html">
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../bower_components/pushstate-anchor/pushstate-anchor.html">
+
+<polymer-element name="session-list">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<firebase-element id="base" location="https://fiery-heat-3091.firebaseio.com/sessions" data="{{sessions}}" keys="{{keys}}"></firebase-element>
+
+		<template repeat="{{id in keys}}">
+			<paper-shadow z="1">
+				<div class="session">
+					<div horizontal center layout>
+						<div class="user">
+							<img width="40" src="{{sessions[id]['user']['github]['cachedUserProfile]['avatar_url']}}">
+						</div>
+						<div class="details" flex>
+							<h3><a is="pushstate-anchor" href="/session/{{id}}">{{sessions[id]['title']}}</a></h3>
+							<span class="metadata">by {{sessions[id]['user']['github]['displayName]}}</span>
+						</div>
+					</div>
+				</div>
+			</paper-shadow>
+		</template>
+
+	</template>
+	<script>
+		(function () {
+			'use strict';
+
+			Polymer({
+				ready: function () {
+
+				}
+			});
+
+		})();
+	</script>
+</polymer-element>

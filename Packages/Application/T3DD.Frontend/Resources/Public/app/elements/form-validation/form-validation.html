@@ -1,0 +1,101 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<polymer-element name="form-validation" extends="form">
+	<script>
+		(function (ELEMENT, PREFIX) {
+			ELEMENT.matches = ELEMENT.matches || ELEMENT[PREFIX + 'MatchesSelector'];
+
+			ELEMENT.closest = ELEMENT.closest || function (selector) {
+				var node = this;
+
+				while (node) {
+					if (node.matches(selector)) return node;
+					else node = node.parentElement;
+				}
+
+				return null;
+			};
+		})(
+			Element.prototype,
+			(getComputedStyle(document.documentElement).cssText.match(/-(moz|webkit|ms)-/) || [])[1] || ''
+		);
+
+		(function () {
+			'use strict';
+
+			function isUndefined(value) {
+				return typeof value === 'undefined';
+			}
+
+			function isFunction(value) {
+				return typeof value === 'function';
+			}
+
+			function arrayOf(pseudoArray) {
+				return Array.prototype.slice.call(pseudoArray);
+			}
+
+			function getFormFields(form) {
+				return arrayOf(form.querySelectorAll('input, textarea, select'));
+			}
+
+			/**
+			 * @param {Element} form
+			 */
+			function registerInputListeners(form) {
+
+				function isFieldValid(field) {
+					if (!isUndefined(field.validity)) {
+						return field.validity.valid;
+					}
+					return true;
+				}
+
+				form.addEventListener('blur', function (e) {
+					var field = e.path[0];
+
+					if (field.validity && !isUndefined(field.closest('paper-input-decorator'))) {
+						field.closest('paper-input-decorator').isInvalid = !field.validity.valid
+					}
+
+				}, true);
+
+				form.addEventListener('submit', function (e) {
+					event.preventDefault();
+					event.stopPropagation();
+
+					var hasErrors = false,
+						invalidFields = [];
+
+					getFormFields(form).forEach(function (field) {
+						if (!isFieldValid(field)) {
+							hasErrors = true;
+							if (!isUndefined(field.closest('paper-input-decorator'))) {
+								field.closest('paper-input-decorator').isInvalid = !field.validity.valid
+							}
+							invalidFields.push(field);
+						}
+					});
+
+					if (!hasErrors) {
+						form.fire('submitting');
+					} else {
+						invalidFields[0].scrollIntoView();
+						form.fire('invalid', invalidFields);
+					}
+
+				});
+
+			}
+
+			Polymer('form-validation', {
+				domReady: function () {
+					var form = this;
+					form.setAttribute('novalidate', 'novalidate');
+					registerInputListeners(form);
+				}
+			});
+
+		})();
+	</script>
+</polymer-element>

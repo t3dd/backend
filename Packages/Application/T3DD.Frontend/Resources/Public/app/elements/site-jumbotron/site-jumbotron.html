@@ -1,0 +1,63 @@
+<polymer-element name="site-jumbotron" horizontal layout center noscript>
+	<template>
+		<style>
+			:host {
+				display: block;
+				height: 192px;
+				padding: 28px 32px 0;
+				background-position: 50% 50%;
+				background-blend-mode: multiply;
+				background-repeat: no-repeat;
+				background-color: #FF8700;
+				background-size: cover;
+				color: #fff;
+				text-shadow: 0px 0px 16px rgba(0, 0, 0, 0.5);
+				box-sizing: border-box;
+			}
+
+			::content h1,
+			::content h2,
+			::content h3,
+			::content h4,
+			::content h5 {
+				margin: 0;
+				font-weight: 400;
+				text-transform: uppercase;
+			}
+
+			::content h1 {
+				font-size: 3.25em;
+				font-weight: 700;
+				line-height: .8181;
+			}
+
+			::content h1 span {
+				font-weight: 400;
+			}
+
+			::content h2 {
+				font-size: 1.75em;
+				font-weight: 700;
+			}
+
+			::content h2 span {
+				font-weight: 400;
+			}
+
+			::content h3 {
+				font-size: 1.5em;
+			}
+
+			::content h4 {
+				font-size: 1.25em;
+			}
+
+			::content h5 {
+				font-size: 1em;
+			}
+		</style>
+			<div>
+				<content></content>
+			</div>
+	</template>
+</polymer-element>

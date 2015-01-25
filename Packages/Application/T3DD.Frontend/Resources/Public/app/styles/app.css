@@ -1,0 +1,144 @@
+@font-face {
+	font-family: 'Share';
+	src: url('../fonts/share-regular.eot');
+	src: url('../fonts/share-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/share-regular.woff2') format('woff2'), url('../fonts/share-regular.woff') format('woff'), url('../fonts/share-regular.ttf') format('truetype');
+	font-weight: 400;
+	font-style: normal;
+
+}
+
+@font-face {
+	font-family: 'Share';
+	src: url('../fonts/share-bold.eot');
+	src: url('../fonts/share-bold.eot?#iefix') format('embedded-opentype'), url('../fonts/share-bold.woff2') format('woff2'), url('../fonts/share-bold.woff') format('woff'), url('../fonts/share-bold.ttf') format('truetype');
+	font-weight: 700;
+	font-style: normal;
+
+}
+
+body {
+	font-family: Share, sans-serif;
+	-webkit-tap-highlight-color: transparent;
+	tap-highlight-color: transparent;
+	background-color: #fafafa;
+	font-weight: 300;
+}
+
+#drawerPanel:not([narrow]) core-scroll-header-panel [content] {
+	padding: 30px 0;
+}
+
+#drawerPanel[narrow][selected="drawer"] .fade-on-drawer-open {
+	opacity: 0;
+}
+
+.fade-on-drawer-open {
+	transition: opacity 300ms ease-in-out;
+}
+
+#drawerPanel core-header-panel {
+	background: #fafafa;
+	box-shadow: 1px 0 1px rgba(0, 0, 0, 0.1);
+	color: #757575;
+}
+
+#drawerPanel core-header-panel .separator {
+	padding: 16px;
+	font-size: 14px;
+	border-top: 1px solid #e0e0e0;
+}
+
+#drawerPanel core-header-panel core-menu {
+	margin: 16px 0 0 0;
+}
+
+#drawerPanel core-scroll-header-panel::shadow #headerBg {
+	background: url('../images/logo.svg') no-repeat 100% 56px;
+	background-size: 200px;
+	background-color: #e51c23;
+}
+
+#drawerPanel core-scroll-header-panel::shadow #condensedHeaderBg {
+	background-color: #e51c23;
+	opacity: 1 !important; /* Prevents the background color from dissolving. */
+}
+
+/*nav a {*/
+	/*color: #757575;*/
+	/*text-decoration: none;*/
+/*}*/
+
+site-item core-icon {
+  margin-right: 16px !important;
+}
+
+site-item.core-selected {
+  background-color: #eee;
+}
+
+/*paper-item.core-selected core-icon {*/
+  /*color: #757575;*/
+/*}*/
+
+#navheader {
+	/*background-image: url('../images/header.jpg');*/
+	background-position: 10% 50%;
+	background-blend-mode: multiply;
+	background-repeat: no-repeat;
+	background-color: #FF8700;
+	background-size: cover;
+	font-size: inherit;
+	color: white;
+	fill: white;
+}
+
+#navheader::shadow .toolbar-tools {
+	z-index: 1;
+}
+
+#navheader::after {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	background-blend-mode: multiply;
+	background-repeat: no-repeat;
+	background-size: cover;
+	z-index: 0;
+	opacity: 0;
+	will-change: opacity;
+	transition: opacity 600ms ease-in-out;
+}
+
+#navheader .bottom {
+	width: 100%;
+}
+
+core-scroll-header-panel > [content] {
+	height: 100%;
+}
+
+#fab {
+	position: fixed;
+	bottom: 16px;
+	right: 16px;
+	color: white;
+	background: #FF8700;
+	will-change: transform;
+	-webkit-transition: -webkit-transform 0.2s ease-in-out;
+	transition: transform 0.2s ease-in-out;
+}
+
+#fab.moveup {
+	transform: translate3d(0, -48px, 0);
+}
+
+#user-login::shadow #label,
+#user-login::shadow #arrow {
+	color: #fff;
+}
+#user-login {
+	border-bottom-color: #fff;
+	min-width: 152px;
+}

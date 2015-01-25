@@ -5,7 +5,8 @@
 /Packages/Libraries
 /Packages/Application/*
 !/Packages/Application/T3DD.Backend
-!/Packages/Application/T3DD.Login/
+!/Packages/Application/T3DD.Frontend
+!/Packages/Application/T3DD.Login
 /Web/
 /bin/
 /Readme.txt

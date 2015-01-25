@@ -1,0 +1,13 @@
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+<polymer-element name="site-map" extends="google-map">
+	<script>
+		Polymer('site-map', {
+			getMapOptions: function() {
+				var mapOptions = this.super();
+				mapOptions["streetViewControl"] = false;
+				mapOptions["scrollwheel"] = false;
+				return mapOptions;
+			}
+		});
+	</script>
+</polymer-element>

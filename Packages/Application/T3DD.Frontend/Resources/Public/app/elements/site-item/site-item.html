@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/core-item/core-item.html">
+<link rel="import" href="../../bower_components/paper-ripple/paper-ripple.html">
+
+<polymer-element name="site-item" attributes="label icon src href" on-tap="{{route}}">
+	<template>
+		<style>
+			:host {
+				display: block;
+				position: relative;
+				font-size: 16px;
+				box-sizing: border-box;
+				min-width: 7em;
+				outline: none;
+				-moz-user-select: none;
+				-ms-user-select: none;
+				-webkit-user-select: none;
+				user-select: none;
+				cursor: pointer;
+			}
+
+			:host([disabled]) {
+				color: #a8a8a8;
+				cursor: auto;
+				pointer-events: none;
+			}
+
+			:host(.core-selected) {
+				background-color: #eaeaea;
+			}
+		</style>
+		<core-item label="{{label}}" icon="{{icon}}" src="{{src}}">
+			<paper-ripple id="ripple" fit></paper-ripple>
+		</core-item>
+	</template>
+	<script>
+		Polymer({
+			route: function() {
+				if (typeof this.href === 'string') {
+					document.querySelector('app-router').go(this.href);
+				}
+			}
+		});
+	</script>
+</polymer-element>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="223px" height="85px" viewBox="0 0 223 85" style="enable-background:new 0 0 223 85;" xml:space="preserve">
+	<g id="figure" class="logo__figure">
+		<path fill="#fff" d="M43.865,39.913c-0.87,0.252-1.564,0.348-2.474,0.348c-7.459,0-18.412-25.706-18.412-34.262
+			c0-3.149,0.755-4.201,1.823-5.102C15.674,1.948,4.72,5.253,1.218,9.452C0.461,10.504,0,12.153,0,14.256
+			c0,13.355,14.454,43.66,24.65,43.66C29.369,57.917,37.322,50.27,43.865,39.913" />
+		<path fill="#fff" d="M39.104,0c9.433,0,18.871,1.5,18.871,6.752c0,10.652-6.851,23.562-10.348,23.562
+			c-6.238,0-13.999-17.11-13.999-25.666C33.628,0.748,35.149,0,39.104,0" />
+	</g>
+</svg>
