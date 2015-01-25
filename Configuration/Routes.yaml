@@ -1,4 +1,13 @@
 -
+  name: 'T3DD.Backend'
+  uriPattern: '<T3DDBackendSubroutes>'
+  subRoutes:
+    'T3DDBackendSubroutes':
+      package: 'T3DD.Backend'
+      variables:
+        'defaultUriSuffix': ''
+
+-
   name: 'Flow'
   uriPattern: '<FlowSubroutes>'
   defaults:

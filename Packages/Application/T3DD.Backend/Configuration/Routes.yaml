@@ -1,0 +1,23 @@
+#                                                                        #
+# Default routes configuration for the T3DD.Backend package              #
+#                                                                        #
+
+-
+  name: 'Participant api'
+  uriPattern: 'participants/{participant}'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Participant'
+    '@action':     'index'
+  appendExceedingArguments: TRUE
+  httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
+
+-
+  name: 'Participants api'
+  uriPattern: 'participants'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Participant'
+    '@action':     'index'
+  appendExceedingArguments: TRUE
+  httpMethods: ['HEAD', 'GET', 'POST']

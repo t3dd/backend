@@ -9,7 +9,8 @@
     "require": {
         "typo3/flow": "2.3.*",
         "typo3/welcome": "2.3.*",
-        "doctrine/migrations": "@dev"
+        "doctrine/migrations": "@dev",
+        "netlogix/crud": "dev-master"
     },
     "require-dev": {
         "typo3/kickstart": "2.3.*",

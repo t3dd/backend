@@ -1,0 +1,13 @@
+{
+    "name": "t3dd/backend",
+    "type": "typo3-flow-package",
+    "description": "T3DD Rest Api Backend",
+    "require": {
+        "typo3/flow": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "T3DD\\Backend": "Classes"
+        }
+    }
+}
