@@ -285,7 +285,7 @@ class Participant {
 	 * @return \T3DD\Backend\Domain\Model\Mate[]
 	 */
 	public function getRoomMates() {
-		return clone $this->roomMates;
+		return $this->roomMates;
 	}
 
 	/**

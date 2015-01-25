@@ -21,3 +21,23 @@
     '@action':     'index'
   appendExceedingArguments: TRUE
   httpMethods: ['HEAD', 'GET', 'POST']
+
+-
+  name: 'Sessions api'
+  uriPattern: 'sessions/{session}'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Session'
+    '@action':     'index'
+  appendExceedingArguments: TRUE
+  httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
+
+-
+  name: 'Sessions api'
+  uriPattern: 'sessions'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Session'
+    '@action':     'index'
+  appendExceedingArguments: TRUE
+  httpMethods: ['HEAD', 'GET', 'POST']
