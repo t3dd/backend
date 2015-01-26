@@ -1,0 +1,11 @@
+-
+  name:  'T3DD Frontend'
+  uriPattern: '{route}'
+  defaults:
+    '@package':    'T3DD.Frontend'
+    '@controller': 'Frontend'
+    '@action':     'serve'
+    '@format':      'html'
+  routeParts:
+    route:
+      handler:     'T3DD\Frontend\Routing\AppRouteHandler'

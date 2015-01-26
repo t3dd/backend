@@ -17,10 +17,10 @@
         'defaultUriSuffix': ''
 
 -
-  name: 'Flow'
-  uriPattern: '<FlowSubroutes>'
-  defaults:
-    '@format': 'html'
+  name: 'T3DD.Frontend'
+  uriPattern: '<T3DDFrontendSubroutes>'
   subRoutes:
-    FlowSubroutes:
-      package: TYPO3.Flow
+    'T3DDFrontendSubroutes':
+      package: 'T3DD.Frontend'
+      variables:
+        'defaultUriSuffix': ''

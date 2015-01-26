@@ -68,7 +68,7 @@
 				<!-- <core-image src="{{user.cover}}" sizing="cover" preload fade
 							  style="width:400px; height:400px; background-color:#c41411;">
 				  </core-image> -->
-				<img class="middle" src="/images/logo.svg">
+				<img class="middle" src="images/logo.svg">
 				<!--<core-image class="middle" src="/images/logo.svg" sizing="cover" preload fade></core-image>-->
 				<!--<img class="middle profile" src="{{user.profile}}" hidden?="{{!user.profile}}">-->
 				<div class="bottom" horizontal end-justified layout>
@@ -89,11 +89,11 @@
 		</core-header-panel>
 		<div main>
 			<app-router mode="pushstate">
-				<app-route path="/" import="/pages/page-home.html" element="page-home"></app-route>
-				<app-route path="/register" import="/pages/register-new.html" element="register-new"></app-route>
-				<app-route path="/register/success" import="/pages/register-success.html" element="register-success"></app-route>
-				<app-route path="/sessions" import="/pages/session-list.html" element="session-view"></app-route>
-				<app-route path="/sessions/:id" import="/pages/session-view.html" element="session-view"></app-route>
+				<app-route path="/" import="pages/page-home.html" element="page-home"></app-route>
+				<app-route path="/register" import="pages/register-new.html" element="register-new"></app-route>
+				<app-route path="/register/success" import="pages/register-success.html" element="register-success"></app-route>
+				<app-route path="/sessions" import="pages/session-list.html" element="session-view"></app-route>
+				<app-route path="/sessions/:id" import="pages/session-view.html" element="session-view"></app-route>
 			</app-router>
 		</div>
 	</core-drawer-panel>
