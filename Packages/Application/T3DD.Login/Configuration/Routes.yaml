@@ -1,10 +1,18 @@
 -
-  name: 'Login Link'
-  uriPattern: 'login'
+  name: 'SSO Login'
+  uriPattern: 'sso/login'
   defaults:
     '@package':    'T3DD.Login'
     '@controller': 'Authentication'
     '@action':     'login'
+
+-
+  name: 'SSO Login'
+  uriPattern: 'sso/logout'
+  defaults:
+    '@package':    'T3DD.Login'
+    '@controller': 'Authentication'
+    '@action':     'logout'
 
 -
   name: 'SSO Callback'

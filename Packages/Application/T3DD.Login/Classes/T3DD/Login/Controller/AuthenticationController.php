@@ -34,6 +34,21 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 	 */
 	protected $securityContext;
 
+	/**
+	 * @var string
+	 */
+	protected $requestIDProtocol = 'requestID://';
+
+	/**
+	 */
+	public function loginAction() {
+		$ssoURL = 'https://typo3.org/my-account/sso/t3dd15/';
+		$requestID = $this->getReturnTo();
+		if (!empty($requestID)) {
+			$ssoURL .= '?returnTo=' . urlencode($this->requestIDProtocol . $requestID);
+		}
+		$this->redirectToUri($ssoURL);
+	}
 
 	/**
 	 * Redirects to a potentially intercepted request. Returns an error message if there has been none.
@@ -45,9 +60,38 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 		if ($originalRequest !== NULL) {
 			$this->redirectToRequest($originalRequest);
 		}
-		return 'There was no redirect implemented and no intercepted request could be found after authentication.
-				Please implement onAuthenticationSuccess() in your login controller to handle this case correctly.
-				If you have a template for the authenticate action, simply make sure that onAuthenticationSuccess()
-				returns NULL in your login controller.';
+		$requestID = $this->getReturnTo();
+		if (!empty($requestID)) {
+			return sprintf('<html><body>
+			<script>
+				window.opener.onSSOAuth("%s", %s);
+				window.close();
+			</script>
+			</body></html>', $requestID, json_encode($this->buildAccountDTO($this->securityContext->getAccount())));
+		}
+		return '';
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getReturnTo() {
+		$requestID = isset($_REQUEST['returnTo']) ? $_REQUEST['returnTo'] : '';
+		if (strncmp($requestID, $this->requestIDProtocol, strlen($this->requestIDProtocol)) === 0) {
+			$requestID = substr($requestID, strlen($this->requestIDProtocol));
+		}
+		return preg_replace('/[^ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789]/', '', $requestID);
+	}
+
+	/**
+	 * @param \TYPO3\Flow\Security\Account $account
+	 * @return \stdClass
+	 */
+	protected function buildAccountDTO(\TYPO3\Flow\Security\Account $account) {
+		/** @var \TYPO3\Party\Domain\Model\Person $person */
+		$person = $account->getParty();
+		$simpleAccount = new \stdClass();
+		$simpleAccount->displayName = (string) $person->getName();
+		return $simpleAccount;
 	}
 }

@@ -59,17 +59,17 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 		}
 
 		$authenticationData = 'version=' . $credentials['version'] .
-							'&user=' . $credentials['username'] .
-							'&tpa_id=' . $credentials['tpaId'] .
-							'&expires=' . $credentials['expires'] .
-							'&action=' . $credentials['action'] .
-							'&flags=' . $credentials['flags'] .
-							'&userdata=' . $credentials['userdata'];
+			'&user=' . $credentials['username'] .
+			'&tpa_id=' . $credentials['tpaId'] .
+			'&expires=' . $credentials['expires'] .
+			'&action=' . $credentials['action'] .
+			'&flags=' . $credentials['flags'] .
+			'&userdata=' . $credentials['userdata'];
 		$authenticationDataIsValid = $this->rsaWalletService->verifySignature(
-										$authenticationData,
-										$credentials['signature'],
-										$this->options['rsaKeyUuid']
-									);
+			$authenticationData,
+			$credentials['signature'],
+			$this->options['rsaKeyUuid']
+		);
 
 		if ($authenticationDataIsValid && $credentials['expires'] > time()) {
 			$userdata = $this->parseUserdata($credentials['userdata']);
@@ -132,17 +132,18 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 
 		$this->accountRepository->add($account);
 		$this->persistenceManager->whitelistObject($account);
-		$this->persistenceManager->persistAll(TRUE);
+		$this->persistenceManager->persistAll(true);
 		return $account;
 	}
 
 	/**
 	 * @param Account $account
 	 * @param array $userdata
+	 * @return \TYPO3\Flow\Security\Account
 	 */
 	protected function updateAccount(Account $account, array $userdata) {
 		$person = $account->getParty();
-		if ($person === NULL) {
+		if ($person === null) {
 			$person = new Person();
 			$this->partyRepository->add($person);
 			$this->persistenceManager->whitelistObject($person);
@@ -153,7 +154,8 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 
 		$this->accountRepository->update($account);
 		$this->persistenceManager->whitelistObject($account);
-		$this->persistenceManager->persistAll(TRUE);
+		$this->persistenceManager->persistAll(true);
+		return $account;
 	}
 
 	/**
@@ -163,7 +165,7 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 	protected function updatePerson(Person $person, array $userdata) {
 		if (isset($userdata['name'])) {
 			$personName = $person->getName();
-			if ($personName === NULL) {
+			if ($personName === null) {
 				$personName = new PersonName();
 				$person->setName($personName);
 			}
@@ -171,7 +173,7 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 		}
 		if (isset($userdata['email'])) {
 			$primaryElectronicAddress = $person->getPrimaryElectronicAddress();
-			if ($primaryElectronicAddress === NULL) {
+			if ($primaryElectronicAddress === null) {
 				$primaryElectronicAddress = new ElectronicAddress();
 				$person->setPrimaryElectronicAddress($primaryElectronicAddress);
 			}
@@ -191,13 +193,16 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 			'lastName' => '',
 			'otherName' => array(),
 		);
-		$nameParts = array_filter(explode(' ', $name), function($nameSegment) use(&$data) {
-			if (strpos($nameSegment, '(') !== FALSE) {
-				$data['otherName'][] = $nameSegment;
-				return FALSE;
+		$nameParts = array_filter(
+			explode(' ', $name),
+			function($nameSegment) use (&$data) {
+				if (strpos($nameSegment, '(') !== false) {
+					$data['otherName'][] = $nameSegment;
+					return false;
+				}
+				return true;
 			}
-			return TRUE;
-		});
+		);
 		$lastPosition = count($nameParts) - 1;
 		foreach (array_values($nameParts) as $position => $nameSegment) {
 			switch ($position) {

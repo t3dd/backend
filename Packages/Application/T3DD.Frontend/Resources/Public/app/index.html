@@ -23,7 +23,6 @@
 		<link rel="import" href="bower_components/app-router/app-router.html">
 		<link rel="import" href="bower_components/pushstate-anchor/pushstate-anchor.html">
 		<link rel="import" href="bower_components/pvc-globals/pvc-globals.html">
-		<link rel="import" href="bower_components/firebase-element/firebase-login.html">
 
 		<link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
 		<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
@@ -46,6 +45,7 @@
 		<link rel="import" href="bower_components/core-style/core-style.html">
 
 		<link rel="import" href="elements/site-item/site-item.html">
+		<link rel="import" href="elements/site-login/site-login.html">
 	<!-- endbuild-->
 </head>
 
@@ -72,13 +72,13 @@
 				<!--<core-image class="middle" src="/images/logo.svg" sizing="cover" preload fade></core-image>-->
 				<!--<img class="middle profile" src="{{user.profile}}" hidden?="{{!user.profile}}">-->
 				<div class="bottom" horizontal end-justified layout>
-					<paper-dropdown-menu id="user-login" label="{{(!statusKnown || !user) ? 'Anonymous' : user.github.displayName}}">
+					<paper-dropdown-menu id="user-login" label="{{(!statusKnown || !user) ? 'Anonymous' : user.displayName}}">
 						<paper-dropdown layered class="dropdown">
-							<paper-item on-click="{{login}}" hidden?="{{!statusKnown || user}}">Login</paper-item>
+							<paper-item on-click="{{login}}">Login</paper-item>
 							<paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">Logout</paper-item>
 					    </paper-dropdown>
 					</paper-dropdown-menu>
-					<firebase-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" location="https://fiery-heat-3091.firebaseio.com/" provider="github" on-login="{{onLogin}}" on-error="{{onLoginError}}"></firebase-login>
+					<site-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" ssoUrl="http://t3dd15.typo3.org/sso/login/" on-login="{{onLogin}}" on-error="{{onLoginError}}"></site-login>
 				</div>
 			</core-toolbar>
 			<core-menu selected="0" excludedLocalNames="div" on-core-select="{{menuSelect}}">

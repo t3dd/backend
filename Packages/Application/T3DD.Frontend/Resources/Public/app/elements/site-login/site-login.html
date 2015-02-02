@@ -1,0 +1,78 @@
+<polymer-element name="site-login" attributes="ssoUrl user statusKnown">
+	<script>
+		(function() {
+			var generateRequestID = function generateRequestID() {
+				var text = "";
+				var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+				for(var i = 0; i < 5; i++)
+					text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+				return text;
+			};
+			Polymer('site-login', {
+
+				/**
+				 * @attribute user
+				 * @type String
+				 * @default null
+				 */
+				ssoUrl: null,
+
+				/**
+				 * When logged in, this property reflects the firebase user auth object.
+				 * @attribute user
+				 * @type Object
+				 * @default null
+				 */
+				user: null,
+
+				/**
+				 * When true, login status can be determined by checking `user` property.
+				 * @attribute statusKnown
+				 * @type Boolean
+				 * @default false
+				 */
+				statusKnown: false,
+
+				_loginQueue: {},
+
+
+				ready: function() {
+					this._boundAuthHandler = this._authHandler.bind(this);
+					window.onSSOAuth = this._authHandler.bind(this);
+				},
+
+				attached: function() {
+					window.addEventListener('SSOAuth', this._boundAuthHandler);
+				},
+
+				detached: function() {
+					window.removeEventListener(this._boundAuthHandler);
+				},
+
+				login: function() {
+					var requestID = generateRequestID();
+					this._loginQueue[requestID] = this._openPopup(requestID);
+				},
+
+				logout: function() {
+				},
+
+				_openPopup: function(requestID) {
+					var windowName = requestID,
+						windowOptions = 'location=0,status=0,width=985,height=400';
+					return window.open(this.ssoUrl + '?returnTo=' + requestID, windowName, windowOptions);
+				},
+
+				_authHandler: function(requestID, user) {
+					if (typeof this._loginQueue[requestID] !== 'undefined') {
+						delete this._loginQueue[requestID];
+						this.statusKnown = true;
+						this.user = user;
+					}
+				}
+
+			});
+		})();
+	</script>
+</polymer-element>
