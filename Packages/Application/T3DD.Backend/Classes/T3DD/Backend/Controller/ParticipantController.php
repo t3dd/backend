@@ -18,9 +18,27 @@ class ParticipantController extends \Netlogix\Crud\Controller\RestController {
 
 	/**
 	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Security\AccountRepository
+	 */
+	protected $accountRepository;
+
+	/**
+	 * @Flow\Inject
 	 * @var \Netlogix\Crud\Domain\Service\DataTransferObjectFactory
 	 */
 	protected $dataTransferObjectFactory;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Security\Context
+	 */
+	protected $securityContext;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Security\Policy\PolicyService
+	 */
+	protected $policyService;
 
 	/**
 	 * Name of the action method argument which acts as the resource for the
@@ -55,9 +73,16 @@ class ParticipantController extends \Netlogix\Crud\Controller\RestController {
 
 	/**
 	 * @param \T3DD\Backend\Domain\Model\Participant $participant
+	 * @Flow\Validate(argumentName="participant", type="T3DD\Backend\Validation\Validator\UniqueParticipantValidator")
 	 */
 	public function createAction($participant) {
+		$account = $this->securityContext->getAccount();
+		$account->setRoles(array(
+			$this->policyService->getRole('T3DD.Backend:Participant')
+		));
+		$participant->setAccount($account);
 		$this->participantRepository->add($participant);
+		$this->accountRepository->update($account);
 		$this->persistenceManager->persistAll();
 		$this->redirect('index', NULL, NULL, array('participant' => $participant));
 	}
@@ -76,6 +101,24 @@ class ParticipantController extends \Netlogix\Crud\Controller\RestController {
 	 */
 	public function deleteAction($participant) {
 		$this->participantRepository->remove($participant);
+	}
+
+	public function errorAction() {
+		$validationResults = $this->arguments->getValidationResults()->getFlattenedErrors();
+		$result = array();
+		/** @var \TYPO3\Flow\Error\Error  $validationResult */
+		foreach ($validationResults as $key => $validationResult) {
+			/** @var \TYPO3\Flow\Validation\Error $error */
+			foreach ($validationResult as $error) {
+				$result['errors'][$key][] = array(
+					'code' => $error->getCode(),
+					'message' => $error->getMessage()
+				);
+			}
+		}
+		$result['success'] = false;
+		$this->view->assign('value', $result);
+		$this->response->setStatus(403);
 	}
 
 }

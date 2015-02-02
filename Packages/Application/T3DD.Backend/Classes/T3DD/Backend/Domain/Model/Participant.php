@@ -15,6 +15,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Participant {
 
 	/**
+	 * @var \TYPO3\Flow\Security\Account
+	 * @ORM\OneToOne(mappedBy="accountIdentifier")
+	 */
+	protected $account = NULL;
+
+	/**
 	 * @var \DateTime
 	 */
 	protected $date;
@@ -97,6 +103,20 @@ class Participant {
 	public function __construct() {
 		$this->date = new \DateTime();
 		$this->roomMates = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	/**
+	 * @return \TYPO3\Flow\Security\Account
+	 */
+	public function getAccount() {
+		return $this->account;
+	}
+
+	/**
+	 * @param \TYPO3\Flow\Security\Account $account
+	 */
+	public function setAccount($account) {
+		$this->account = $account;
 	}
 
 	/**
