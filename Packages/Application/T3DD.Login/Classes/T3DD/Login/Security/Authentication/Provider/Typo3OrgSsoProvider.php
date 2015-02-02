@@ -34,6 +34,12 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 	protected $roleRepository;
 
 	/**
+	 * @var \TYPO3\Flow\Security\Policy\PolicyService
+	 * @Flow\Inject
+	 */
+	protected $policyService;
+
+	/**
 	 * @param TokenInterface $authenticationToken
 	 * @throws \TYPO3\Flow\Security\Exception\UnsupportedAuthenticationTokenException
 	 */
@@ -71,6 +77,7 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 			$this->options['rsaKeyUuid']
 		);
 
+		$this->policyService->initializeRolesFromPolicy();
 		if ($authenticationDataIsValid && $credentials['expires'] > time()) {
 			$userdata = $this->parseUserdata($credentials['userdata']);
 			if (!is_object($account)) {
@@ -119,9 +126,9 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 		$account = new Account();
 		$account->setCredentialsSource('typo3.org SSO');
 		$account->setAuthenticationProviderName($this->name);
-//		$account->setRoles(array(
-//			$this->roleRepository->findByIdentifier('AuthenticatedUser')
-//		));
+		$account->setRoles(array(
+			$this->policyService->getRole('AuthenticatedUser')
+		));
 		$account->setAccountIdentifier($userdata['username']);
 
 		$person = new Person();
@@ -148,6 +155,11 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 			$this->partyRepository->add($person);
 			$this->persistenceManager->whitelistObject($person);
 			$account->setParty($person);
+		}
+		if (!$account->getRoles()) {
+			$account->setRoles(array(
+				$this->policyService->getRole('AuthenticatedUser')
+			));
 		}
 
 		$this->updatePerson($person, $userdata);
