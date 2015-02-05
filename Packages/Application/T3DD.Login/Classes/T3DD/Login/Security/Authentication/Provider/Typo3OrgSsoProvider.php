@@ -127,7 +127,7 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 		$account->setCredentialsSource('typo3.org SSO');
 		$account->setAuthenticationProviderName($this->name);
 		$account->setRoles(array(
-			$this->policyService->getRole('AuthenticatedUser')
+			$this->policyService->getRole('T3DD.Backend:Authenticated')
 		));
 		$account->setAccountIdentifier($userdata['username']);
 
@@ -158,7 +158,7 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 		}
 		if (!$account->getRoles()) {
 			$account->setRoles(array(
-				$this->policyService->getRole('AuthenticatedUser')
+				$this->policyService->getRole('T3DD.Backend:Authenticated')
 			));
 		}
 
