@@ -4,7 +4,7 @@
 			:host {
 				display: block;
 				height: 192px;
-				padding: 28px 32px 0;
+				padding: 28px 16px 0;
 				background-position: 50% 50%;
 				background-blend-mode: multiply;
 				background-repeat: no-repeat;
@@ -26,7 +26,7 @@
 			}
 
 			::content h1 {
-				font-size: 3.25em;
+				font-size: 2.5em;
 				font-weight: 700;
 				line-height: .8181;
 			}
@@ -36,7 +36,7 @@
 			}
 
 			::content h2 {
-				font-size: 1.75em;
+				font-size: 1.35em;
 				font-weight: 700;
 			}
 
@@ -45,15 +45,21 @@
 			}
 
 			::content h3 {
-				font-size: 1.5em;
+				font-size: 1.15em;
 			}
 
 			::content h4 {
-				font-size: 1.25em;
+				font-size: .96em;
 			}
 
 			::content h5 {
-				font-size: 1em;
+				font-size: .77em;
+			}
+
+			@media (min-width: 34em) {
+				:host {
+					padding: 28px 32px 0;
+				}
 			}
 		</style>
 			<div>

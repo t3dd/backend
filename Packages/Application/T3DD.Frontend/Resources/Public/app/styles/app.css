@@ -142,3 +142,11 @@ core-scroll-header-panel > [content] {
 	border-bottom-color: #fff;
 	min-width: 152px;
 }
+
+#menuButton {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 1;
+	background: #FF8700;
+}

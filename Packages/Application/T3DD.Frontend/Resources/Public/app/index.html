@@ -34,6 +34,7 @@
 		<link rel="import" href="bower_components/core-selector/core-selector.html">
 		<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
 		<link rel="import" href="bower_components/core-scroll-header-panel/core-scroll-header-panel.html">
+		<link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
 
 		<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 		<link rel="import" href="bower_components/paper-dropdown/paper-dropdown.html">
@@ -61,7 +62,7 @@
 <template id="t" is="auto-binding">
 	<pvc-globals values="{{globals}}"></pvc-globals>
 
-	<core-drawer-panel id="drawerPanel" narrow="{{narrow}}">
+	<core-drawer-panel id="drawerPanel" narrow="{{narrow}}" responsiveWidth="816px">
 
 		<core-header-panel mode="scroll" drawer>
 			<core-toolbar id="navheader" class="tall">
@@ -73,7 +74,7 @@
 				<div class="bottom" horizontal layout>
 					<div flex self-start >
 						<core-image src="{{user.profile}}" sizing="cover"
-							   preload fade style="width:60px; height:60px; background-color:#c41411; border-radius: 1000em;" hidden?="{{!user.profile}}">
+							   preload fade style="width:60px; height:60px; background-color:#FF8700; border-radius: 1000em;" hidden?="{{!user.profile}}">
 						  </core-image>
 					</div>
 					<paper-dropdown-menu flex self-end id="user-login" label="{{(!statusKnown || !user) ? 'Anonymous' : user.displayName}}">
@@ -92,6 +93,7 @@
 			</core-menu>
 		</core-header-panel>
 		<div main>
+			<core-icon-button id="menuButton" icon="menu" hidden?="{{!narrow}}" core-drawer-toggle></core-icon-button>
 			<app-router mode="pushstate">
 				<app-route path="/" import="pages/page-home.html" element="page-home"></app-route>
 				<app-route path="/register" import="pages/register-new.html" element="register-new"></app-route>
