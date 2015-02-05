@@ -42,12 +42,43 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 	/**
 	 */
 	public function loginAction() {
-		$ssoURL = 'https://typo3.org/my-account/sso/t3dd15/';
 		$requestID = $this->getReturnTo();
+		$account = $this->securityContext->getAccount();
+		if (is_object($account)) {
+			$this->redirect('callback', NULL, NULL, array('requestID' => $requestID));
+		}
+		$ssoURL = 'https://typo3.org/my-account/sso/t3dd15/';
 		if (!empty($requestID)) {
 			$ssoURL .= '?returnTo=' . urlencode($this->requestIDProtocol . $requestID);
 		}
 		$this->redirectToUri($ssoURL);
+	}
+
+	/**
+	 *
+	 */
+	public function statusAction() {
+		$account = $this->securityContext->getAccount();
+		if (is_object($account)) {
+			$this->response->setHeader('Content-Type', 'application/json', TRUE);
+			$this->response->setContent(json_encode($this->buildAccountDTO($this->securityContext->getAccount(), $this->response->getCookie('TYPO3_Flow_Session'))));
+			return;
+		}
+		$this->response->setStatus(401, 'Not logged in.');
+	}
+
+	/**
+	 * @param string $requestID
+	 * @return string
+	 */
+	public function callbackAction($requestID) {
+		$requestID = $this->sanitizeRequestID($requestID);
+		return sprintf('<html><body>
+			<script>
+				window.opener.onSSOAuth("%s", %s);
+				window.close();
+			</script>
+			</body></html>', $requestID, json_encode($this->buildAccountDTO($this->securityContext->getAccount(), $this->response->getCookie('TYPO3_Flow_Session'))));
 	}
 
 	/**
@@ -62,12 +93,7 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 		}
 		$requestID = $this->getReturnTo();
 		if (!empty($requestID)) {
-			return sprintf('<html><body>
-			<script>
-				window.opener.onSSOAuth("%s", %s);
-				window.close();
-			</script>
-			</body></html>', $requestID, json_encode($this->buildAccountDTO($this->securityContext->getAccount())));
+			$this->redirect('callback', NULL, NULL, array('requestID' => $requestID));
 		}
 		return '';
 	}
@@ -80,18 +106,31 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 		if (strncmp($requestID, $this->requestIDProtocol, strlen($this->requestIDProtocol)) === 0) {
 			$requestID = substr($requestID, strlen($this->requestIDProtocol));
 		}
-		return preg_replace('/[^ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789]/', '', $requestID);
+		return $this->sanitizeRequestID($requestID);
+	}
+
+	/**
+	 * @param string $requestID
+	 * @return mixed
+	 */
+	protected function sanitizeRequestID($requestID) {
+		return preg_replace('/[^abcdefghijklmnopqrstuvwxyz0123456789]/', '', $requestID);
 	}
 
 	/**
 	 * @param \TYPO3\Flow\Security\Account $account
+	 * @param \TYPO3\Flow\Http\Cookie $sessionCookie
 	 * @return \stdClass
 	 */
-	protected function buildAccountDTO(\TYPO3\Flow\Security\Account $account) {
+	protected function buildAccountDTO(\TYPO3\Flow\Security\Account $account, \TYPO3\Flow\Http\Cookie $sessionCookie = NULL) {
 		/** @var \TYPO3\Party\Domain\Model\Person $person */
 		$person = $account->getParty();
 		$simpleAccount = new \stdClass();
 		$simpleAccount->displayName = (string) $person->getName();
+		if ($sessionCookie !== NULL) {
+			$simpleAccount->sessionIdentifier = $sessionCookie->getValue();
+		}
+		$simpleAccount->profile = sprintf('http://typo3.org/services/userimage.php?username=%s&size=big', $account->getAccountIdentifier());
 		return $simpleAccount;
 	}
 }

@@ -15,11 +15,5 @@
 		document.getElementById('baseLogin').logout();
 		document.getElementById('user-login').opened = false;
 	};
-	template.onLogin = function() {
-		this.globals.currentUser = this.user;
-	};
-	template.onLoginError = function(err) {
-		console.log('An error occurred.');
-	};
 
 })(wrap(document));

@@ -69,16 +69,20 @@
 							  style="width:400px; height:400px; background-color:#c41411;">
 				  </core-image> -->
 				<img class="middle" src="images/logo.svg">
-				<!--<core-image class="middle" src="/images/logo.svg" sizing="cover" preload fade></core-image>-->
-				<!--<img class="middle profile" src="{{user.profile}}" hidden?="{{!user.profile}}">-->
-				<div class="bottom" horizontal end-justified layout>
-					<paper-dropdown-menu id="user-login" label="{{(!statusKnown || !user) ? 'Anonymous' : user.displayName}}">
+
+				<div class="bottom" horizontal layout>
+					<div flex self-start >
+						<core-image src="{{user.profile}}" sizing="cover"
+							   preload fade style="width:60px; height:60px; background-color:#c41411; border-radius: 1000em;" hidden?="{{!user.profile}}">
+						  </core-image>
+					</div>
+					<paper-dropdown-menu flex self-end id="user-login" label="{{(!statusKnown || !user) ? 'Anonymous' : user.displayName}}">
 						<paper-dropdown layered class="dropdown">
-							<paper-item on-click="{{login}}">Login</paper-item>
+							<paper-item on-click="{{login}}" hidden?="{{statusKnown && user}}">Login</paper-item>
 							<paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">Logout</paper-item>
 					    </paper-dropdown>
 					</paper-dropdown-menu>
-					<site-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" ssoUrl="http://t3dd15.typo3.org/sso/login/" on-login="{{onLogin}}" on-error="{{onLoginError}}"></site-login>
+					<site-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" ssoUrl="http://t3dd15.typo3.org/sso/"></site-login>
 				</div>
 			</core-toolbar>
 			<core-menu selected="0" excludedLocalNames="div" on-core-select="{{menuSelect}}">

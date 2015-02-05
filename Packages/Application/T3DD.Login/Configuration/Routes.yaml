@@ -1,18 +1,30 @@
 -
-  name: 'SSO Login'
+  name: 'SSO Parent Window Callback'
+  uriPattern: 'sso/callback/{requestID}'
+  defaults:
+    '@package':    'T3DD.Login'
+    '@controller': 'Authentication'
+    '@action':     'callback'
+    '@format':     'html'
+
+-
+  name: 'SSO Parent Window Callback'
   uriPattern: 'sso/login'
   defaults:
     '@package':    'T3DD.Login'
     '@controller': 'Authentication'
     '@action':     'login'
+    '@format':     'html'
 
 -
-  name: 'SSO Login'
-  uriPattern: 'sso/logout'
+  name: 'User Status'
+  uriPattern: 'sso/status'
   defaults:
     '@package':    'T3DD.Login'
     '@controller': 'Authentication'
-    '@action':     'logout'
+    '@action':     'status'
+    '@format':     'html'
+
 
 -
   name: 'SSO Callback'

@@ -1,9 +1,18 @@
+
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
 <polymer-element name="site-login" attributes="ssoUrl user statusKnown">
+	<template>
+		<core-ajax
+		    auto
+		    url="{{ssoUrl}}status/"
+		    handleAs="json"
+		    on-core-response="{{handleUser}}"></core-ajax>
+	</template>
 	<script>
 		(function() {
 			var generateRequestID = function generateRequestID() {
 				var text = "";
-				var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+				var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
 				for(var i = 0; i < 5; i++)
 					text += possible.charAt(Math.floor(Math.random() * possible.length));
 
@@ -43,11 +52,9 @@
 				},
 
 				attached: function() {
-					window.addEventListener('SSOAuth', this._boundAuthHandler);
 				},
 
 				detached: function() {
-					window.removeEventListener(this._boundAuthHandler);
 				},
 
 				login: function() {
@@ -58,18 +65,26 @@
 				logout: function() {
 				},
 
+				handleUser: function(ajaxEvent) {
+					this._setUser(ajaxEvent.detail.response);
+				},
+
 				_openPopup: function(requestID) {
 					var windowName = requestID,
 						windowOptions = 'location=0,status=0,width=985,height=400';
-					return window.open(this.ssoUrl + '?returnTo=' + requestID, windowName, windowOptions);
+					return window.open(this.ssoUrl + 'login/?returnTo=' + requestID, windowName, windowOptions);
 				},
 
 				_authHandler: function(requestID, user) {
 					if (typeof this._loginQueue[requestID] !== 'undefined') {
 						delete this._loginQueue[requestID];
-						this.statusKnown = true;
-						this.user = user;
+						this._setUser(user);
 					}
+				},
+
+				_setUser: function(user) {
+					this.statusKnown = true;
+					this.user = user;
 				}
 
 			});
