@@ -65,12 +65,12 @@ class Participant {
 	 * @var string
 	 * @Flow\Validate(type="NotEmpty")
 	 */
-	protected $footType = 'default';
+	protected $foodType = 'default';
 
 	/**
 	 * @var string
 	 */
-	protected $footWishes = '';
+	protected $foodWishes = '';
 
 	/**
 	 * @var string
@@ -81,7 +81,7 @@ class Participant {
 	/**
 	 * @var boolean
 	 */
-	protected $noob = true;
+	protected $newcomer = true;
 
 	/**
 	 * @var boolean

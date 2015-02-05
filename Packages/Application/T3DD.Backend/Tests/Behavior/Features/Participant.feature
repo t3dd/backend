@@ -12,9 +12,9 @@ Feature: Participant Controller
             | zip        | 90411                  |
             | city       | Nürnberg               |
             | country    | Deutschland            |
-            | footType   | default                |
+            | foodType   | default                |
             | tshirtSize | XL                     |
-            | noob       | 0                      |
+            | newcomer   | 0                      |
             | room       | 1                      |
             | roomSize   | 3                      |
         Then response code should be 200
