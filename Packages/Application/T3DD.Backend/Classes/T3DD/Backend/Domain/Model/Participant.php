@@ -220,29 +220,29 @@ class Participant {
 	/**
 	 * @return mixed
 	 */
-	public function getFootType() {
-		return $this->footType;
+	public function getFoodType() {
+		return $this->foodType;
 	}
 
 	/**
-	 * @param mixed $footType
+	 * @param mixed $foodType
 	 */
-	public function setFootType($footType) {
-		$this->footType = $footType;
+	public function setFoodType($foodType) {
+		$this->foodType = $foodType;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getFootWishes() {
-		return $this->footWishes;
+	public function getFoodWishes() {
+		return $this->foodWishes;
 	}
 
 	/**
-	 * @param string $footWishes
+	 * @param string $foodWishes
 	 */
-	public function setFootWishes($footWishes) {
-		$this->footWishes = $footWishes;
+	public function setFootWishes($foodWishes) {
+		$this->foodWishes = $foodWishes;
 	}
 
 	/**
@@ -262,15 +262,15 @@ class Participant {
 	/**
 	 * @return boolean
 	 */
-	public function isNoob() {
-		return $this->noob;
+	public function isNewcomer() {
+		return $this->newcomer;
 	}
 
 	/**
-	 * @param boolean $noob
+	 * @param boolean $newcomer
 	 */
-	public function setNoob($noob) {
-		$this->noob = $noob;
+	public function setNewcomer($newcomer) {
+		$this->newcomer = $newcomer;
 	}
 
 	/**
