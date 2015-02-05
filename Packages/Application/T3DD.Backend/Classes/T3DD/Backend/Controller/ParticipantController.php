@@ -58,6 +58,10 @@ class ParticipantController extends \Netlogix\Crud\Controller\RestController {
 	 * @param \T3DD\Backend\Domain\Model\Participant $participant
 	 */
 	public function showAction($participant) {
+		if ($participant->getAccount() !== $this->securityContext->getAccount() && !$this->securityContext->hasRole('T3DD.Backend:Administrator')) {
+			$this->response->setStatus(403);
+			return;
+		}
 		$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObject($participant));
 	}
 
@@ -100,6 +104,10 @@ class ParticipantController extends \Netlogix\Crud\Controller\RestController {
 	 * @param \T3DD\Backend\Domain\Model\Participant $participant
 	 */
 	public function deleteAction($participant) {
+		if ($participant->getAccount() !== $this->securityContext->getAccount() && !$this->securityContext->hasRole('T3DD.Backend:Administrator')) {
+			$this->response->setStatus(403);
+			return;
+		}
 		$this->participantRepository->remove($participant);
 	}
 
