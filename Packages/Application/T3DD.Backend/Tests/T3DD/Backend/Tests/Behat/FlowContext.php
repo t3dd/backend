@@ -65,6 +65,7 @@ class FlowContext implements Context {
 			define('BEHAT_ERROR_REPORTING', E_ALL);
 				// Load ErrorException class, since it will be used in the Behat error handler
 			class_exists('Behat\Behat\Exception\ErrorException');
+			class_exists('Behat\Testwork\Call\Exception\CallErrorException');
 		}
 		$bootstrap = new Bootstrap('Testing/Behat');
 		Scripts::initializeClassLoader($bootstrap);

@@ -1,0 +1,12 @@
+TYPO3:
+  Flow:
+    security:
+      authentication:
+        authenticationStrategy: atLeastOneToken
+        providers:
+          HttpBasic:
+            provider: 'PersistedUsernamePasswordProvider'
+            token: 'UsernamePasswordHttpBasic'
+            entryPoint: 'HttpBasic'
+            entryPointOptions: ~
+            providerOptions: ~

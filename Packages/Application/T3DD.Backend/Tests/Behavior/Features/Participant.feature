@@ -4,7 +4,8 @@ Feature: Participant Controller
     I want to see if the registration work as expected
 
     @fixtures
-    Scenario: Creating a New Employee
+    Scenario: Creating a New Participant
+        Given I am a user "foo" with password "bar" and role "Authenticated"
         When I send a POST request to "/participants" with values:
             | name       | Sascha Nowak           |
             | company    | netlogix GmbH & Co. KG |

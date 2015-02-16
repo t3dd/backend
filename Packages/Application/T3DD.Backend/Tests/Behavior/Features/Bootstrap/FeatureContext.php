@@ -17,15 +17,36 @@ class FeatureContext extends MinkContext {
 	protected $objectManager;
 
 	/** @var \T3DD\Backend\Tests\Behat\FlowContext */
-	private $flowContext;
+	protected $flowContext;
+
+	/**
+	 * @var \Behat\WebApiExtension\Context\WebApiContext
+	 */
+	protected $webApiContext;
 
 	/** @BeforeScenario */
 	public function gatherContexts(BeforeScenarioScope $scope) {
 		$environment = $scope->getEnvironment();
 
 		$this->flowContext = $environment->getContext('T3DD\Backend\Tests\Behat\FlowContext');
+		$this->webApiContext = $environment->getContext('Behat\WebApiExtension\Context\WebApiContext');
 
 		$this->objectManager = $this->flowContext->getObjectManager();
+	}
+
+	/**
+	 * @Given I am a user :username with password :password and role :role
+	 */
+	public function iAmAUserWithPasswordAndRole($username, $password, $role) {
+		$account = $this->objectManager->get('TYPO3\Flow\Security\AccountFactory')->createAccountWithPassword($username, $password, array('T3DD.Backend:' . $role), 'HttpBasic');
+		$person = new \TYPO3\Party\Domain\Model\Person();
+		$person->setName(new \TYPO3\Party\Domain\Model\PersonName('', '', '', '', ucfirst($username)));
+		$this->objectManager->get('TYPO3\Party\Domain\Repository\PartyRepository')->add($person);
+		$account->setParty($person);
+
+		$this->objectManager->get('TYPO3\Flow\Security\AccountRepository')->add($account);
+		$this->flowContext->persistAll();
+		$this->webApiContext->iAmAuthenticatingAs($username, $password);
 	}
 
 	/**
