@@ -19,7 +19,7 @@ class Mate extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransfer
 	 * @var \T3DD\Backend\Domain\Model\Mate
 	 * @ORM\OneToOne
 	 */
-	protected $innermostSelf;
+	protected $payload;
 
 	/**
 	 * @return array<string>
@@ -31,8 +31,8 @@ class Mate extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransfer
 	/**
 	 * @return \T3DD\Backend\Domain\Model\Mate
 	 */
-	public function getInnermostSelf() {
-		return $this->innermostSelf;
+	public function getPayload() {
+		return $this->payload;
 	}
 
 }

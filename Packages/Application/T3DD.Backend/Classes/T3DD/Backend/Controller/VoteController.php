@@ -31,6 +31,10 @@ class VoteController extends \Netlogix\Crud\Controller\RestController {
 
 	}
 
+	public function myVotesAction() {
+
+	}
+
 	/**
 	 * @param \T3DD\Backend\Domain\Model\Session $session
 	 * @Flow\Validate(argumentName="session", type="T3DD\Backend\Validation\Validator\UniqueVoteValidator")

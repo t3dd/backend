@@ -19,7 +19,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @var \T3DD\Backend\Domain\Model\Session
 	 * @ORM\OneToOne
 	 */
-	protected $innermostSelf;
+	protected $payload;
 
 	/**
 	 * @Flow\Inject
@@ -37,8 +37,8 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	/**
 	 * @return \T3DD\Backend\Domain\Model\Session
 	 */
-	public function getInnermostSelf() {
-		return $this->innermostSelf;
+	public function getPayload() {
+		return $this->payload;
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 			'packageKey' => 'T3DD.Backend',
 			'controllerName' => 'Session',
 			'actionName' => 'index',
-			'arguments' => array('session' => $this->innermostSelf),
+			'arguments' => array('session' => $this->payload),
 		));
 	}
 
@@ -57,7 +57,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @return Speaker[]
 	 */
 	public function getSpeakers() {
-		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getInnermostSelf()->getSpeakers());
+		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getPayload()->getSpeakers());
 	}
 
 	/**
@@ -68,7 +68,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 			'packageKey' => 'T3DD.Backend',
 			'controllerName' => 'Vote',
 			'actionName' => 'index',
-			'arguments' => array('session' => $this->innermostSelf),
+			'arguments' => array('session' => $this->payload),
 		));
 	}
 

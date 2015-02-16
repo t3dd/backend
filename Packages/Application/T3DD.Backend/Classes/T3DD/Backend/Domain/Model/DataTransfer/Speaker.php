@@ -19,7 +19,7 @@ class Speaker extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @var \T3DD\Backend\Domain\Model\Participant
 	 * @ORM\OneToOne
 	 */
-	protected $innermostSelf;
+	protected $payload;
 
 	/**
 	 * @return array<string>
@@ -31,8 +31,8 @@ class Speaker extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	/**
 	 * @return \T3DD\Backend\Domain\Model\Mate
 	 */
-	public function getInnermostSelf() {
-		return $this->innermostSelf;
+	public function getPayload() {
+		return $this->payload;
 	}
 
 	/**

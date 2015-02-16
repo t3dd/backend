@@ -19,7 +19,7 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	 * @var \T3DD\Backend\Domain\Model\Participant
 	 * @ORM\OneToOne
 	 */
-	protected $innermostSelf;
+	protected $payload;
 
 	/**
 	 * @var string
@@ -42,22 +42,22 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	/**
 	 * @return \T3DD\Backend\Domain\Model\Participant
 	 */
-	public function getInnermostSelf() {
-		return $this->innermostSelf;
+	public function getPayload() {
+		return $this->payload;
 	}
 
 	/**
 	 * @return \DateTime
 	 */
 	public function getDate() {
-		return $this->getInnermostSelf()->getDate()->getTimestamp();
+		return $this->getPayload()->getDate()->getTimestamp();
 	}
 
 	/**
 	 * @return Mate[]
 	 */
 	public function getRoomMates() {
-		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getInnermostSelf()->getRoomMates());
+		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getPayload()->getRoomMates());
 	}
 
 	/**
@@ -68,7 +68,7 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 			'packageKey' => 'T3DD.Backend',
 			'controllerName' => 'Participant',
 			'actionName' => 'index',
-			'arguments' => array('participant' => $this->innermostSelf),
+			'arguments' => array('participant' => $this->payload),
 		));
 	}
 
