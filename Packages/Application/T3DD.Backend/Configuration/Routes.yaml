@@ -4,7 +4,7 @@
 
 -
   name: 'Participant api'
-  uriPattern: 'participants/{participant}'
+  uriPattern: 'api/participants/{participant}'
   defaults:
     '@package':    'T3DD.Backend'
     '@controller': 'Participant'
@@ -14,7 +14,7 @@
 
 -
   name: 'Participants api'
-  uriPattern: 'participants'
+  uriPattern: 'api/participants'
   defaults:
     '@package':    'T3DD.Backend'
     '@controller': 'Participant'
@@ -24,7 +24,7 @@
 
 -
   name: 'Sessions api'
-  uriPattern: 'sessions/{session}'
+  uriPattern: 'api/sessions/{session}'
   defaults:
     '@package':    'T3DD.Backend'
     '@controller': 'Session'
@@ -34,7 +34,7 @@
 
 -
   name: 'Sessions api'
-  uriPattern: 'sessions'
+  uriPattern: 'api/sessions'
   defaults:
     '@package':    'T3DD.Backend'
     '@controller': 'Session'
