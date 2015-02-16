@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @Flow\Entity
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="code_unique", columns={"account", "session"})})
  */
 class Vote {
 
