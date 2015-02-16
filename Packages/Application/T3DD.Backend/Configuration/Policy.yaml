@@ -1,8 +1,9 @@
 resources:
   methods:
     T3DD_Backend_AllControllerActions: 'within(TYPO3\Flow\Mvc\Controller\AbstractController) && method(public .*->(?!initialize).*Action())'
-    T3DD_Backend_PublicFrontendAccess: 'method(T3DD\Frontend\Controller\FrontendController->serveAction()) || method(T3DD\Login\Controller\AuthenticationController->(login|authenticate|callback|status)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
+    T3DD_Backend_PublicFrontendAccess: 'method(T3DD\Frontend\Controller\FrontendController->serveAction()) || method(T3DD\Login\Controller\AuthenticationController->(login|authenticate|callback|status)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction()) || method(T3DD\Backend\Controller\SessionController->(list|show)Action())'
     T3DD_Backend_Participant: 'method(T3DD\Backend\Controller\ParticipantController->(show|create)Action())'
+    T3DD_Backend_Session: 'method(T3DD\Backend\Controller\SessionController->(create|update|delete)Action())'
 
 
 roles:
@@ -17,6 +18,7 @@ acls:
   Authenticated:
     methods:
       T3DD_Backend_Participant: GRANT
+      T3DD_Backend_Session: GRANT
   Administrator:
     methods:
       T3DD_Backend_AllControllerActions: GRANT
