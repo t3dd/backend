@@ -23,16 +23,32 @@ class VoteController extends \Netlogix\Crud\Controller\RestController {
 	protected $voteRepository;
 
 	/**
+	 * @Flow\Inject
+	 * @var \Netlogix\Crud\Domain\Service\DataTransferObjectFactory
+	 */
+	protected $dataTransferObjectFactory;
+
+	/**
 	 * @var string
 	 */
 	protected $resourceArgumentName = 'session';
 
 	public function listAction() {
+		$sessionVotes = $this->voteRepository->getVoteCountForSessions();
+		foreach ($sessionVotes as $index => $sessionVote) {
+			$sessionVotes[$index]['session'] = new \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer(array(
+				'packageKey' => 'T3DD.Backend',
+				'controllerName' => 'Vote',
+				'actionName' => 'index',
+				'arguments' => array('session' => $sessionVote['session']),
+			));
+		}
 
+		$this->view->assign('value', $sessionVotes);
 	}
 
 	public function myVotesAction() {
-
+		$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObjects($this->voteRepository->findByAccount($this->securityContext->getAccount())));
 	}
 
 	/**

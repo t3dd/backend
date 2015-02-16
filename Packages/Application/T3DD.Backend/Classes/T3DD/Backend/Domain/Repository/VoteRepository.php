@@ -7,7 +7,7 @@ namespace T3DD\Backend\Domain\Repository;
  *                                                                        */
 
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Persistence\Repository;
+use \TYPO3\Flow\Persistence\Doctrine\Repository;
 
 /**
  * @Flow\Scope("singleton")
@@ -34,6 +34,14 @@ class VoteRepository extends Repository {
 		$query = $this->createQuery();
 		$query->matching($query->logicalAnd(array($query->equals('session', $session), $query->equals('account', $account))));
 		return $query->execute()->getFirst();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getVoteCountForSessions() {
+		$query = $this->entityManager->createQuery('SELECT s.Persistence_Object_Identifier session, count(v.Persistence_Object_Identifier) numberOfVotes FROM T3DD\Backend\Domain\Model\Vote v JOIN v.session s GROUP BY v.session');
+		return $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
 	}
 
 }

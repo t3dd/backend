@@ -61,3 +61,13 @@
     '@action':     'myVotes'
   appendExceedingArguments: TRUE
   httpMethods: ['GET']
+
+-
+  name: 'Vote api'
+  uriPattern: 'api/votes'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Vote'
+    '@action':     'index'
+  appendExceedingArguments: TRUE
+  httpMethods: ['GET']
