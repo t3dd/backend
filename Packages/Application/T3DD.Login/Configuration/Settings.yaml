@@ -10,8 +10,9 @@ TYPO3:
             entryPoint: 'WebRedirect'
             entryPointOptions:
               routeValues:
-                '@package': 'DFAU.Login'
-                '@controller': 'Authenticate'
-                '@action': 'login'
+                '@package':    'T3DD.Login'
+                '@controller': 'Authentication'
+                '@action':     'login'
+                '@format':     'html'
             providerOptions:
               rsaKeyUuid: '6c9785b514e93c6467d4d74dff4a7455'
