@@ -48,7 +48,7 @@ class Vote extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransfer
 	public function getSession() {
 		return new \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer(array(
 			'packageKey' => 'T3DD.Backend',
-			'controllerName' => 'Vote',
+			'controllerName' => 'Session',
 			'actionName' => 'index',
 			'arguments' => array('session' => $this->payload->getSession()),
 		));

@@ -38,7 +38,7 @@ class VoteController extends \Netlogix\Crud\Controller\RestController {
 		foreach ($sessionVotes as $index => $sessionVote) {
 			$sessionVotes[$index]['session'] = new \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer(array(
 				'packageKey' => 'T3DD.Backend',
-				'controllerName' => 'Vote',
+				'controllerName' => 'Session',
 				'actionName' => 'index',
 				'arguments' => array('session' => $sessionVote['session']),
 			));
