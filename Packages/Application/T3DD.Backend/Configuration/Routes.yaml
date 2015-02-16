@@ -41,3 +41,13 @@
     '@action':     'index'
   appendExceedingArguments: TRUE
   httpMethods: ['HEAD', 'GET', 'POST']
+
+-
+  name: 'Vote api'
+  uriPattern: 'api/vote/{session}'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Vote'
+    '@action':     'index'
+  appendExceedingArguments: TRUE
+  httpMethods: ['POST', 'DELETE']

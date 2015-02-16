@@ -31,11 +31,11 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'title', 'description', 'speakers');
+		return array('resource', 'title', 'description', 'speakers', 'voteUri');
 	}
 
 	/**
-	 * @return \T3DD\Backend\Domain\Model\Mate
+	 * @return \T3DD\Backend\Domain\Model\Session
 	 */
 	public function getInnermostSelf() {
 		return $this->innermostSelf;
@@ -58,6 +58,18 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 */
 	public function getSpeakers() {
 		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getInnermostSelf()->getSpeakers());
+	}
+
+	/**
+	 * @return \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer
+	 */
+	public function getVoteUri() {
+		return new \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer(array(
+			'packageKey' => 'T3DD.Backend',
+			'controllerName' => 'Vote',
+			'actionName' => 'index',
+			'arguments' => array('session' => $this->innermostSelf),
+		));
 	}
 
 }

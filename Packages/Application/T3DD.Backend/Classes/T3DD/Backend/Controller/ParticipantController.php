@@ -111,22 +111,4 @@ class ParticipantController extends \Netlogix\Crud\Controller\RestController {
 		$this->participantRepository->remove($participant);
 	}
 
-	public function errorAction() {
-		$validationResults = $this->arguments->getValidationResults()->getFlattenedErrors();
-		$result = array();
-		/** @var \TYPO3\Flow\Error\Error  $validationResult */
-		foreach ($validationResults as $key => $validationResult) {
-			/** @var \TYPO3\Flow\Validation\Error $error */
-			foreach ($validationResult as $error) {
-				$result['errors'][$key][] = array(
-					'code' => $error->getCode(),
-					'message' => $error->getMessage()
-				);
-			}
-		}
-		$result['success'] = false;
-		$this->view->assign('value', $result);
-		$this->response->setStatus(403);
-	}
-
 }
