@@ -1,10 +1,18 @@
 <?php
 namespace T3DD\Frontend\Routing;
 
+use TYPO3\Flow\Annotations as Flow;
+
 /**
  * Enter descriptions here
  */
-class AppRouteHandler extends \TYPO3\Flow\Mvc\Routing\DynamicRoutePart {
+class AppRouteHandler extends \TYPO3\Flow\Mvc\Routing\AbstractRoutePart implements \TYPO3\Flow\Mvc\Routing\DynamicRoutePartInterface  {
+
+	/**
+	 * @var \TYPO3\Flow\Core\Bootstrap
+	 * @Flow\Inject
+	 */
+	protected $bootstrap;
 
 	/**
 	 * @var array
@@ -25,45 +33,6 @@ class AppRouteHandler extends \TYPO3\Flow\Mvc\Routing\DynamicRoutePart {
 			$this->routes = $appRoutes[2];
 		}
 
-	}
-
-	/**
-	 * @param string $routePath
-	 * @return string
-	 */
-	protected function findValueToMatch($routePath) {
-		$this->loadRoutes();
-		$requestPath = '/' . $routePath;
-		foreach ($this->routes as $route) {
-			if ($this->testRoute($route, $requestPath)) {
-				return $routePath;
-			}
-		}
-		return false;
-	}
-
-
-	/**
-	 * Checks whether the current URI section matches the configured RegEx pattern.
-	 *
-	 * @param string $requestPath value to match, the string to be checked
-	 * @return boolean TRUE if value could be matched successfully, otherwise FALSE.
-	 */
-	protected function matchValue($requestPath) {
-		if ($requestPath !== false) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Checks whether the route part matches the configured RegEx pattern.
-	 *
-	 * @param string $value The route part (must be a string)
-	 * @return boolean TRUE if value could be resolved successfully, otherwise FALSE.
-	 */
-	protected function resolveValue($value) {
-		return true;
 	}
 
 	/**
@@ -108,4 +77,112 @@ class AppRouteHandler extends \TYPO3\Flow\Mvc\Routing\DynamicRoutePart {
 		return true;
 	}
 
+	/**
+	 * Sets split string of the Route Part.
+	 * The split string represents the border of a Dynamic Route Part.
+	 * If it is empty, Route Part will be equal to the remaining request path.
+	 *
+	 * @param string $splitString
+	 * @return void
+	 * @api
+	 */
+	public function setSplitString($splitString) {
+		return '';
+	}
+
+	/**
+	 * Checks whether this Route Part corresponds to the given $routePath.
+	 * This method does not only check if the Route Part matches. It can also
+	 * shorten the $routePath by the matching substring when matching is successful.
+	 * This is why $routePath has to be passed by reference.
+	 *
+	 * @param string &$routePath The request path to be matched - without query parameters, host and fragment.
+	 * @return boolean TRUE if Route Part matched $routePath, otherwise FALSE.
+	 */
+	public function match(&$routePath) {
+		$currentRequest = $this->getHttpRequest();
+		if ($currentRequest === NULL) return FALSE;
+
+		$mediaType = $currentRequest->getNegotiatedMediaType(array('text/html'));
+		if ($mediaType === NULL) return FALSE;
+
+		$this->loadRoutes();
+		$requestPath = '/' . $routePath;
+		foreach ($this->routes as $route) {
+			if ($this->testRoute($route, $requestPath)) {
+				$routePath = '';
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	/**
+	 * Checks whether $routeValues contains elements which correspond to this Dynamic Route Part.
+	 * If a corresponding element is found in $routeValues, this element is removed from the array.
+	 *
+	 * @param array $routeValues An array with key/value pairs to be resolved by Dynamic Route Parts.
+	 * @return boolean TRUE if current Route Part could be resolved, otherwise FALSE
+	 */
+	public function resolve(array &$routeValues) {
+		$this->value = NULL;
+		if ($this->name === NULL || $this->name === '') {
+			return FALSE;
+		}
+		$valueToResolve = $this->findValueToResolve($routeValues);
+		if (!$this->resolveValue($valueToResolve)) {
+			return FALSE;
+		}
+		$routeValues = Arrays::unsetValueByPath($routeValues, $this->name);
+		return TRUE;
+	}
+
+	/**
+	 * Returns the route value of the current route part.
+	 * This method can be overridden by custom RoutePartHandlers to implement custom resolving mechanisms.
+	 *
+	 * @param array $routeValues An array with key/value pairs to be resolved by Dynamic Route Parts.
+	 * @return string|array value to resolve.
+	 * @api
+	 */
+	protected function findValueToResolve(array $routeValues) {
+		return \TYPO3\Flow\Reflection\ObjectAccess::getPropertyPath($routeValues, $this->name);
+	}
+
+	/**
+	 * Checks, whether given value can be resolved and if so, sets $this->value to the resolved value.
+	 * If $value is empty, this method checks whether a default value exists.
+	 * This method can be overridden by custom RoutePartHandlers to implement custom resolving mechanisms.
+	 *
+	 * @param string $value value to resolve
+	 * @return boolean TRUE if value could be resolved successfully, otherwise FALSE.
+	 * @api
+	 */
+	protected function resolveValue($value) {
+		if ($value === NULL) {
+			return FALSE;
+		}
+		if (is_object($value)) {
+			$value = $this->persistenceManager->getIdentifierByObject($value);
+			if ($value === NULL || !is_string($value)) {
+				return FALSE;
+			}
+		}
+		$this->value = urlencode($value);
+		if ($this->lowerCase) {
+			$this->value = strtolower($this->value);
+		}
+		return TRUE;
+	}
+
+	/**
+	 * @return \TYPO3\Flow\Http\Request
+	 */
+	protected function getHttpRequest() {
+		$requestHandler = $this->bootstrap->getActiveRequestHandler();
+		if ($requestHandler instanceof \TYPO3\Flow\Http\HttpRequestHandlerInterface) {
+			return $requestHandler->getHttpRequest();
+		}
+	}
 }
