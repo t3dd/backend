@@ -44,6 +44,7 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 	 * @param Session $session
 	 */
 	public function showAction(Session $session) {
+		$this->response->getHeaders()->setCacheControlDirective('no-store');
 		$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObject($session));
 	}
 
