@@ -25,23 +25,99 @@
 	</template>
 
 	<script>
+		// Element.closest polyfill beginn
+		(function (ELEMENT, PREFIX) {
+			ELEMENT.matches = ELEMENT.matches || ELEMENT[PREFIX + 'MatchesSelector'];
+			ELEMENT.closest = ELEMENT.closest || function (selector) {
+				var node = this;
+				while (node) {
+					if (node.matches(selector)) return node;
+					else node = node.parentElement;
+				}
+				return null;
+			};
+		})(
+			Element.prototype,
+			(getComputedStyle(document.documentElement).cssText.match(/-(moz|webkit|ms)-/) || [])[1] || ''
+		);
+		// Element.closest polyfill end
+
 		Polymer({
+			eventDelegates: {
+				'focusout': 'onBlur',
+				'invalid': 'onInvalid',
+				'submitting': 'onSubmitting',
+				'submitted': 'onSubmitted'
+			},
+
+			/**
+			 * If the submitted data returns an error
+			 *
+			 * @attribute hasError
+			 * @type boolean
+			 * @default false
+			 */
 			hasError: false,
+
+			/**
+			 * Contains the error message if there is one
+			 *
+			 * @attribute errorText
+			 * @type string
+			 * @default ''
+			 */
 			errorText: '',
+
+			/**
+			 * Tells you if the form is currently submitting data
+			 *
+			 * @attribute isSubmitting
+			 * @type boolean
+			 * @default false
+			 */
 			isSubmitting: false,
-			domReady: function() {
-				this.super();
-				this.addEventListener('submitting', function() {
-					this.isSubmitting = true;
-				});
-				this.addEventListener('submitted', function(event) {
-					this.isSubmitting = false;
-					if (event.detail.status > 399) {
-						this.hasError = true;
-						this.$.errorMessage.heading = event.detail.statusText;
+
+			onBlur: function(event, pathPosition) {
+				var invalidEl = event.path[pathPosition];
+				if (typeof invalidEl !== 'undefined') {
+					this.invalidateDecorator(invalidEl);
+				}
+			},
+
+			onInvalid: function(event) {
+				var firstInvalidEl, self = this;
+				event.detail.forEach(function(invalidEl) {
+					self.invalidateDecorator.call(self, invalidEl);
+					if (typeof firstInvalidEl === 'undefined') {
+						firstInvalidEl = invalidEl;
 					}
 				});
+				if (typeof firstInvalidEl !== 'undefined') {
+					firstInvalidEl.scrollIntoView();
+				}
 			},
+
+			onSubmitting: function() {
+				this.isSubmitting = true;
+			},
+
+			onSubmitted: function() {
+				this.isSubmitting = false;
+				if (event.detail.status > 399) {
+					this.hasError = true;
+					this.$.errorMessage.heading = event.detail.statusText;
+				}
+			},
+
+			invalidateDecorator: function(invalidEl) {
+				if (typeof invalidEl.validity === 'undefined') return;
+
+				var closestDecorator = invalidEl.closest('paper-input-decorator');
+				if (typeof closestDecorator !== 'undefined') {
+					closestDecorator.isInvalid = !invalidEl.validity.valid
+				}
+			},
+
 			changePageToResource: function(event) {
 				if (event.detail.status > 199 && event.detail.status < 300) {
 					var session = JSON.parse(event.detail.response);
