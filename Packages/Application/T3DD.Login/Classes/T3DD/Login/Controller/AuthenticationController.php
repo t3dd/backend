@@ -40,6 +40,14 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 	protected $requestIDProtocol = 'requestID://';
 
 	/**
+	 * A list of IANA media types which are supported by this controller
+	 *
+	 * @var array
+	 * @see http://www.iana.org/assignments/media-types/index.html
+	 */
+	protected $supportedMediaTypes = array('text/html', 'application/json');
+
+	/**
 	 */
 	public function loginAction() {
 		$requestID = $this->getReturnTo();
@@ -62,9 +70,10 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 		if (is_object($account)) {
 			$this->response->setHeader('Content-Type', 'application/json', TRUE);
 			$this->response->setContent(json_encode($this->buildAccountDTO($this->securityContext->getAccount(), $this->response->getCookie('TYPO3_Flow_Session'))));
-			return;
+		} else {
+			$this->response->setStatus(401, 'Not logged in.');
 		}
-		$this->response->setStatus(401, 'Not logged in.');
+		throw new \TYPO3\Flow\Mvc\Exception\StopActionException();
 	}
 
 	/**

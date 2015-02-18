@@ -5,7 +5,7 @@
     '@package':    'T3DD.Login'
     '@controller': 'Authentication'
     '@action':     'callback'
-    '@format':     'html'
+    '@format':     'json'
 
 -
   name: 'SSO Parent Window Callback'
@@ -14,7 +14,7 @@
     '@package':    'T3DD.Login'
     '@controller': 'Authentication'
     '@action':     'login'
-    '@format':     'html'
+    '@format':     'json'
 
 -
   name: 'User Status'
@@ -23,7 +23,7 @@
     '@package':    'T3DD.Login'
     '@controller': 'Authentication'
     '@action':     'status'
-    '@format':     'html'
+    '@format':     'json'
 
 
 -
