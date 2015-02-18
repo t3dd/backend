@@ -7,12 +7,5 @@ TYPO3:
           # configure SSO key to use
           Typo3OrgSsoProvider:
             provider: 'T3DD\Login\Security\Authentication\Provider\Typo3OrgSsoProvider'
-            entryPoint: 'WebRedirect'
-            entryPointOptions:
-              routeValues:
-                '@package':    'T3DD.Login'
-                '@controller': 'Authentication'
-                '@action':     'login'
-                '@format':     'html'
             providerOptions:
               rsaKeyUuid: '6c9785b514e93c6467d4d74dff4a7455'

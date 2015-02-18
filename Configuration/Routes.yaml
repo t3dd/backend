@@ -1,4 +1,13 @@
 -
+  name: 'T3DD.Frontend'
+  uriPattern: '<T3DDFrontendSubroutes>'
+  subRoutes:
+    'T3DDFrontendSubroutes':
+      package: 'T3DD.Frontend'
+      variables:
+        'defaultUriSuffix': ''
+
+-
   name: 'T3DD.Backend'
   uriPattern: '<T3DDBackendSubroutes>'
   subRoutes:

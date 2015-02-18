@@ -28,18 +28,30 @@ class AppRouteHandler extends \TYPO3\Flow\Mvc\Routing\DynamicRoutePart {
 	}
 
 	/**
+	 * @param string $routePath
+	 * @return string
+	 */
+	protected function findValueToMatch($routePath) {
+		$this->loadRoutes();
+		$requestPath = '/' . $routePath;
+		foreach ($this->routes as $route) {
+			if ($this->testRoute($route, $requestPath)) {
+				return $routePath;
+			}
+		}
+		return false;
+	}
+
+
+	/**
 	 * Checks whether the current URI section matches the configured RegEx pattern.
 	 *
 	 * @param string $requestPath value to match, the string to be checked
 	 * @return boolean TRUE if value could be matched successfully, otherwise FALSE.
 	 */
 	protected function matchValue($requestPath) {
-		$this->loadRoutes();
-		$requestPath = '/' . $requestPath;
-		foreach ($this->routes as $route) {
-			if ($this->testRoute($route, $requestPath)) {
-				return true;
-			}
+		if ($requestPath !== false) {
+			return true;
 		}
 		return false;
 	}

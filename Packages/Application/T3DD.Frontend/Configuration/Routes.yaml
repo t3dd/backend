@@ -5,7 +5,8 @@
     '@package':    'T3DD.Frontend'
     '@controller': 'Frontend'
     '@action':     'serve'
-    '@format':      'html'
+    '@format':     'html'
+  httpMethods: ['HEAD', 'GET']
   routeParts:
     route:
       handler:     'T3DD\Frontend\Routing\AppRouteHandler'

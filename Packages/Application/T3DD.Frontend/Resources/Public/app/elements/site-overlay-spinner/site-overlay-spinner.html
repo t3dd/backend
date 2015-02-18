@@ -1,0 +1,45 @@
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
+
+<polymer-element name="site-overlay-spinner" attributes="active">
+	<template>
+		<style>
+			#spinnerContainer {
+				visibility: hidden;
+				background: rgba(255, 255, 255, .5);
+				opacity: 0;
+				-webkit-transition: opacity 0.2s ease-in;
+				transition: visibility 0.2s ease-in, opacity 0.2s ease-in;
+			}
+			#spinnerContainer.transitioning {
+
+				/*visibility: hidden;*/
+			}
+			#spinnerContainer.active {
+				visibility: visible;
+				opacity: 1;
+			}
+		</style>
+		<div id="spinnerContainer" layout vertical center-center fit>
+			<paper-spinner id="spinner"></paper-spinner>
+		</div>
+	</template>
+	<script>
+		Polymer({
+			publish: {
+				/**
+				 * Displays the spinner.
+				 *
+				 * @attribute active
+				 * @type boolean
+				 * @default false
+				 */
+				active: {value: false, reflect: true}
+			},
+
+			activeChanged: function() {
+				this.$.spinnerContainer.classList.toggle('active', this.active);
+				this.$.spinner.active = this.active;
+			}
+		});
+	</script>
+</polymer-element>

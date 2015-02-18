@@ -1,0 +1,8 @@
+resources:
+  methods:
+    T3DD_Frontend_PublicFrontendAccess: 'method(T3DD\Frontend\Controller\FrontendController->serveAction())'
+
+acls:
+  Everybody:
+    methods:
+      T3DD_Frontend_PublicFrontendAccess: GRANT

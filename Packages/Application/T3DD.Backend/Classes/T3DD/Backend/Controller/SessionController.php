@@ -6,6 +6,7 @@ namespace T3DD\Backend\Controller;
  *                                                                        *
  *                                                                        */
 
+use T3DD\Backend\Domain\Model\Session;
 use TYPO3\Flow\Annotations as Flow;
 
 class SessionController extends \Netlogix\Crud\Controller\RestController {
@@ -32,39 +33,42 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 	 */
 	protected $resourceArgumentName = 'session';
 
+	/**
+	 *
+	 */
 	public function listAction() {
 		$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObjects($this->sessionRepository->findAll()));
 	}
 
 	/**
-	 * @param \T3DD\Backend\Domain\Model\Session $session
+	 * @param Session $session
 	 */
-	public function showAction($session) {
+	public function showAction(Session $session) {
 		$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObject($session));
 	}
 
 	/**
-	 * @param \T3DD\Backend\Domain\Model\Session $session
+	 * @param Session $session
 	 */
-	public function createAction($session) {
+	public function createAction(Session $session) {
 		$this->sessionRepository->add($session);
 		$this->persistenceManager->persistAll();
-		$this->redirect('index', NULL, NULL, array('session' => $session));
+		$this->reportSuccess($session, 201);
 	}
 
 	/**
-	 * @param \T3DD\Backend\Domain\Model\Session $session
+	 * @param Session $session
 	 */
-	public function updateAction($session) {
+	public function updateAction(Session $session) {
 		$this->sessionRepository->update($session);
 		$this->persistenceManager->persistAll();
-		$this->redirect('index', NULL, NULL, array('session' => $session));
+		$this->reportSuccess($session);
 	}
 
 	/**
-	 * @param \T3DD\Backend\Domain\Model\Session $session
+	 * @param Session $session
 	 */
-	public function deleteAction($session) {
+	public function deleteAction(Session $session) {
 		$this->sessionRepository->remove($session);
 	}
 

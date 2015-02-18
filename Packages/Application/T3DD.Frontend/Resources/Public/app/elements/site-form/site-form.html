@@ -1,0 +1,57 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/ajax-form/ajax-form.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-action-dialog.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/core-transition/core-transition.html">
+
+<polymer-element name="site-form" extends="ajax-form" attributes="cookies headers isSubmitting">
+
+	<template>
+		<style>
+			:host {
+				position: relative;
+			}
+			#spinner {
+				background: rgba(255, 255, 255, .75);
+			}
+		</style>
+		<content></content>
+		<paper-action-dialog id="errorMessage" backdrop autoCloseDisabled layered="false" opened="{{hasError}}">
+			<paper-button affirmative autofocus>
+				<core-icon icon="check"></core-icon>
+				OK
+			</paper-button>
+		</paper-action-dialog>
+	</template>
+
+	<script>
+		Polymer({
+			hasError: false,
+			errorText: '',
+			isSubmitting: false,
+			domReady: function() {
+				this.super();
+				this.addEventListener('submitting', function() {
+					this.isSubmitting = true;
+				});
+				this.addEventListener('submitted', function(event) {
+					this.isSubmitting = false;
+					if (event.detail.status > 399) {
+						this.hasError = true;
+						this.$.errorMessage.heading = event.detail.statusText;
+					}
+				});
+			},
+			changePageToResource: function(event) {
+				if (event.detail.status > 199 && event.detail.status < 300) {
+					var session = JSON.parse(event.detail.response);
+					if (typeof session.resource !== 'undefined') {
+						var path = session.resource.replace(/^https?:\/\/[^\/]+/, '');
+						document.querySelector('app-router').go(path);
+					}
+				}
+			}
+		});
+	</script>
+
+</polymer-element>

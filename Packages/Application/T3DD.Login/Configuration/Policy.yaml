@@ -1,0 +1,8 @@
+resources:
+  methods:
+    T3DD_Login_PublicFrontendAccess: 'method(T3DD\Login\Controller\AuthenticationController->(login|authenticate|callback|status)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
+
+acls:
+  Everybody:
+    methods:
+      T3DD_Login_PublicFrontendAccess: GRANT

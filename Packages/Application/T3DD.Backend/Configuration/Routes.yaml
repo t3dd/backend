@@ -24,7 +24,7 @@
 
 -
   name: 'Sessions api'
-  uriPattern: 'api/sessions/{session}'
+  uriPattern: 'sessions/{session}'
   defaults:
     '@package':    'T3DD.Backend'
     '@controller': 'Session'
@@ -34,7 +34,7 @@
 
 -
   name: 'Sessions api'
-  uriPattern: 'api/sessions'
+  uriPattern: 'sessions'
   defaults:
     '@package':    'T3DD.Backend'
     '@controller': 'Session'
