@@ -3,7 +3,8 @@
     "type": "typo3-flow-package",
     "description": "T3DD Rest Api Backend",
     "require": {
-        "typo3/flow": "*"
+        "typo3/flow": "*",
+        "netlogix/crud": "*"
     },
     "autoload": {
         "psr-0": {

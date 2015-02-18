@@ -18,6 +18,12 @@
         "phpunit/phpunit": "4.3.*",
         "mikey179/vfsstream": "1.4.*"
     },
+    "repositories": [
+        {
+            "type": "git",
+            "url":  "https://github.com/netlogix/Netlogix.Crud.git"
+        }
+    ],
     "suggest": {
         "ext-pdo_sqlite": "For running functional tests out-of-the-box this is required"
     },
