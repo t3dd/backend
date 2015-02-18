@@ -5,6 +5,8 @@
 		<core-ajax
 		    auto
 		    url="{{ssoUrl}}status/"
+			contentType="application/json"
+			headers='{"Accept": "application/json"}'
 		    handleAs="json"
 		    on-core-response="{{handleUser}}"></core-ajax>
 	</template>

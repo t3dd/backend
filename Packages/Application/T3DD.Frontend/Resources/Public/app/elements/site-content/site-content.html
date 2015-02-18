@@ -1,0 +1,26 @@
+<polymer-element name="site-content" noscript>
+	<template>
+		<style>
+			:host {
+				display: block;
+				padding: 0 16px;
+			}
+
+			@media (min-width: 34em) {
+				:host {
+					padding: 0 32px;
+				}
+			}
+
+			::content img {
+				max-width: 100%;
+			}
+
+			::content p {
+				margin-bottom: 32px;
+				line-height: 1.4;
+			}
+		</style>
+		<content></content>
+	</template>
+</polymer-element>
