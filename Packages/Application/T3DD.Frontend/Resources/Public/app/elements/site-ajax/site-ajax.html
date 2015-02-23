@@ -3,7 +3,9 @@
 <polymer-element name="site-ajax" extends="core-ajax" attributes="cache">
 	<script>
 
-		var _cachedResponse = {};
+		var _cachedRequests = {},
+			_activeRequests = {},
+			_callbacks = {};
 
 		Polymer({
 			auto: true,
@@ -12,20 +14,55 @@
 			handleAs:'json',
 			cache: false,
 
+			receive: function(response, xhr) {
+				this.super([response, xhr]);
+				if (typeof _callbacks[this.url] !== 'undefined') {
+					_callbacks[this.url].forEach(function(callback) {
+						callback(response, xhr);
+					});
+					delete _callbacks[this.url];
+					delete _activeRequests[this.url];
+				}
+				if (this.cache) {
+					_cachedRequests[this.url] = xhr;
+				}
+			},
+
 			go: function () {
-				var _this = this;
-
 				if (!this.cache) {
-					return _this.super();
+					return this.super();
 				}
 
-				if (_cachedResponse[this.url]) {
-					return _cachedResponse[this.url];
+				if (typeof _cachedRequests[this.url] !== 'undefined') {
+					var request = _cachedRequests[this.url];
+					return this.receive(request.response, request);
 				}
 
-				var xhr = _this.super();
+				if (typeof _activeRequests[this.url] !== 'undefined') {
+					this.activeRequest = _activeRequests[this.url];
+					if(this.activeRequest) {
+						this.loading = true;
+						var activeRequest = this.activeRequest;
+						// IE < 10 doesn't support progress events.
+						if('onprogress' in activeRequest) {
+							this.activeRequest.addEventListener(
+									'progress',
+									function(progress) {
+										this.processProgress(progress, activeRequest);
+									}.bind(this), false);
+						} else {
+							this.progress = {
+								lengthComputable: false
+							}
+						}
+					}
+					_callbacks[this.url].push(this.__proto__.__proto__.receive.bind(this));
+					return;
+				}
 
-
+				var activeRequest = this.super();
+				_callbacks[this.url] = [];
+				_activeRequests[this.url] = activeRequest;
 			}
 		});
 	</script>
