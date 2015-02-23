@@ -61,8 +61,7 @@ class VoteController extends \Netlogix\Crud\Controller\RestController {
 		$vote->setSession($session);
 		$vote->setAccount($this->securityContext->getAccount());
 		$this->voteRepository->add($vote);
-		$this->response->setStatus(201);
-		return;
+		$this->reportSuccess($vote, 201);
 	}
 
 	/**
@@ -75,11 +74,6 @@ class VoteController extends \Netlogix\Crud\Controller\RestController {
 
 		if (!$vote) {
 			$this->response->setStatus(404);
-			return;
-		}
-
-		if ($vote->getAccount() !== $account && !$this->securityContext->hasRole('T3DD.Backend:Administrator')) {
-			$this->response->setStatus(403);
 			return;
 		}
 		$this->voteRepository->remove($vote);

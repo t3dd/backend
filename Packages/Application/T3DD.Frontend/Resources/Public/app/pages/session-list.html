@@ -8,7 +8,7 @@
 				display: block;
 			}
 		</style>
-		<site-ajax url="/sessions"  response="{{sessions}}"></site-ajax>
+		<site-ajax url="/sessions" response="{{sessions}}"></site-ajax>
 		<template repeat="{{session in sessions}}">
 			<site-session session="{{session}}"></site-session>
 		</template>

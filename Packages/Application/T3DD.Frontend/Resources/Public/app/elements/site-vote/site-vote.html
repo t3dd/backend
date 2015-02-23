@@ -6,6 +6,7 @@
 			:host {
 				display: block;
 			}
+
 			#vote-count {
 				border-radius: 50%;
 				width: 40px;
@@ -17,9 +18,14 @@
 			}
 		</style>
 
-		<site-ajax id="votes" cache="true" url="/votes" on-core-response="{{handleResponse}}"></site-ajax>
-		<div>
-			<div id="vote-count">{{vote.numberOfVotes || 0}}</div>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<site-ajax cache="true" url="/votes" response="{{votes}}"></site-ajax>
+		<site-ajax cache="true" url="/votes/me" response="{{myVotes}}"></site-ajax>
+		<site-ajax id="voteAjax" auto="false" url="{{session.voteUri}}" on-core-response="{{handleVoteResponse}}"></site-ajax>
+		<!--<template bind="{{votes | voteForSession(session)}}"></template>-->
+		<div layout horizontal>
+			<div id="vote-count" layout horizontal center-center>{{vote.numberOfVotes || 0}}</div>
+			<paper-icon-button icon="{{myVote ? 'star' : 'star-outline'}}" on-tap="{{toggleVote}}" hidden?="{{!globals.user}}"></paper-icon-button>
 		</div>
 	</template>
 	<script>
@@ -27,9 +33,45 @@
 			'use strict';
 
 			Polymer({
+				vote: {},
+				myVote: null,
 
-				handleResponse: function (event) {
-					console.log(event);
+				votesChanged: function () {
+					var self = this;
+					this.vote = this.votes.filter(function (vote) {
+						return vote.session === self.session.resource;
+					})[0] || {numberOfVotes: 0, session: self.session.resource};
+				},
+
+				myVotesChanged: function () {
+					var self = this;
+					this.myVote = this.myVotes.filter(function (vote) {
+						return vote.session === self.session.resource;
+					})[0];
+				},
+
+				toggleVote: function () {
+					var voteAjax = this.$.voteAjax;
+					if (voteAjax.loading) {
+						return;
+					}
+
+					if (this.myVote) {
+						voteAjax.method = 'DELETE';
+					} else {
+						voteAjax.method = 'POST';
+					}
+					voteAjax.go();
+				},
+
+				handleVoteResponse: function (event) {
+					if (this.myVote) {
+						this.myVote = null;
+						this.vote.numberOfVotes--;
+					} else {
+						this.myVote = event.detail.response;
+						this.vote.numberOfVotes++;
+					}
 				}
 
 			});
