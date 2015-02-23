@@ -1,40 +1,109 @@
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
 <link rel="import" href="../bower_components/core-scroll-header-panel/core-scroll-header-panel.html">
-<link rel="import" href="../elements/site-jumbotron/site-jumbotron.html">
-<link rel="import" href="../elements/site-content/site-content.html">
+<link rel="import" href="../elements/site-logo/site-logo.html">
 <link rel="import" href="../elements/site-map/site-map.html">
+<link rel="import" href="../elements/site-style/site-style.html">
 
 <polymer-element name="page-home" noscript>
 	<template>
+		<core-style ref="main"></core-style>
 		<style>
-			:host, core-scroll-header-panel {
+			:host {
 				display: block;
-				height: 100%;
+			}
+
+			.masthead {
+				background-image: url('../images/header_simple.jpg');
+			}
+
+			.masthead-container {
+				height: 192px;
+				margin: 0 auto;
+				padding: 0 16px;
+			}
+
+			.masthead-meta {
+				text-align: center;
+			}
+
+			@media (min-width: 640px) {
+				.masthead-meta {
+					text-align: right;
+				}
+			}
+
+			@media (max-width: 767px) {
+				.masthead-meta {
+					padding: 0 16px 16px;
+				}
+			}
+
+			@media (min-width: 640px) and (max-width: 767px) {
+				site-logo {
+					padding-bottom: 16px;
+				}
+				.masthead-meta {
+					padding: 16px 0 16px 60px
+				}
+			}
+
+			@media (min-width: 768px) {
+				.masthead-container {
+					height: 256px;
+					padding: 0 32px 80px;
+				}
+			}
+
+			@media (min-width: 768px) {
+				.card__container {
+					position: absolute;
+					left: 0;
+					right: 0;
+					margin: -64px auto 0;
+				}
+			}
+
+			.t3dd-logo {
+				width: 192px;
+			}
+
+			.t3dd-date {
+				text-transform: uppercase;
+			}
+
+			.t3dd-date span {
+				font-weight: 400;
 			}
 
 			site-map {
 				display: block;
-				height: 400px;
-			}
-
-			site-jumbotron {
-				background-image: url('../images/header_simple.jpg');
+				height: 384px;
 			}
 		</style>
-		<core-scroll-header-panel>
-			<site-jumbotron>
-				<h1>July 16–19 <span>2015</span></h1>
-
-				<h3>The 10th international TYPO3 Developer Days</h3>
-			</site-jumbotron>
-			<site-content>
-				<p>The Developer Days will be repeated again. This time in Nuremberg at an exciting location. It takes place in a fully refurbished hostel in the 500 year-old imperial stables (Kaiserstallung) of the even older castle. At the heart of Nuremberg's landmark, in the city centre and centre of Franconia. Onsite accommodation will be offered.
-				   From Thursday, July 16 to Sunday, July 19 2015 developers from around the world will meet each other and make this conference a great experience.
-				   Be excited. We are looking forward to see you there!</p>
-			</site-content>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<header class="masthead bg-orange bg-cover-multiply">
+			<div class="masthead-container container" layout end?="{{!globals.isSmallPhoneSize}}" center?="{{globals.isSmallPhoneSize}}" horizontal?="{{!globals.isSmallPhoneSize}}" vertical?="{{globals.isSmallPhoneSize}}">
+				<site-logo class="t3dd-logo"></site-logo>
+				<div class="masthead-meta {{ {transition: pageTransitioningOut} | tokenList }}" layout vertical end-justified?="{{globals.isSmallPhoneSize}}" flex?="{{!globals.isSmallPhoneSize}}">
+					<h2 class="t3dd-date" site-font="{{globals.isPhoneSize ? 'headline' : 'display1'}}">July 16–19 <span>2015</span></h2>
+					<h4 site-font="subhead">The 10th international TYPO3 Developer Days</h4>
+				</div>
+			</div>
+		</header>
+		<main>
+			<div class="card__container container">
+				<div class="card">
+					<div class="card__content" site-font="subhead">
+						The Developer Days will be repeated again. This time in Nuremberg at an exciting location. It takes place in a fully refurbished hostel in the 500 year-old imperial stables (Kaiserstallung) of the even older castle. At the heart of Nuremberg's landmark, in the city centre and centre of Franconia. Onsite accommodation will be offered.
+						From Thursday, July 16 to Sunday, July 19 2015 developers from around the world will meet each other and make this conference a great experience.
+						Be excited. We are looking forward to see you there!
+					</div>
+				</div>
+			</div>
 			<site-map latitude="49.458116" longitude="11.077652" zoom="15">
 				<google-map-marker latitude="49.458116" longitude="11.077652" icon="../images/pin.svg" title="T3DD15 Location">
 				</google-map-marker>
 			</site-map>
-		</core-scroll-header-panel>
+		</main>
 	</template>
 </polymer-element>

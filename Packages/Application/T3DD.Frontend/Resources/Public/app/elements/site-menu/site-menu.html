@@ -1,0 +1,58 @@
+<link rel="import" href="../../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
+
+<polymer-element name="site-menu" attributes="selected horizontal items">
+	<template>
+		<style>
+			paper-tabs {
+				font-size: 16px;
+				height: 64px;
+			}
+			paper-tabs::shadow #selectionBar {
+				background-color: #000;
+			}
+			paper-tab {
+				text-transform: uppercase;
+			}
+		</style>
+		<template if="{{!horizontal}}">
+			<core-menu selected="{{selected}}" valueattr="href" excludedLocalNames="div" horizontal end-justified layout>
+				<template repeat="{{items}}">
+					<core-item label="{{label}}" icon="{{icon}}" src="{{src}}" href="{{href}}" on-tap="{{route}}">
+						<paper-ripple id="ripple" fit></paper-ripple>
+					</core-item>
+				</template>
+			</core-menu>
+		</template>
+		<template if="{{horizontal}}">
+			<paper-tabs selected="{{selected}}" valueattr="href" noink>
+				<template repeat="{{items}}">
+					<paper-tab href="{{href}}" on-tap="{{route}}">{{label}}</paper-tab>
+				</template>
+			</paper-tabs>
+		</template>
+	</template>
+	<script>
+		Polymer({
+			horizontal: false,
+			selected: '/',
+			items: [
+				{
+					label: 'Register',
+					href: '/register',
+					icon: 'social:person-add'
+				},
+				{
+					label: 'Sessions',
+					href: '/sessions',
+					icon: 'view-agenda'
+				}
+			],
+			route: function(event, index, target) {
+				if (typeof target.attributes.href === 'object') {
+					document.querySelector('app-router').go(target.getAttribute('href'));
+				}
+			}
+		});
+	</script>
+</polymer-element>

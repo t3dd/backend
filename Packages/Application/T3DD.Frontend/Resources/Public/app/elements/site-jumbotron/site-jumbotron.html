@@ -1,10 +1,9 @@
-<polymer-element name="site-jumbotron" horizontal layout center noscript>
+<polymer-element name="site-jumbotron"noscript>
 	<template>
 		<style>
 			:host {
 				display: block;
-				height: 192px;
-				padding: 28px 16px 0;
+				height: 80vh;
 				background-position: 50% 50%;
 				background-blend-mode: multiply;
 				background-repeat: no-repeat;
@@ -56,14 +55,19 @@
 				font-size: .77em;
 			}
 
+			::content [container] {
+				height: 100%;
+				padding: 28px 16px 0;
+			}
+
 			@media (min-width: 34em) {
-				:host {
-					padding: 28px 32px 0;
+				::content [container] {
+					max-width: 1024px;
+					margin: 0 auto;
+					padding: 0;
 				}
 			}
 		</style>
-			<div>
-				<content></content>
-			</div>
+			<content></content>
 	</template>
 </polymer-element>

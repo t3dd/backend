@@ -1,0 +1,209 @@
+<link rel="import" href="../../bower_components/core-style/core-style.html">
+
+<script>
+  CoreStyle.g.theme = {
+  }
+</script>
+
+<core-style id="main">
+
+/* Taken from https://github.com/PolymerLabs/paper-styles, license unclear */
+[site-font] {
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Opt for better kerning for headers & other short labels. */
+[site-font=display4],
+[site-font=display3],
+[site-font=display2],
+[site-font=display1],
+[site-font=headline],
+[site-font=title],
+[site-font=subhead],
+[site-font=menu],
+[site-font=button] {
+	text-rendering: optimizeLegibility;
+}
+
+/*
+"Line wrapping only applies to Body, Subhead, Headline, and the smaller Display
+styles. All other styles should exist as single lines."
+*/
+[site-font=display4],
+[site-font=display3],
+[site-font=title],
+[site-font=caption],
+[site-font=menu],
+[site-font=button] {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+[site-font=display4] {
+	font-size: 112px;
+	font-weight: 400;
+	letter-spacing: -.044em;
+	line-height: 120px;
+}
+
+[site-font=display3] {
+	font-size: 56px;
+	font-weight: 400;
+	letter-spacing: -.026em;
+	line-height: 60px;
+}
+
+[site-font=display2] {
+	font-size: 45px;
+	font-weight: 700;
+	letter-spacing: -.018em;
+	line-height: 48px;
+}
+
+[site-font=display1] {
+	font-size: 34px;
+	font-weight: 700;
+	letter-spacing: -.01em;
+	line-height: 40px;
+}
+
+[site-font=headline] {
+	font-size: 24px;
+	font-weight: 400;
+	letter-spacing: -.012em;
+	line-height: 32px;
+}
+
+[site-font=title] {
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 28px;
+}
+
+[site-font=subhead] {
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 24px;
+}
+
+[site-font=body2] {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 24px;
+}
+
+[site-font=body1] {
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 20px;
+}
+
+[site-font=caption] {
+	font-size: 12px;
+	font-weight: 400;
+	letter-spacing: 0.011em;
+	line-height: 20px;
+}
+
+[site-font=menu] {
+	font-size: 13px;
+	font-weight: 500;
+	line-height: 24px;
+}
+
+[site-font=button] {
+	font-size: 14px;
+	font-weight: 500;
+	letter-spacing: 0.018em;
+	line-height: 24px;
+	text-transform: uppercase;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+}
+
+.bg-cover-multiply {
+	background-position: 50% 50%;
+	background-blend-mode: multiply;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.bg-orange {
+	background-color: #FF8700;
+	color: #fff;
+	fill: #fff;
+}
+
+.card {
+	position: relative;
+	background: #fff;
+	display: block;
+	color: #212121;
+}
+
+.container, .card {
+	z-index: 1;
+}
+
+.card .card__content {
+	padding: 16px;
+}
+
+
+@media (max-width: 767px) {
+	.card {
+		border-bottom:1px solid #eee
+	}
+
+	.card:last-child {
+		border-bottom: 0
+	}
+
+	.card .card-content {
+		padding: 24px 16px
+	}
+}
+
+
+@media (min-width: 768px) {
+	.card {
+		border-radius: 3px;
+		box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.16),0px 2px 5px 0px rgba(0,0,0,0.23);
+	}
+	.card .card__content {
+		padding: 32px;
+	}
+	.card .card__content:not(:last-child) {
+		border-bottom: 1px solid #eee;
+	}
+}
+
+@media (min-width: 945px) {
+	.card .card__content {
+		padding: 32px 40px;
+	}
+}
+
+@media (min-width: 768px) {
+	.container {
+		max-width: 704px;
+		margin: 0 auto;
+	}
+}
+
+@media (min-width: 1136px) {
+	.container {
+		max-width: 896px;
+	}
+}
+
+@media (min-width: 1264px) {
+	.container {
+		max-width: 1024px;
+	}
+}
+
+</core-style>

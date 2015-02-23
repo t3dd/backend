@@ -18,35 +18,42 @@
 	<!-- endbuild -->
 
 	<!-- build:vulcanized elements/elements.vulcanized.html -->
-		<link rel="import" href="bower_components/core-ajax/core-ajax.html">
+	<link rel="import" href="bower_components/core-ajax/core-ajax.html">
 
-		<link rel="import" href="bower_components/app-router/app-router.html">
-		<link rel="import" href="bower_components/pushstate-anchor/pushstate-anchor.html">
-		<link rel="import" href="bower_components/pvc-globals/pvc-globals.html">
+	<link rel="import" href="bower_components/app-router/app-router.html">
+	<link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
+	<link rel="import" href="bower_components/core-animated-pages/transitions/cross-fade.html">
+	<link rel="import" href="bower_components/pushstate-anchor/pushstate-anchor.html">
+	<link rel="import" href="bower_components/pvc-globals/pvc-globals.html">
 
-		<link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
-		<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-		<link rel="import" href="bower_components/core-icons/core-icons.html">
-		<link rel="import" href="bower_components/core-icons/social-icons.html">
-		<link rel="import" href="bower_components/core-image/core-image.html">
-		<link rel="import" href="bower_components/core-menu/core-menu.html">
-		<link rel="import" href="bower_components/core-localstorage/core-localstorage.html">
-		<link rel="import" href="bower_components/core-selector/core-selector.html">
-		<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
-		<link rel="import" href="bower_components/core-scroll-header-panel/core-scroll-header-panel.html">
-		<link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
+	<link rel="import" href="bower_components/core-media-query/core-media-query.html">
+	<link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
+	<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+	<link rel="import" href="bower_components/core-icons/core-icons.html">
+	<link rel="import" href="bower_components/core-icons/social-icons.html">
+	<link rel="import" href="bower_components/core-image/core-image.html">
+	<link rel="import" href="bower_components/core-menu/core-menu.html">
+	<link rel="import" href="bower_components/core-localstorage/core-localstorage.html">
+	<link rel="import" href="bower_components/core-selector/core-selector.html">
+	<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
+	<link rel="import" href="bower_components/core-scroll-header-panel/core-scroll-header-panel.html">
+	<link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
 
-		<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-		<link rel="import" href="bower_components/paper-dropdown/paper-dropdown.html">
-		<link rel="import" href="bower_components/paper-item/paper-item.html">
-		<link rel="import" href="bower_components/paper-button/paper-button.html">
-		<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-		<link rel="import" href="bower_components/paper-fab/paper-fab.html">
+	<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+	<link rel="import" href="bower_components/paper-dropdown/paper-dropdown.html">
+	<link rel="import" href="bower_components/paper-item/paper-item.html">
+	<link rel="import" href="bower_components/paper-button/paper-button.html">
+	<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+	<link rel="import" href="bower_components/paper-fab/paper-fab.html">
 
-		<link rel="import" href="bower_components/core-style/core-style.html">
+	<link rel="import" href="bower_components/core-style/core-style.html">
 
-		<link rel="import" href="elements/site-item/site-item.html">
-		<link rel="import" href="elements/site-login/site-login.html">
+	<link rel="import" href="elements/site-menu/site-menu.html">
+	<link rel="import" href="elements/site-login/site-login.html">
+	<link rel="import" href="elements/site-logo/site-logo.html">
+	<link rel="import" href="elements/site-jumbotron/site-jumbotron.html">
+	<link rel="import" href="elements/site-content/site-content.html">
+	<link rel="import" href="elements/site-map/site-map.html">
 	<!-- endbuild-->
 </head>
 
@@ -61,8 +68,18 @@
 
 <template id="t" is="auto-binding">
 	<pvc-globals values="{{globals}}"></pvc-globals>
+	<core-media-query id="mq-phone" query="(max-width:767px)"
+					  queryMatches="{{globals.isPhoneSize}}"></core-media-query>
+	<core-media-query id="mq-phone" query="(max-width:640px)"
+					  queryMatches="{{globals.isSmallPhoneSize}}"></core-media-query>
+	<core-media-query id="mq-phone" query="(min-width:640px) and (max-width:767px)"
+					  queryMatches="{{globals.isLargePhoneSize}}"></core-media-query>
+	<core-media-query id="mq-tablet" query="(min-width:768px) and (max-width:944px)"
+					  queryMatches="{{globals.isTabletSize}}"></core-media-query>
+	<core-media-query id="mq-desktop" query="(min-width:945px)"
+					  queryMatches="{{globals.isDesktopSize}}"></core-media-query>
 
-	<core-drawer-panel id="drawerPanel" narrow="{{narrow}}" responsiveWidth="816px">
+	<core-drawer-panel id="drawerPanel" narrow="{{narrow}}" forceNarrow>
 
 		<core-header-panel mode="scroll" drawer>
 			<core-toolbar id="navheader" class="tall">
@@ -72,40 +89,49 @@
 				<img class="middle" src="images/logo.svg">
 
 				<div class="bottom" horizontal layout>
-					<div flex self-start >
+					<div flex self-start>
 						<core-image src="{{user.profile}}" sizing="cover"
-							   preload fade style="width:60px; height:60px; background-color:#FF8700; border-radius: 1000em;" hidden?="{{!user.profile}}">
-						  </core-image>
+									preload fade style="width:60px; height:60px; background-color:#FF8700; border-radius: 1000em;" hidden?="{{!user.profile}}">
+						</core-image>
 					</div>
-					<paper-dropdown-menu flex self-end id="user-login" label="{{(!statusKnown || !user) ? 'Anonymous' : user.displayName}}">
-						<paper-dropdown layered class="dropdown">
-							<paper-item on-click="{{login}}" hidden?="{{statusKnown && user}}">Login</paper-item>
-							<paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">Logout</paper-item>
-					    </paper-dropdown>
-					</paper-dropdown-menu>
+					<!--<paper-dropdown-menu flex self-end id="user-login" label="{{(!statusKnown || !user) ? 'Anonymous' : user.displayName}}">-->
+						<!--<paper-dropdown layered class="dropdown">-->
+							<!--<paper-item on-click="{{login}}" hidden?="{{statusKnown && user}}">Login</paper-item>-->
+							<!--<paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">Logout</paper-item>-->
+						<!--</paper-dropdown>-->
+					<!--</paper-dropdown-menu>-->
 					<site-login id="baseLogin" user="{{user}}" statusKnown="{{statusKnown}}" ssoUrl="http://t3dd15.typo3.org/sso/"></site-login>
 				</div>
 			</core-toolbar>
-			<core-menu selected="0" excludedLocalNames="div" on-core-select="{{menuSelect}}">
-				<site-item label="Home" icon="home" href="/"></site-item>
-				<site-item label="Register" icon="social:person-add" href="/register"></site-item>
-				<site-item label="Sessions" icon="view-agenda" href="/sessions"></site-item>
-			</core-menu>
+			<site-menu selected="{{currentPath}}"></site-menu>
 		</core-header-panel>
-		<div main>
-			<core-icon-button id="menuButton" icon="menu" hidden?="{{!narrow}}" core-drawer-toggle></core-icon-button>
-			<app-router mode="pushstate">
-				<app-route path="/" import="pages/page-home.html" element="page-home"></app-route>
-				<app-route path="/register" import="pages/register-new.html" element="register-new"></app-route>
-				<app-route path="/register/success" import="pages/register-success.html" element="register-success"></app-route>
-				<app-route path="/sessions" import="pages/session-list.html" element="session-list"></app-route>
-				<app-route path="/sessions/new" import="pages/session-new.html" element="session-new"></app-route>
-				<app-route path="/sessions/:uuid" import="pages/session-show.html" element="session-show"></app-route>
-			</app-router>
+		<div id="main-content" main>
+			<core-scroll-header-panel id="scrollHeader">
+				<core-toolbar id="navbar">
+					<core-icon-button id="menuButton" icon="menu" hidden?="{{!globals.isPhoneSize}}" core-drawer-toggle></core-icon-button>
+					<a href="/" is="pushstate-anchor" hidden?="{{currentPath == '/'}}"><site-logo></site-logo></a>
+					<div flex>
+						<core-image id="userImage" src="{{user.profile}}" sizing="cover" preload fade></core-image>
+						<paper-dropdown-menu id="userLogin" label="{{(!statusKnown || !user) ? 'Anonymous' : user.displayName}}">
+							<paper-dropdown layered class="dropdown">
+								<paper-item on-click="{{login}}" hidden?="{{statusKnown && user}}">Login</paper-item>
+								<paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">Logout</paper-item>
+							</paper-dropdown>
+						</paper-dropdown-menu>
+					</div>
+					<site-menu horizontal selected="{{currentPath}}" hidden?="{{globals.isPhoneSize}}"></site-menu>
+				</core-toolbar>
+				<app-router id="router" mode="pushstate">
+					<app-route path="/" import="pages/page-home.html" element="page-home"></app-route>
+					<app-route path="/register" import="pages/register-new.html" element="register-new"></app-route>
+					<app-route path="/register/success" import="pages/register-success.html" element="register-success"></app-route>
+					<app-route path="/sessions" import="pages/session-list.html" element="session-list"></app-route>
+					<app-route path="/sessions/new" import="pages/session-new.html" element="session-new"></app-route>
+					<app-route path="/sessions/:uuid" import="pages/session-show.html" element="session-show"></app-route>
+				</app-router>
+			</core-scroll-header-panel>
 		</div>
 	</core-drawer-panel>
-
-	<paper-fab title="Register" id="fab" icon="social:person-add" on-tap="{{register}}"></paper-fab>
 </template>
 
 <!-- build:js scripts/app.js -->

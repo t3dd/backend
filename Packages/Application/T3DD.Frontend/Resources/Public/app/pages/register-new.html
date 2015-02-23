@@ -49,105 +49,98 @@
 			}
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
-		<firebase-element id="base" location="https://fiery-heat-3091.firebaseio.com/registrations" data="{{registrations}}"></firebase-element>
-		<core-scroll-header-panel>
-			<core-toolbar>
-				<div>Register for T3DD15</div>
-			</core-toolbar>
+		<form id="registration" is="form-validation">
 
-			<form id="registration" is="form-validation">
+			<fieldset>
+				<legend>Billing address</legend>
+				<paper-input-decorator label="Name" floatingLabel error="Enter a name!">
+					<input id="name" value="{{formData.billing.name}}" is="core-input" required="">
+				</paper-input-decorator>
+				<paper-input-decorator label="Company" floatingLabel error="Enter a company!">
+					<input id="company" value="{{formData.billing.company}}" is="core-input" required="">
+				</paper-input-decorator>
+				<paper-input-decorator label="Steet" floatingLabel error="Enter a street!">
+					<input id="street" value="{{formData.billing.street}}" is="core-input" required="">
+				</paper-input-decorator>
+				<paper-input-decorator label="Zip" floatingLabel error="Enter a zip!">
+					<input id="zip" value="{{formData.billing.zip}}" is="core-input" required="">
+				</paper-input-decorator>
+				<paper-input-decorator label="City" floatingLabel error="Enter a city!">
+					<input id="city" value="{{formData.billing.city}}" is="core-input" required="">
+				</paper-input-decorator>
+				<paper-input-decorator label="Country" floatingLabel error="Enter a country!">
+					<input id="country" value="{{formData.billing.country}}" is="core-input" required="">
+				</paper-input-decorator>
+			</fieldset>
 
-				<fieldset>
-					<legend>Billing address</legend>
-					<paper-input-decorator label="Name" floatingLabel error="Enter a name!">
-						<input id="name" value="{{formData.billing.name}}" is="core-input" required="">
-					</paper-input-decorator>
-					<paper-input-decorator label="Company" floatingLabel error="Enter a company!">
-						<input id="company" value="{{formData.billing.company}}" is="core-input" required="">
-					</paper-input-decorator>
-					<paper-input-decorator label="Steet" floatingLabel error="Enter a street!">
-						<input id="street" value="{{formData.billing.street}}" is="core-input" required="">
-					</paper-input-decorator>
-					<paper-input-decorator label="Zip" floatingLabel error="Enter a zip!">
-						<input id="zip" value="{{formData.billing.zip}}" is="core-input" required="">
-					</paper-input-decorator>
-					<paper-input-decorator label="City" floatingLabel error="Enter a city!">
-						<input id="city" value="{{formData.billing.city}}" is="core-input" required="">
-					</paper-input-decorator>
-					<paper-input-decorator label="Country" floatingLabel error="Enter a country!">
-						<input id="country" value="{{formData.billing.country}}" is="core-input" required="">
-					</paper-input-decorator>
-				</fieldset>
+			<fieldset>
+				<legend>Additional information</legend>
 
-				<fieldset>
-					<legend>Additional information</legend>
+				<h4>Food</h4>
+				<paper-radio-group selected="{{formData.food.type}}">
+					<paper-radio-button name="default" label="Default"></paper-radio-button>
+					<paper-radio-button name="vegetarian" label="Vegetarian"></paper-radio-button>
+					<paper-radio-button name="vegan" label="Vegan"></paper-radio-button>
+				</paper-radio-group>
 
-					<h4>Food</h4>
-					<paper-radio-group selected="{{formData.food.type}}">
-						<paper-radio-button name="default" label="Default"></paper-radio-button>
-						<paper-radio-button name="vegetarian" label="Vegetarian"></paper-radio-button>
-						<paper-radio-button name="vegan" label="Vegan"></paper-radio-button>
+				<br />
+				<paper-autogrow-textarea>
+					<textarea id="foodwishes" placeholder="Special food needs" value="{{formData.food.wish}}"></textarea>
+				</paper-autogrow-textarea>
+
+				<h4>T-Shirt size</h4>
+				<paper-radio-group selected="{{formData.tshirt.size}}">
+					<paper-radio-button name="S" label="S"></paper-radio-button>
+					<paper-radio-button name="M" label="M"></paper-radio-button>
+					<paper-radio-button name="L" label="L"></paper-radio-button>
+					<paper-radio-button name="XL" label="XL"></paper-radio-button>
+					<paper-radio-button name="XXL" label="2XL"></paper-radio-button>
+					<paper-radio-button name="XXXL" label="3XL"></paper-radio-button>
+				</paper-radio-group>
+
+				<h4>Do you visit developer days before?</h4>
+				<paper-radio-group selected="{{formData.nooby}}">
+					<paper-radio-button name="0" label="yes"></paper-radio-button>
+					<paper-radio-button name="1" label="no"></paper-radio-button>
+				</paper-radio-group>
+			</fieldset>
+
+			<fieldset>
+				<legend>Room</legend>
+
+				<h4>I like to have a room</h4>
+				<paper-radio-group selected="{{formData.room.take}}">
+					<paper-radio-button name="1" label="yes"></paper-radio-button>
+					<paper-radio-button name="0" label="no"></paper-radio-button>
+				</paper-radio-group>
+
+				<template if="{{formData.room.take == 1}}">
+					<h4>With how many people you want to share your room</h4>
+					<paper-radio-group selected="{{formData.room.size}}">
+						<paper-radio-button name="2" label="2"></paper-radio-button>
+						<paper-radio-button name="3" label="3"></paper-radio-button>
+						<paper-radio-button name="4" label="4"></paper-radio-button>
 					</paper-radio-group>
 
-					<br />
-					<paper-autogrow-textarea>
-						<textarea id="foodwishes" placeholder="Special food needs" value="{{formData.food.wish}}"></textarea>
-					</paper-autogrow-textarea>
-
-					<h4>T-Shirt size</h4>
-					<paper-radio-group selected="{{formData.tshirt.size}}">
-						<paper-radio-button name="S" label="S"></paper-radio-button>
-						<paper-radio-button name="M" label="M"></paper-radio-button>
-						<paper-radio-button name="L" label="L"></paper-radio-button>
-						<paper-radio-button name="XL" label="XL"></paper-radio-button>
-						<paper-radio-button name="XXL" label="2XL"></paper-radio-button>
-						<paper-radio-button name="XXXL" label="3XL"></paper-radio-button>
-					</paper-radio-group>
-
-					<h4>Do you visit developer days before?</h4>
-					<paper-radio-group selected="{{formData.nooby}}">
-						<paper-radio-button name="0" label="yes"></paper-radio-button>
-						<paper-radio-button name="1" label="no"></paper-radio-button>
-					</paper-radio-group>
-				</fieldset>
-
-				<fieldset>
-					<legend>Room</legend>
-
-					<h4>I like to have a room</h4>
-					<paper-radio-group selected="{{formData.room.take}}">
-						<paper-radio-button name="1" label="yes"></paper-radio-button>
-						<paper-radio-button name="0" label="no"></paper-radio-button>
-					</paper-radio-group>
-
-					<template if="{{formData.room.take == 1}}">
-						<h4>With how many people you want to share your room</h4>
-						<paper-radio-group selected="{{formData.room.size}}">
-							<paper-radio-button name="2" label="2"></paper-radio-button>
-							<paper-radio-button name="3" label="3"></paper-radio-button>
-							<paper-radio-button name="4" label="4"></paper-radio-button>
-						</paper-radio-group>
-
-						<h4>I like to share the room with the following people</h4>
-						<template if="{{formData.room.mates.length < 3}}">
-							<paper-input-decorator label="Add roommate (typo3.org Username/Email/Name)" floatingLabel>
-								<input id="roommate" is="core-input" on-keypress="{{addRoommate}}">
-							</paper-input-decorator>
-						</template>
-						<template repeat="{{ mate, mateIndex in formData.room.mates }}">
-							<div class="item">
-								{{mate}}
-								<paper-button on-click="{{removeRoommate}}">
-									<core-icon icon="clear"></core-icon>
-								</paper-button>
-							</div>
-						</template>
+					<h4>I like to share the room with the following people</h4>
+					<template if="{{formData.room.mates.length < 3}}">
+						<paper-input-decorator label="Add roommate (typo3.org Username/Email/Name)" floatingLabel>
+							<input id="roommate" is="core-input" on-keypress="{{addRoommate}}">
+						</paper-input-decorator>
 					</template>
-				</fieldset>
+					<template repeat="{{ mate, mateIndex in formData.room.mates }}">
+						<div class="item">
+							{{mate}}
+							<paper-button on-click="{{removeRoommate}}">
+								<core-icon icon="clear"></core-icon>
+							</paper-button>
+						</div>
+					</template>
+				</template>
+			</fieldset>
 
-				<paper-button raised on-click="{{register}}">Register</paper-button>
-			</form>
-		</core-scroll-header-panel>
+			<paper-button raised on-click="{{register}}">Register</paper-button>
+		</form>
 	</template>
 	<script>
 		(function() {
