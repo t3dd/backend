@@ -64,7 +64,7 @@ class FeatureContext extends MinkContext {
 		$participant->setAccount($account);
 		$this->objectManager->get('T3DD\Backend\Domain\Repository\ParticipantRepository')->add($participant);
 
-		$this->flowContext->resolvePageUri('Participant api', array('participant' => $participant));
+		$this->flowContext->resolvePageUri('Single Participant', array('participant' => $participant));
 		$this->flowContext->persistAll();
 	}
 
@@ -119,7 +119,12 @@ class FeatureContext extends MinkContext {
 		$propertyMappingConfiguration = new \TYPO3\Flow\Property\PropertyMappingConfiguration();
 		$propertyMappingConfiguration->allowAllProperties();
 		$propertyMappingConfiguration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
-		$entity = $this->objectManager->get('TYPO3\Flow\Property\PropertyMapper')->convert($values->getRowsHash(), 'T3DD\Backend\Domain\Model\\' . $class, $propertyMappingConfiguration);
+		/** @var \TYPO3\Flow\Property\PropertyMapper $propertyMapper */
+		$propertyMapper = $this->objectManager->get('TYPO3\Flow\Property\PropertyMapper');
+		$entity = $propertyMapper->convert($values->getRowsHash(), 'T3DD\Backend\Domain\Model\\' . $class, $propertyMappingConfiguration);
+		if ($propertyMapper->getMessages()->hasErrors()) {
+			throw new \Exception('Error while mapping entity: ' . print_r($propertyMapper->getMessages(), TRUE));
+		}
 		$this->objectManager->get('T3DD\Backend\Domain\Repository\\' . $class . 'Repository')->add($entity);
 		$this->flowContext->resolvePageUri('Single ' . $class, array(lcfirst($class) => $entity));
 		$this->flowContext->persistAll();

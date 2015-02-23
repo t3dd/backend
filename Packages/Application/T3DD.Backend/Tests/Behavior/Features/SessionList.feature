@@ -54,23 +54,24 @@ Feature: List and show sessions
 
   @fixtures
   Scenario: Retrieve session list with multiple sessions
-     Given I have a Session with values
+    Given I have a Session with values
       | title       | Test Session for Dummies   |
       | description | Lorem ipsum dolor sit amet |
-     Given I have a Session with values
+      | date        | 2015-01-01T12:00:00Z       |
+    Given I have a Session with values
       | title       | Test Session for Experts |
       | description | Foo bar baz              |
+      | date        | 2015-01-02T12:00:00Z     |
     And I set header "Accept" with value "application/json"
     When I send a GET request to "/sessions"
     Then the response code should be 200
     And the response should contain the json subset:
       """
       [{
-        "title": "Test Session for Dummies",
-        "description": "Lorem ipsum dolor sit amet"
-      },
-      {
         "title": "Test Session for Experts",
         "description": "Foo bar baz"
+      }, {
+        "title": "Test Session for Dummies",
+        "description": "Lorem ipsum dolor sit amet"
       }]
       """
