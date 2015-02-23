@@ -101,11 +101,17 @@
 				this.isSubmitting = true;
 			},
 
-			onSubmitted: function() {
+			onSubmitted: function(event) {
 				this.isSubmitting = false;
 				if (event.detail.status > 399) {
 					this.hasError = true;
-					this.$.errorMessage.heading = event.detail.statusText;
+					var response = JSON.parse(event.detail.response);
+					if (typeof response.errors !== 'undefined') {
+						var errors = response.errors;
+						this.$.errorMessage.heading = errors[Object.keys(errors)[0]][0]['message'] || event.detail.statusText
+					} else {
+						this.$.errorMessage.heading = event.detail.statusText;
+					}
 				}
 			},
 
