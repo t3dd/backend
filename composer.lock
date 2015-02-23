@@ -701,7 +701,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/netlogix/Netlogix.Crud.git",
-                "reference": "a92031f1da02c890ecb64b2605ea13f5fa587b1e"
+                "reference": "c938cef7bf2037ff90d39cd71484ea91011bf2f4"
             },
             "require": {
                 "typo3/flow": "*"
@@ -712,7 +712,7 @@
                     "Netlogix\\Crud": "Classes"
                 }
             },
-            "time": "2015-02-17 14:21:43"
+            "time": "2015-02-23 23:37:55"
         },
         {
             "name": "symfony/console",
