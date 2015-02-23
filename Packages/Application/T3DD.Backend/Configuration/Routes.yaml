@@ -3,7 +3,7 @@
 #                                                                        #
 
 -
-  name: 'Participant api'
+  name: 'Single Participant'
   uriPattern: 'api/participants/{participant}'
   defaults:
     '@package':    'T3DD.Backend'
@@ -13,7 +13,7 @@
   httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
 
 -
-  name: 'Participants api'
+  name: 'Participant list'
   uriPattern: 'api/participants'
   defaults:
     '@package':    'T3DD.Backend'
@@ -23,7 +23,7 @@
   httpMethods: ['HEAD', 'GET', 'POST']
 
 -
-  name: 'Sessions api'
+  name: 'Single Session'
   uriPattern: 'sessions/{session}'
   defaults:
     '@package':    'T3DD.Backend'
@@ -31,9 +31,12 @@
     '@action':     'index'
   appendExceedingArguments: TRUE
   httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
+  routeParts:
+    session:
+      objectType: T3DD\Backend\Domain\Model\Session
 
 -
-  name: 'Sessions api'
+  name: 'Session list'
   uriPattern: 'sessions'
   defaults:
     '@package':    'T3DD.Backend'
@@ -43,7 +46,7 @@
   httpMethods: ['HEAD', 'GET', 'POST']
 
 -
-  name: 'Vote api'
+  name: 'Session votes'
   uriPattern: 'vote/{session}'
   defaults:
     '@package':    'T3DD.Backend'
@@ -51,9 +54,12 @@
     '@action':     'index'
   appendExceedingArguments: TRUE
   httpMethods: ['POST', 'DELETE']
+  routeParts:
+    session:
+      objectType: T3DD\Backend\Domain\Model\Session
 
 -
-  name: 'Vote api'
+  name: 'My votes'
   uriPattern: 'votes/me'
   defaults:
     '@package':    'T3DD.Backend'
@@ -63,7 +69,7 @@
   httpMethods: ['GET']
 
 -
-  name: 'Vote api'
+  name: 'Vote list'
   uriPattern: 'votes'
   defaults:
     '@package':    'T3DD.Backend'

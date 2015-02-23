@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1423a6e2bf89afed35e301334e0dad3c",
+    "hash": "82f859767c50a035ac43fe895a37fda1",
     "packages": [
         {
             "name": "behat/behat",
@@ -466,17 +466,11 @@
         },
         {
             "name": "behat/web-api-extension",
-            "version": "dev-master",
+            "version": "dev-check-json-subset",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Behat/WebApiExtension.git",
-                "reference": "319db66092a66fee152e0809a05834005eef0010"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Behat/WebApiExtension/zipball/319db66092a66fee152e0809a05834005eef0010",
-                "reference": "319db66092a66fee152e0809a05834005eef0010",
-                "shasum": ""
+                "url": "https://github.com/t3dd/WebApiExtension.git",
+                "reference": "0ed67f1ac1c810aacf24d4c54533c665e1c85858"
             },
             "require": {
                 "behat/behat": "~3.0",
@@ -499,7 +493,6 @@
                     "Behat\\WebApiExtension\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -519,7 +512,7 @@
                 "api",
                 "test"
             ],
-            "time": "2015-01-18 23:20:16"
+            "time": "2015-02-23 21:10:17"
         },
         {
             "name": "deminy/behat-rest-testing",
@@ -2130,7 +2123,14 @@
         }
     ],
     "packages-dev": [],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "dev-master",
+            "alias_normalized": "9999999-dev",
+            "version": "dev-check-json-subset",
+            "package": "behat/web-api-extension"
+        }
+    ],
     "minimum-stability": "stable",
     "stability-flags": {
         "behat/web-api-extension": 20,

@@ -4,10 +4,16 @@
 		"behat/mink-extension": "2.0.*",
 		"behat/mink-goutte-driver": "*",
 		"behat/mink-selenium2-driver": "*",
-	  "behat/web-api-extension": "@dev",
+	  "behat/web-api-extension": "dev-check-json-subset as dev-master",
 		"deminy/behat-rest-testing": "@dev"
 	},
 	"config": {
 		"bin-dir": "../../bin/"
-	}
+	},
+	"repositories": [
+		{
+			"type": "git",
+			"url": "https://github.com/t3dd/WebApiExtension.git"
+		}
+	]
 }
