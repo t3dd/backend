@@ -10,7 +10,8 @@
     "pvc-globals": "Divshot/pvc-globals",
     "pushstate-anchor": "~0.3.0",
     "google-map": "~0.4.0",
-    "marked": "~0.3.2"
+    "marked": "~0.3.2",
+    "disqus-comments": "~0.1.2"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.0"

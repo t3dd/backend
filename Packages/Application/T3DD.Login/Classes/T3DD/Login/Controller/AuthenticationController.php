@@ -17,7 +17,6 @@ use TYPO3\Flow\Annotations as Flow;
  * An action controller for generic authentication in Flow
  *
  * @Flow\Scope("singleton")
- * @deprecated since 1.2 Instead you should inherit from the AbstractAuthenticationController from within your package
  */
 class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController {
 

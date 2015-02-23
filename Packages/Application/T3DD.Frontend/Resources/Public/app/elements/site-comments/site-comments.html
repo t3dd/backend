@@ -1,0 +1,90 @@
+<link rel="import" href="../../bower_components/disqus-comments/disqus-comments.html">
+
+<polymer-element name="site-comments" extends="disqus-comments" attributes="remoteAuth shortname identifier title url categoryId https">
+	<script>
+		Polymer({
+			apiKey: 'xpJcYt2esQJ51SQbrBUp9RMJ5ofOptniRi10ES4M0LIX2E02VyG02Sb2BCs8QFVo',
+
+			remoteAuth: '',
+
+//			remoteAuthChanged: function(oldValue, newValue) {
+//				this.reset();
+//			},
+
+			attached: function() {
+				if(window.DISQUS) {
+					this.reset();
+					return;
+				}
+
+				if(this.shortname) {
+					var disqus_shortname = this.shortname;
+				} else {
+					return console.error('Required: Please provide a Disqus shortname.');
+				}
+
+				var el = this;
+				var disq = this.shadowRoot.querySelector('#disqus');
+				var clone = document.importNode(disq, true);
+
+				document.body.appendChild(clone);
+
+				window.disqus_config = function() {
+					if(el.identifier) this.page.identifier = el.identifier;
+					if(el.title) this.page.title = el.title;
+					if(el.url) this.page.url = el.url;
+					if(el.categoryId) this.page.category_id = el.categoryId;
+					if(el.apiKey) this.page.api_key = el.apiKey;
+					if(el.remoteAuth) this.page.remote_auth_s3 = el.remoteAuth;
+					this.sso = {
+						name: "SampleNews",
+						button: "http://example.com/images/samplenews.gif",
+						icon: "http://example.com/favicon.png",
+						url: "http://example.com/login/",
+						logout: "http://example.com/logout/",
+						width: "800",
+						height: "400"
+					};
+console.log(this.page);
+					this.callbacks.onReady = [function() {
+						el.$.disqus.parentNode.replaceChild(clone, el.$.disqus);
+						el.$.disqus = clone;
+					}];
+				};
+
+				var dsq = document.createElement('script');
+				var http = (this.https) ? 'https' : 'http';
+				dsq.type = 'text/javascript';
+				dsq.async = true;
+				dsq.src = http + '://' + disqus_shortname + '.disqus.com/embed.js';
+				(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+			},
+
+			reset: function() {
+				if(window.DISQUS) {
+					var el = this;
+					var disq = this.shadowRoot.querySelector('#disqus');
+					var clone = document.importNode(disq, true);
+
+					document.body.appendChild(clone);
+
+					DISQUS.reset({
+						reload: true,
+						config: function() {
+							if(el.identifier) this.page.identifier = el.identifier;
+							if(el.title) this.page.title = el.title;
+							if(el.url) this.page.url = el.url;
+							if(el.categoryId) this.page.category_id = el.categoryId;
+							if(el.apiKey) this.page.api_key = el.apiKey;
+							if(el.remoteAuth) this.page.remote_auth_s3 = el.remoteAuth;
+//							this.callbacks.onReady = [function() {
+//								el.$.disqus.parentNode.replaceChild(clone, el.$.disqus);
+//								el.$.disqus = clone;
+//							}];
+						}
+					});
+				}
+			}
+		});
+	</script>
+</polymer-element>
