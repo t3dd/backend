@@ -35,6 +35,8 @@
 
 				if (typeof _cachedRequests[this.url] !== 'undefined') {
 					var request = _cachedRequests[this.url];
+					this.loading = true;
+					this.activeRequest = request;
 					return this.receive(request.response, request);
 				}
 
