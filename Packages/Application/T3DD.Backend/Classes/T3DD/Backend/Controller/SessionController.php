@@ -50,6 +50,7 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 
 	/**
 	 * @param Session $session
+	 * @Flow\Validate(argumentName="session", type="T3DD\Backend\Validation\Validator\UniqueSessionTitleValidator")
 	 */
 	public function createAction(Session $session) {
 		$this->sessionRepository->add($session);

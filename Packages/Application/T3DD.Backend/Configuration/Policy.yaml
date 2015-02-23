@@ -3,7 +3,7 @@ resources:
     T3DD_Backend_AllControllerActions: 'within(TYPO3\Flow\Mvc\Controller\AbstractController) && method(public .*->(?!initialize).*Action())'
     T3DD_Backend_PublicFrontendAccess: 'method(T3DD\Backend\Controller\SessionController->(list|show)Action()) || method(T3DD\Backend\Controller\VoteController->listAction()) || method(Netlogix\Crud\Controller\RestController->errorAction())'
     T3DD_Backend_Participant: 'method(T3DD\Backend\Controller\ParticipantController->(show|create|error)Action())'
-    T3DD_Backend_Session: 'method(T3DD\Backend\Controller\SessionController->(create|update|delete)Action())'
+    T3DD_Backend_Session: 'method(T3DD\Backend\Controller\SessionController->(create|update|delete|error)Action())'
     T3DD_Backend_Vote: 'method(T3DD\Backend\Controller\VoteController->(myVotes|create|delete)Action())'
 
 
