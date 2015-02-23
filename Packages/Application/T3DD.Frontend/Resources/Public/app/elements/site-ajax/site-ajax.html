@@ -1,12 +1,32 @@
 <link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
 
-<polymer-element name="site-ajax" extends="core-ajax">
+<polymer-element name="site-ajax" extends="core-ajax" attributes="cache">
 	<script>
+
+		var _cachedResponse = {};
+
 		Polymer({
 			auto: true,
 			contentType:'application/json',
 			headers: {"Accept": "application/json"},
-			handleAs:'json'
+			handleAs:'json',
+			cache: false,
+
+			go: function () {
+				var _this = this;
+
+				if (!this.cache) {
+					return _this.super();
+				}
+
+				if (_cachedResponse[this.url]) {
+					return _cachedResponse[this.url];
+				}
+
+				var xhr = _this.super();
+
+
+			}
 		});
 	</script>
 </polymer-element>

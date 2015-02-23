@@ -1,0 +1,30 @@
+<link rel="import" href="../bower_components/pushstate-anchor/pushstate-anchor.html">
+<link rel="import" href="../site-vote/site-vote.html">
+
+<polymer-element name="site-session" attributes="session" noscript>
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+
+			#session {
+				background-color: #FAFAFA;
+				padding: 16px;
+				border-bottom: 1px solid #E0E0E0;
+				will-change: transform,opacity;
+			}
+		</style>
+
+		<div id="session-container">
+			<div id="session" layout horizontal>
+				<site-vote session="{{session}}"></site-vote>
+				<div flex vertical felx>
+					<h3>{{session.title}}</h3>
+				</div>
+			</div>
+		</div>
+
+	</template>
+
+</polymer-element>

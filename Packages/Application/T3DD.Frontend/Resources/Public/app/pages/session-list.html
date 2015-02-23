@@ -1,5 +1,5 @@
-<link rel="import" href="../bower_components/pushstate-anchor/pushstate-anchor.html">
 <link rel="import" href="../elements/site-ajax/site-ajax.html">
+<link rel="import" href="../elements/site-session/site-session.html">
 
 <polymer-element name="session-list" noscript>
 	<template>
@@ -10,9 +10,7 @@
 		</style>
 		<site-ajax url="/sessions"  response="{{sessions}}"></site-ajax>
 		<template repeat="{{session in sessions}}">
-			<ul>
-				<li><a is="pushstate-anchor" href="{{session.resource}}"><h4>{{session.title}}</h4></a></li>
-			</ul>
+			<site-session session="{{session}}"></site-session>
 		</template>
 	</template>
 </polymer-element>

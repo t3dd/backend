@@ -44,7 +44,7 @@
 
 -
   name: 'Vote api'
-  uriPattern: 'api/vote/{session}'
+  uriPattern: 'vote/{session}'
   defaults:
     '@package':    'T3DD.Backend'
     '@controller': 'Vote'
@@ -54,7 +54,7 @@
 
 -
   name: 'Vote api'
-  uriPattern: 'api/votes/me'
+  uriPattern: 'votes/me'
   defaults:
     '@package':    'T3DD.Backend'
     '@controller': 'Vote'
@@ -64,7 +64,7 @@
 
 -
   name: 'Vote api'
-  uriPattern: 'api/votes'
+  uriPattern: 'votes'
   defaults:
     '@package':    'T3DD.Backend'
     '@controller': 'Vote'

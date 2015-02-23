@@ -1,0 +1,39 @@
+<link rel="import" href="../site-ajax/site-ajax.html">
+
+<polymer-element name="site-vote" attributes="session">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+			#vote-count {
+				border-radius: 50%;
+				width: 40px;
+				height: 40px;
+				transition: transform 350ms ease-in-out;
+				background-color: #9E9E9E;
+				color: #FFF;
+				will-change: transform;
+			}
+		</style>
+
+		<site-ajax id="votes" cache="true" url="/votes" on-core-response="{{handleResponse}}"></site-ajax>
+		<div>
+			<div id="vote-count">{{vote.numberOfVotes || 0}}</div>
+		</div>
+	</template>
+	<script>
+		(function () {
+			'use strict';
+
+			Polymer({
+
+				handleResponse: function (event) {
+					console.log(event);
+				}
+
+			});
+
+		})();
+	</script>
+</polymer-element>
