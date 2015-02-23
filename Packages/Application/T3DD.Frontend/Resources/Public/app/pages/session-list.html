@@ -18,6 +18,10 @@
 				border-bottom: 1px solid #E0E0E0;
 				will-change: transform,opacity;
 			}
+
+			.session h3 {
+				padding-left: 8px;
+			}
 		</style>
 		<site-ajax url="/sessions" response="{{sessions}}"></site-ajax>
 		<core-list data="{{sessions}}">
