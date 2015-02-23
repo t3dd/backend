@@ -1,0 +1,12 @@
+<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+
+<polymer-element name="site-ajax" extends="core-ajax">
+	<script>
+		Polymer({
+			auto: true,
+			contentType:'application/json',
+			headers: {"Accept": "application/json"},
+			handleAs:'json'
+		});
+	</script>
+</polymer-element>
