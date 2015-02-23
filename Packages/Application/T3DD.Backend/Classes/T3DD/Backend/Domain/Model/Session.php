@@ -95,4 +95,18 @@ class Session {
 		$this->speakers->add($speaker);
 	}
 
+	/**
+	 * @return \DateTime
+	 */
+	public function getDate() {
+		return $this->date;
+	}
+
+	/**
+	 * @param \DateTime $date
+	 */
+	public function setDate($date) {
+		$this->date = $date;
+	}
+
 }

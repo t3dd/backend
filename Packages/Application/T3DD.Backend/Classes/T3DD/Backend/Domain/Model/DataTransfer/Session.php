@@ -31,7 +31,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'title', 'description', 'speakers', 'voteUri');
+		return array('resource', 'title', 'description', 'speakers', 'date', 'voteUri');
 	}
 
 	/**
