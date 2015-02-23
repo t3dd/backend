@@ -50,6 +50,49 @@ class FeatureContext extends MinkContext {
 	}
 
 	/**
+	 * @Given user :user has a participant with values:
+	 */
+	public function userHasAParticipantWithValues($user, TableNode $values) {
+		$account = $this->objectManager->get('TYPO3\Flow\Security\AccountRepository')->findByAccountIdentifierAndAuthenticationProviderName($user, 'HttpBasic');
+		if ($account === NULL) {
+			throw new \Exception('User "' . $user . '" does not exist');
+		}
+		$propertyMappingConfiguration = new \TYPO3\Flow\Property\PropertyMappingConfiguration();
+		$propertyMappingConfiguration->allowAllProperties();
+		$propertyMappingConfiguration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
+		$participant = $this->objectManager->get('TYPO3\Flow\Property\PropertyMapper')->convert($values->getRowsHash(), 'T3DD\Backend\Domain\Model\Participant', $propertyMappingConfiguration);
+		$participant->setAccount($account);
+		$this->objectManager->get('T3DD\Backend\Domain\Repository\ParticipantRepository')->add($participant);
+
+		$this->flowContext->resolvePageUri('Participant api', array('participant' => $participant));
+		$this->flowContext->persistAll();
+	}
+
+	/**
+	 * @Then the there should be a persisted Participant for user :user with
+	 */
+	public function theThereShouldBeAPersistedParticipantForUserWith($user, TableNode $table) {
+		$account = $this->objectManager->get('TYPO3\Flow\Security\AccountRepository')->findByAccountIdentifierAndAuthenticationProviderName($user, 'HttpBasic');
+		if ($account === NULL) {
+			throw new \Exception('User "' . $user . '" does not exist');
+		}
+		$participant = $this->objectManager->get('T3DD\Backend\Domain\Repository\ParticipantRepository')->findOneByAccount($account);
+		if ($participant === NULL) {
+			throw new \Exception('No participant found for user "' . $user . '"');
+		}
+		foreach ($table->getRowsHash() as $property => $value) {
+			PHPUnit_Framework_Assert::assertEquals($value, (string) \TYPO3\Flow\Reflection\ObjectAccess::getProperty($participant, $property), 'Property "' . $property . '" of participant does not equal expected value');
+		}
+	}
+
+	/**
+	 * @Then there should be no persisted Participant
+	 */
+	public function thereShouldBeNoPersistedParticipant() {
+		PHPUnit_Framework_Assert::assertEquals(0, $this->objectManager->get('T3DD\Backend\Domain\Repository\ParticipantRepository')->countAll(), 'There is a persisted participant');
+	}
+
+	/**
 	 * @Then /^I should see some output from behat$/
 	 */
 	public function iShouldSeeSomeOutputFromBehat() {

@@ -5,8 +5,7 @@ TYPO3:
         authenticationStrategy: atLeastOneToken
         providers:
           HttpBasic:
-            provider: 'PersistedUsernamePasswordProvider'
-            token: 'UsernamePasswordHttpBasic'
-            entryPoint: 'HttpBasic'
+            provider: 'TYPO3\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider'
+            token: 'TYPO3\Flow\Security\Authentication\Token\UsernamePasswordHttpBasic'
             entryPointOptions: ~
             providerOptions: ~

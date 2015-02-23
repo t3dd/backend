@@ -88,7 +88,7 @@ class ParticipantController extends \Netlogix\Crud\Controller\RestController {
 		$this->participantRepository->add($participant);
 		$this->accountRepository->update($account);
 		$this->persistenceManager->persistAll();
-		$this->redirect('index', NULL, NULL, array('participant' => $participant));
+		$this->redirect('index', NULL, NULL, array('participant' => $participant),0, 201);
 	}
 
 	/**
