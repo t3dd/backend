@@ -1,14 +1,5 @@
 -
   name: 'SSO Parent Window Callback'
-  uriPattern: 'sso/callback/{requestID}'
-  defaults:
-    '@package':    'T3DD.Login'
-    '@controller': 'Authentication'
-    '@action':     'callback'
-    '@format':     'json'
-
--
-  name: 'SSO Parent Window Callback'
   uriPattern: 'sso/login'
   defaults:
     '@package':    'T3DD.Login'
@@ -25,6 +16,14 @@
     '@action':     'status'
     '@format':     'json'
 
+-
+  name: 'SSO Parent Window Callback'
+  uriPattern: 'sso/callback/{requestID}'
+  defaults:
+    '@package':    'T3DD.Login'
+    '@controller': 'Authentication'
+    '@action':     'callback'
+    '@format':     'html'
 
 -
   name: 'SSO Callback'
