@@ -1,16 +1,46 @@
+<link rel="import" href="../bower_components/core-list/core-list.html">
+<link rel="import" href="../bower_components/pushstate-anchor/pushstate-anchor.html">
+<link rel="import" href="../elements/site-style/site-style.html">
 <link rel="import" href="../elements/site-ajax/site-ajax.html">
 <link rel="import" href="../elements/site-session/site-session.html">
 
-<polymer-element name="session-list" noscript>
+<polymer-element name="session-list">
 	<template>
+		<core-style ref="main"></core-style>
 		<style>
-			:host {
+			:host, core-list {
 				display: block;
+				height: 100%;
+			}
+			.session {
+				background-color: #FAFAFA;
+				padding: 16px;
+				border-bottom: 1px solid #E0E0E0;
+				will-change: transform,opacity;
 			}
 		</style>
 		<site-ajax url="/sessions" response="{{sessions}}"></site-ajax>
-		<template repeat="{{session in sessions}}">
-			<site-session session="{{session}}"></site-session>
-		</template>
+		<core-list data="{{sessions}}">
+			<template>
+				<div class="session__container">
+					<a href="{{model.resource}}" class="session" layout horizontal on-tap="{{showSession}}" on-click="{{nope}}">
+						<site-vote session="{{model}}"></site-vote>
+						<div flex horizontal layout center>
+							<h3 site-font="title">{{model.title}}</h3>
+						</div>
+					</a>
+				</div>
+			</template>
+		</core-list>
 	</template>
+	<script>
+		Polymer({
+			nope: function(event) {
+				event.preventDefault();
+			},
+			showSession: function(event, index, element) {
+				document.getElementById('router').go(element.getAttribute('href'));
+			}
+		});
+	</script>
 </polymer-element>

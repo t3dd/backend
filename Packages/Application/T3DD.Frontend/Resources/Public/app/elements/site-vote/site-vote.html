@@ -50,7 +50,9 @@
 					})[0];
 				},
 
-				toggleVote: function () {
+				toggleVote: function (event) {
+					event.stopPropagation();
+
 					var voteAjax = this.$.voteAjax;
 					if (voteAjax.loading) {
 						return;
