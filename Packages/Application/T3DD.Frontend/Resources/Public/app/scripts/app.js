@@ -26,9 +26,7 @@
 			router = document.getElementById('router');
 
 		router.addEventListener('activate-route-end', function(event) {
-			// After every route change the header height needs to be remeasured
 			template.currentPath = event.detail.path;
-			scrollHeader.measureHeaderHeight();
 		});
 	});
 

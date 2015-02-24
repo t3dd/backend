@@ -28,9 +28,14 @@ class AppRouteHandler extends \TYPO3\Flow\Mvc\Routing\AbstractRoutePart implemen
 		}
 		$appIndex = file_get_contents('resource://T3DD.Frontend/Public/app/index.html');
 		$appRoutes = array();
-		preg_match_all('!(<app-route\s.*path="(.+?)"\s?.*?>)!im', $appIndex, $appRoutes);
+		preg_match_all('!(<app-route\s.*path="(.+?)"\s?(regex)?.*?>)!im', $appIndex, $appRoutes);
 		if (isset($appRoutes[2]) && !empty($appRoutes[2])) {
-			$this->routes = $appRoutes[2];
+			foreach ($appRoutes[2] as $index => $route) {
+				$this->routes[] = array(
+					'path' => $appRoutes[2][$index],
+					'isRegExp' => !empty($appRoutes[3][$index])
+				);
+			}
 		}
 
 	}
@@ -38,9 +43,14 @@ class AppRouteHandler extends \TYPO3\Flow\Mvc\Routing\AbstractRoutePart implemen
 	/**
 	 * @param string $routePath
 	 * @param string $requestPath
+	 * @param bool $isRegExp
 	 * @return bool
 	 */
-	protected function testRoute($routePath, $requestPath) {
+	protected function testRoute($routePath, $requestPath, $isRegExp = false) {
+		if ($isRegExp) {
+			return preg_match($routePath, $requestPath) > 0;
+		}
+
 		// if the requestPath is an exact match or '*' then the route is a match
 		if ($routePath === $requestPath || $routePath === '*') {
 			return true;
@@ -109,7 +119,7 @@ class AppRouteHandler extends \TYPO3\Flow\Mvc\Routing\AbstractRoutePart implemen
 		$this->loadRoutes();
 		$requestPath = '/' . $routePath;
 		foreach ($this->routes as $route) {
-			if ($this->testRoute($route, $requestPath)) {
+			if ($this->testRoute($route['path'], $requestPath, $route['isRegExp'])) {
 				$routePath = '';
 				return TRUE;
 			}

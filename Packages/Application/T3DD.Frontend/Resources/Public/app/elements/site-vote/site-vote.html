@@ -1,31 +1,29 @@
+<link rel="import" href="../../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../site-style/site-style.html">
 <link rel="import" href="../site-ajax/site-ajax.html">
 
-<polymer-element name="site-vote" attributes="session">
+<polymer-element name="site-vote" attributes="sessionResource voteUri">
 	<template>
+		<core-style ref="main"></core-style>
 		<style>
 			:host {
 				display: block;
 			}
-
-			#vote-count {
-				border-radius: 50%;
-				width: 40px;
-				height: 40px;
-				transition: transform 350ms ease-in-out;
-				background-color: #9E9E9E;
-				color: #FFF;
-				will-change: transform;
+			#button {
+				color: #b4b4b4;
+			}
+			#count, #button.voted {
+				color: #595959;
 			}
 		</style>
-
 		<pvc-globals values="{{globals}}"></pvc-globals>
 		<site-ajax cache="true" url="/votes" response="{{votes}}"></site-ajax>
 		<site-ajax cache="true" url="/votes/me" response="{{myVotes}}"></site-ajax>
-		<site-ajax id="voteAjax" auto="false" url="{{session.voteUri}}" on-core-response="{{handleVoteResponse}}"></site-ajax>
+		<site-ajax id="voteAjax" auto="false" url="{{voteUri}}" on-core-response="{{handleVoteResponse}}"></site-ajax>
 		<!--<template bind="{{votes | voteForSession(session)}}"></template>-->
-		<div layout horizontal>
-			<div id="vote-count" layout horizontal center-center>{{vote.numberOfVotes || 0}}</div>
-			<paper-icon-button icon="{{myVote ? 'star' : 'star-outline'}}" on-tap="{{toggleVote}}" hidden?="{{!globals.user}}"></paper-icon-button>
+		<div layout vertical>
+			<div id="count" site-font="caption" layout horizontal center-center>{{vote.numberOfVotes || 'no'}} fav{{vote.numberOfVotes > 1 ? 's' : ''}}</div>
+			<paper-icon-button id="button" class="{{ {'voted':myVote} | tokenList}}" icon="{{myVote ? 'favorite' : 'favorite-outline'}}" on-tap="{{toggleVote}}" hidden?="{{!globals.user}}"></paper-icon-button>
 		</div>
 	</template>
 	<script>
@@ -35,19 +33,19 @@
 			Polymer({
 				vote: {},
 				myVote: null,
+				myVotes: null,
+				sessionResource: null,
 
 				votesChanged: function () {
-					var self = this;
 					this.vote = this.votes.filter(function (vote) {
-						return vote.session === self.session.resource;
-					})[0] || {numberOfVotes: 0, session: self.session.resource};
+						return vote.session === this.sessionResource;
+					}.bind(this))[0] || {numberOfVotes: 0, session: this.sessionResource};
 				},
 
 				myVotesChanged: function () {
-					var self = this;
 					this.myVote = this.myVotes.filter(function (vote) {
-						return vote.session === self.session.resource;
-					})[0];
+						return vote.session === this.sessionResource;
+					}.bind(this))[0];
 				},
 
 				toggleVote: function (event) {

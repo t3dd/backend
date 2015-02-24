@@ -20,7 +20,7 @@
 	<!-- build:vulcanized elements/elements.vulcanized.html -->
 	<link rel="import" href="bower_components/core-ajax/core-ajax.html">
 
-	<link rel="import" href="bower_components/app-router/app-router.html">
+	<link rel="import" href="bower_components/app-router/src/app-router.html">
 	<link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
 	<link rel="import" href="bower_components/core-animated-pages/transitions/cross-fade.html">
 	<link rel="import" href="bower_components/pushstate-anchor/pushstate-anchor.html">
@@ -106,7 +106,7 @@
 			<site-menu selected="{{currentPath}}"></site-menu>
 		</core-header-panel>
 		<div id="main-content" main>
-			<core-scroll-header-panel id="scrollHeader">
+			<core-scroll-header-panel id="scrollHeader" headerHeight="64">
 				<core-toolbar id="navbar">
 					<core-icon-button id="menuButton" icon="menu" hidden?="{{!globals.isPhoneSize}}" core-drawer-toggle></core-icon-button>
 					<a href="/" is="pushstate-anchor" hidden?="{{currentPath == '/'}}"><site-logo></site-logo></a>
@@ -121,13 +121,12 @@
 					</div>
 					<site-menu horizontal selected="{{currentPath}}" hidden?="{{globals.isPhoneSize}}"></site-menu>
 				</core-toolbar>
-				<app-router id="router" mode="pushstate">
-					<app-route path="/" import="pages/page-home.html" element="page-home"></app-route>
-					<app-route path="/register" import="pages/register-new.html" element="register-new"></app-route>
-					<app-route path="/register/success" import="pages/register-success.html" element="register-success"></app-route>
-					<app-route path="/sessions" import="pages/session-list.html" element="session-list"></app-route>
-					<app-route path="/sessions/new" import="pages/session-new.html" element="session-new"></app-route>
-					<app-route path="/sessions/:uuid" import="pages/session-show.html" element="session-show"></app-route>
+				<app-router id="router" mode="pushstate" trailingSlash="ignore">
+					<app-route path="/" import="pages/page-home.html"></app-route>
+					<app-route path="/register" import="pages/register-new.html"></app-route>
+					<app-route path="/register/success" import="pages/register-success.html"></app-route>
+					<app-route path="/sessions/new" import="pages/session-new.html"></app-route>
+					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter></app-route>
 				</app-router>
 			</core-scroll-header-panel>
 		</div>

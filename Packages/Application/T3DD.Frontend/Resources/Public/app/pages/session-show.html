@@ -1,27 +1,79 @@
-<link rel="import" href="../elements/site-ajax/site-ajax.html">
 
 <link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
-<link rel="import" href="../elements/site-jumbotron/site-jumbotron.html">
-<link rel="import" href="../elements/site-content/site-content.html">
-
 <link rel="import" href="../bower_components/marked-element/marked-element.html">
-<link rel="import" href="../bower_components/pushstate-anchor/pushstate-anchor.html">
-
+<link rel="import" href="../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+<link rel="import" href="../elements/site-ajax/site-ajax.html">
+<link rel="import" href="../elements/site-style/site-style.html">
 <link rel="import" href="../elements/site-comments/site-comments.html">
 
-<polymer-element name="session-show" attributes="uuid" noscript>
+<polymer-element name="session-show" attributes="sessionId router">
 	<template>
-		<site-ajax url="/sessions/{{uuid}}" response="{{session}}"></site-ajax>
+		<h1>{{resource}}</h1>
+		<site-ajax url="/sessions/{{sessionId}}" on-core-response="{{handleSession}}"></site-ajax>
 		<pvc-globals values="{{globals}}"></pvc-globals>
-		<style>
-			:host {
-				display: block;
-			}
-		</style>
-		<h1>{{session.title}}</h1>
-		<marked-element text="{{session.description}}"></marked-element>
-		<template if="{{globals.user.disqusRemoteAuth}}">
-			<site-comments shortname="t3dd15" remoteAuth="{{globals.user.disqusRemoteAuth}}"></site-comments>
-		</template>
+		<core-overlay opened backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
+			<core-style ref="main"></core-style>
+			<style>
+				#close {
+					position: absolute;
+					right: 8px;
+					top: 8px;
+					background: #fff;
+				}
+				#title {
+					min-height: 32px;
+					margin-right: 54px;
+				}
+				#spinner {
+					position: absolute;
+					left: 50%;
+					margin-left: -14px;
+					top: 50%;
+					margin-top: -14px;
+				}
+				.card__container {
+					width: 2048px;
+				}
+				.card {
+					min-height: 30vh;
+				}
+				@media (min-width: 768px) {
+					.card .card__content {
+						padding: 16px 32px;
+					}
+				}
+			</style>
+			<div class="card__container container">
+				<div class="card">
+					<paper-spinner id="spinner" active?="{{!session}}" hidden?="{{session}}"></paper-spinner>
+					<div class="card__content">
+						<core-icon-button id="close" icon="clear" core-overlay-toggle></core-icon-button>
+						<h1 id="title" site-font="headline">{{session.title}}</h1>
+					</div>
+					<div class="card__content">
+						<marked-element text="{{session.description}}"></marked-element>
+					</div>
+					<!--<template if="{{globals.user.disqusRemoteAuth}}">-->
+						<!--<div class="card__content">-->
+							<!--<site-comments shortname="t3dd15" remoteAuth="{{globals.user.disqusRemoteAuth}}"></site-comments>-->
+						<!--</div>-->
+					<!--</template>-->
+				</div>
+			</div>
+		</core-overlay>
 	</template>
+	<script>
+		Polymer({
+			session: null,
+			handleSession: function(event) {
+				this.session = event.detail.response;
+				this.fire('session-open', this.session);
+			},
+			onClose: function() {
+				this.fire('session-close');
+			}
+		});
+	</script>
 </polymer-element>

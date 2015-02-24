@@ -1,22 +1,39 @@
 <link rel="import" href="../bower_components/core-list/core-list.html">
-<link rel="import" href="../bower_components/pushstate-anchor/pushstate-anchor.html">
+<link rel="import" href="../bower_components/marked-element/marked-element.html">
 <link rel="import" href="../elements/site-style/site-style.html">
 <link rel="import" href="../elements/site-ajax/site-ajax.html">
 <link rel="import" href="../elements/site-vote/site-vote.html">
 
-<polymer-element name="session-list">
+<polymer-element name="session-list" attributes="router">
 	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
 		<core-style ref="main"></core-style>
 		<style>
-			:host, core-list {
+			:host {
 				display: block;
+				position: relative;
 				height: 100%;
 			}
+
+			#list {
+				height: 100%;
+				max-width: 1024px;
+				margin: 0 auto;
+			}
+
 			.session {
-				background-color: #FAFAFA;
+				background-color: #fff;
 				padding: 16px;
-				border-bottom: 1px solid #E0E0E0;
-				will-change: transform,opacity;
+				border-bottom: 1px solid #ccc;
+				will-change: transform, opacity;
+				cursor: pointer;
+				transition: background-color .2s ease-in;
+			}
+			.session:hover, .session:focus  {
+				background: #f2f2f2;
+			}
+			.session.selected {
+				background: #e6e6e6;
 			}
 
 			.session h3 {
@@ -24,26 +41,58 @@
 			}
 		</style>
 		<site-ajax url="/sessions" response="{{sessions}}"></site-ajax>
-		<core-list data="{{sessions}}">
+		<core-list id="list" data="{{sessions}}" on-core-activate="{{selectSession}}" selectionEnabled="true" on-ready="{{test}}">
 			<template>
 				<div class="session__container">
-					<a href="{{model.resource}}" class="session" layout horizontal on-tap="{{showSession}}" on-click="{{nope}}">
-						<site-vote session="{{model}}"></site-vote>
+					<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>
 						<div flex horizontal layout center>
 							<h3 site-font="title">{{model.title}}</h3>
 						</div>
-					</a>
+						<site-vote sessionResource="{{model.resource}}" voteUri="{{mode.voteUri}}"></site-vote>
+					</div>
 				</div>
 			</template>
 		</core-list>
+		<app-router id="sessionRouter">
+			<app-route path="/sessions/:sessionId" import="/_Resources/Static/Packages/T3DD.Frontend/app/pages/session-show.html"></app-route>
+		</app-router>
 	</template>
 	<script>
 		Polymer({
-			nope: function(event) {
-				event.preventDefault();
+			sessions: null,
+			selectedSessionResource: null,
+			eventDelegates: {
+				'session-open': 'focusOpenSession',
+				'session-close': 'unselectSession'
 			},
-			showSession: function(event, index, element) {
-				document.getElementById('router').go(element.getAttribute('href'));
+			focusOpenSession: function(event) {
+				// selectedSessionResource is only set when selected from list, but not when routed upon first call
+				if (this.selectedSessionResource === null) {
+					this.selectedSessionResource = event.detail.resource;
+				}
+			},
+			/*selectedSessionResourceChanged: function(oldResource, newResource) {
+				if (this.sessions !== null && typeof newResource === 'string') {
+					this.sessions.every(function(session, index) {
+						if (session.resource === newResource) {
+							this.async(function(index) {
+								this.$.list.setItemSelected(index, true);
+								this.$.list.scrollToItem(index);
+							  }, [index], 3000);
+							return false;
+						}
+						return true;
+					}, this);
+				}
+			},*/
+			unselectSession: function() {
+				this.selectedSessionResource = null;
+				this.$.list.clearSelection();
+				this.router.go('/sessions');
+			},
+			selectSession: function(event, detail) {
+				this.selectedSessionResource = detail.data.resource;
+				this.router.go(this.selectedSessionResource);
 			}
 		});
 	</script>
