@@ -58,20 +58,19 @@
 
 					if (this.myVote) {
 						voteAjax.method = 'DELETE';
+						this.vote.numberOfVotes--;
+						this.myVote = false;
 					} else {
 						voteAjax.method = 'POST';
+						this.myVote = true;
+						this.vote.numberOfVotes++;
 					}
+;
 					voteAjax.go();
 				},
 
 				handleVoteResponse: function (event) {
-					if (this.myVote) {
-						this.myVote = null;
-						this.vote.numberOfVotes--;
-					} else {
-						this.myVote = event.detail.response;
-						this.vote.numberOfVotes++;
-					}
+					this.myVote = event.detail.response !== null;
 				}
 
 			});
