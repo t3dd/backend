@@ -51,7 +51,7 @@
 	<link rel="import" href="elements/site-menu/site-menu.html">
 	<link rel="import" href="elements/site-login/site-login.html">
 	<link rel="import" href="elements/site-logo/site-logo.html">
-	<link rel="import" href="elements/site-jumbotron/site-jumbotron.html">
+	<link rel="import" href="elements/site-style/site-style.html">
 	<link rel="import" href="elements/site-content/site-content.html">
 	<link rel="import" href="elements/site-map/site-map.html">
 	<!-- endbuild-->
@@ -59,15 +59,13 @@
 
 <body unresolved fullbleed>
 
-<core-style id="navheaderstyle">
-	#navheader::after {
-	/* causes console warning for incorrect mimetype */
-	background-image: url({{coverImg}});
-	}
-</core-style>
-
 <template id="t" is="auto-binding">
+	<core-style ref="main"></core-style>
+
 	<pvc-globals values="{{globals}}"></pvc-globals>
+
+	<site-login id="baseLogin" user="{{globals.user}}" statusKnown="{{statusKnown}}" ssoUrl="http://t3dd15.typo3.org/sso/"></site-login>
+
 	<core-media-query id="mq-phone" query="(max-width:767px)"
 					  queryMatches="{{globals.isPhoneSize}}"></core-media-query>
 	<core-media-query id="mq-phone" query="(max-width:640px)"
@@ -83,43 +81,32 @@
 
 		<core-header-panel mode="scroll" drawer>
 			<core-toolbar id="navheader" class="tall">
-				<!-- <core-image src="{{user.cover}}" sizing="cover" preload fade
-							  style="width:400px; height:400px; background-color:#c41411;">
-				  </core-image> -->
-				<img class="middle" src="images/logo.svg">
-
-				<div class="bottom" horizontal layout>
-					<div flex self-start>
-						<core-image src="{{globals.user.profile}}" sizing="cover"
-									preload fade style="width:60px; height:60px; background-color:#FF8700; border-radius: 1000em;" hidden?="{{!user.profile}}">
-						</core-image>
-					</div>
-					<!--<paper-dropdown-menu flex self-end id="user-login" label="{{(!statusKnown || !user) ? 'Anonymous' : user.displayName}}">-->
-						<!--<paper-dropdown layered class="dropdown">-->
-							<!--<paper-item on-click="{{login}}" hidden?="{{statusKnown && user}}">Login</paper-item>-->
-							<!--<paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !user}}">Logout</paper-item>-->
-						<!--</paper-dropdown>-->
-					<!--</paper-dropdown-menu>-->
-					<site-login id="baseLogin" user="{{globals.user}}" statusKnown="{{statusKnown}}" ssoUrl="http://t3dd15.typo3.org/sso/"></site-login>
-				</div>
+				<site-logo class="t3dd-logo"></site-logo>
+				<h2 class="bottom" site-font="subhead">July 16–19 <span>2015</span></h2>
 			</core-toolbar>
-			<site-menu selected="{{currentPath}}"></site-menu>
+			<site-menu selected="{{currentPath}}">
+				<core-item label="Home" icon="home" href="/">
+					<paper-ripple id="ripple" fit></paper-ripple>
+				</core-item>
+			</site-menu>
 		</core-header-panel>
 		<div id="main-content" main>
 			<core-scroll-header-panel id="scrollHeader" headerHeight="64">
-				<core-toolbar id="navbar">
-					<core-icon-button id="menuButton" icon="menu" hidden?="{{!globals.isPhoneSize}}" core-drawer-toggle></core-icon-button>
-					<a href="/" is="pushstate-anchor" hidden?="{{currentPath == '/'}}"><site-logo></site-logo></a>
-					<div flex>
+				<core-toolbar id="navbar" justify="between">
+					<div horizontal layout center>
+						<core-icon-button id="menuButton" icon="menu" hidden?="{{!globals.isPhoneSize}}" core-drawer-toggle></core-icon-button>
+						<a href="/" is="pushstate-anchor" hidden?="{{currentPath == '/'}}"><site-logo class="t3dd-logo"></site-logo></a>
+						<site-menu horizontal selected="{{currentPath}}" hidden?="{{globals.isPhoneSize}}"></site-menu>
+					</div>
+					<div>
 						<core-image id="userImage" src="{{globals.user.profile}}" sizing="cover" preload fade></core-image>
-						<paper-dropdown-menu id="userLogin" label="{{(!statusKnown || !globals.user) ? 'Anonymous' : globals.user.displayName}}">
+						<paper-dropdown-menu id="userLogin" label="{{ globals.isSmallPhoneSize ? '' : (!statusKnown || !globals.user) ? 'Anonymous' : globals.user.displayName}}">
 							<paper-dropdown layered class="dropdown">
 								<paper-item on-click="{{login}}" hidden?="{{statusKnown && globals.user}}">Login</paper-item>
 								<paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !globals.user}}">Logout</paper-item>
 							</paper-dropdown>
 						</paper-dropdown-menu>
 					</div>
-					<site-menu horizontal selected="{{currentPath}}" hidden?="{{globals.isPhoneSize}}"></site-menu>
 				</core-toolbar>
 				<app-router id="router" mode="pushstate" trailingSlash="ignore">
 					<app-route path="/" import="pages/page-home.html"></app-route>

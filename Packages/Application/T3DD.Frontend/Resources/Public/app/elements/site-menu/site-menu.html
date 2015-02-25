@@ -1,9 +1,22 @@
 <link rel="import" href="../../bower_components/core-menu/core-menu.html">
+<link rel="import" href="../../bower_components/core-item/core-item.html">
 <link rel="import" href="../../bower_components/paper-tabs/paper-tabs.html">
 
 <polymer-element name="site-menu" attributes="selected horizontal items">
 	<template>
 		<style>
+			core-menu {
+				margin: 16px 0;
+			}
+			core-item, ::content core-item {
+				padding-left: 12px;
+				color: #000;
+				opacity: .6;
+			}
+			core-item.core-selected, ::content core-item.core-selected {
+				font-weight: normal;
+				opacity: 1;
+			}
 			paper-tabs {
 				font-size: 16px;
 				height: 64px;
@@ -16,9 +29,10 @@
 			}
 		</style>
 		<template if="{{!horizontal}}">
-			<core-menu selected="{{selected}}" valueattr="href" excludedLocalNames="div" horizontal end-justified layout>
+			<core-menu selected="{{selected}}" valueattr="href" excludedLocalNames="div">
 				<template repeat="{{items}}">
-					<core-item label="{{label}}" icon="{{icon}}" src="{{src}}" href="{{href}}" on-tap="{{route}}">
+					<content></content>
+					<core-item label="{{label}}" icon="{{icon}}" src="{{src}}" href="{{href}}">
 						<paper-ripple id="ripple" fit></paper-ripple>
 					</core-item>
 				</template>
@@ -26,8 +40,9 @@
 		</template>
 		<template if="{{horizontal}}">
 			<paper-tabs selected="{{selected}}" valueattr="href" noink>
+				<content></content>
 				<template repeat="{{items}}">
-					<paper-tab href="{{href}}" on-tap="{{route}}">{{label}}</paper-tab>
+					<paper-tab href="{{href}}">{{label}}</paper-tab>
 				</template>
 			</paper-tabs>
 		</template>
@@ -36,6 +51,9 @@
 		Polymer({
 			horizontal: false,
 			selected: '/',
+			eventDelegates: {
+				'tap': 'route'
+			},
 			items: [
 				{
 					label: 'Register',
@@ -49,9 +67,12 @@
 				}
 			],
 			route: function(event, index, target) {
-				if (typeof target.attributes.href === 'object') {
-					document.querySelector('app-router').go(target.getAttribute('href'));
-				}
+				Array.prototype.every.call(event.path, function(node) {
+					if ((node.tagName === 'CORE-ITEM' || node.tagName === 'PAPER-TAB') && typeof node.attributes.href === 'object') {
+						document.getElementById('router').go(node.getAttribute('href'));
+					}
+					return node !== target;
+				});
 			}
 		});
 	</script>
