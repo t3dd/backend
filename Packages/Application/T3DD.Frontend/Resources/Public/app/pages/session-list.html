@@ -11,8 +11,8 @@
 		<style>
 			:host {
 				display: block;
-				position: relative;
-				height: 100%;
+				/*position: relative;*/
+				/*height: 100%;*/
 			}
 
 			#list {
@@ -42,7 +42,7 @@
 			}
 		</style>
 		<site-ajax url="/sessions" response="{{sessions}}"></site-ajax>
-		<core-list id="list" data="{{sessions}}" on-core-activate="{{selectSession}}" selectionEnabled="true" on-ready="{{test}}">
+		<core-list id="list" data="{{sessions}}" scrollTarget="{{globals.scrollTarget}}" on-core-activate="{{selectSession}}" selectionEnabled="true" on-ready="{{test}}">
 			<template>
 				<div class="session__container">
 					<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>

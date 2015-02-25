@@ -22,10 +22,8 @@
 	};
 
 	template.addEventListener('template-bound', function() {
-		var scrollHeader = document.getElementById('scrollHeader'),
-			router = document.getElementById('router');
-
-		router.addEventListener('activate-route-end', function(event) {
+		this.globals.scrollTarget = this.$.scrollHeader.shadowRoot.getElementById('mainContainer');
+		this.$.router.addEventListener('activate-route-end', function(event) {
 			template.currentPath = event.detail.path;
 		});
 	});
