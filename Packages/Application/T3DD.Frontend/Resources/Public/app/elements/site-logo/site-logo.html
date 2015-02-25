@@ -1,4 +1,4 @@
-<polymer-element name="site-logo">
+<polymer-element name="site-logo" attributes="figureColor">
 	<template>
 		<style>
 			:host {
@@ -6,6 +6,7 @@
 			}
 
 			.logo__figure {
+				fill: {{figureColor}};
 			}
 
 			.logo__name {
@@ -71,6 +72,7 @@
 	</template>
 	<script>
 		Polymer('site-logo', {
+			figureColor: '#000',
 			ready: function() {
 				this.observeAttributes(['class'], this.determineHeight);
 				this.determineHeight();
