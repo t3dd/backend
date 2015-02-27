@@ -14,10 +14,10 @@ class DisqusRemoteAuthAspect {
 	const DISQUS_SECRET_KEY = 'yHAieA0TLdgWafMf3K16XXYnwRn2m7RTVVzAaLIGfvF6dvD8mnu1nQqz3MMdGbFF';
 
 	/**
-	 * @param \TYPO3\Flow\AOP\JoinPointInterface $joinPoint
+	 * @param \TYPO3\Flow\Aop\JoinPointInterface $joinPoint
 	 * @Flow\Around("method(T3DD\Login\Controller\AuthenticationController->buildAccountDTO())")
 	 */
-	public function addDisqusRemoteAuthToUserDto(\TYPO3\Flow\AOP\JoinPointInterface $joinPoint) {
+	public function addDisqusRemoteAuthToUserDto(\TYPO3\Flow\Aop\JoinPointInterface $joinPoint) {
 		$userDto = $joinPoint->getAdviceChain()->proceed($joinPoint);
 		$account = $joinPoint->getMethodArgument('account');
 		$userDto->disqusRemoteAuth = $this->generateDisqusRemoteAuth($account);

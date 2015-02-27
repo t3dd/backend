@@ -1,8 +1,11 @@
-resources:
-  methods:
-    T3DD_Frontend_PublicFrontendAccess: 'method(T3DD\Frontend\Controller\FrontendController->serveAction())'
 
-acls:
-  Everybody:
-    methods:
-      T3DD_Frontend_PublicFrontendAccess: GRANT
+privilegeTargets:
+  TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
+    T3DD_Frontend_PublicFrontendAccess:
+      matcher: method(T3DD\Frontend\Controller\FrontendController->serveAction())
+roles:
+  'TYPO3.Flow:Everybody':
+    privileges:
+      -
+        privilegeTarget: T3DD_Frontend_PublicFrontendAccess
+        permission: GRANT

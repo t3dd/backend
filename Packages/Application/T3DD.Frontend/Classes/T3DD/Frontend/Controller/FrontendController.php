@@ -8,7 +8,7 @@ class FrontendController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 
 	/**
 	 */
-	public function serveAction() {;
+	public function serveAction() {
 		$html = file_get_contents('resource://T3DD.Frontend/Public/app/index.html');
 		return $this->rewriteResourceUrls($html);
 	}

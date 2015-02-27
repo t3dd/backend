@@ -28,16 +28,16 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 	protected $persistenceManager;
 
 	/**
-	 * @var \TYPO3\Flow\Security\Policy\RoleRepository
-	 * @Flow\Inject
-	 */
-	protected $roleRepository;
-
-	/**
 	 * @var \TYPO3\Flow\Security\Policy\PolicyService
 	 * @Flow\Inject
 	 */
 	protected $policyService;
+
+	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Party\Domain\Service\PartyService
+	 */
+	protected $partyService;
 
 	/**
 	 * @param TokenInterface $authenticationToken
@@ -77,7 +77,6 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 			$this->options['rsaKeyUuid']
 		);
 
-		$this->policyService->initializeRolesFromPolicy();
 		if ($authenticationDataIsValid && $credentials['expires'] > time()) {
 			$userdata = $this->parseUserdata($credentials['userdata']);
 			if (!is_object($account)) {
@@ -133,13 +132,11 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 
 		$person = new Person();
 		$this->partyRepository->add($person);
-		$this->persistenceManager->whitelistObject($person);
-		$account->setParty($person);
+		$this->partyService->assignAccountToParty($account, $person);
 		$this->updatePerson($person, $userdata);
 
 		$this->accountRepository->add($account);
-		$this->persistenceManager->whitelistObject($account);
-		$this->persistenceManager->persistAll(true);
+		$this->persistenceManager->persistAll();
 		return $account;
 	}
 
@@ -149,12 +146,11 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 	 * @return \TYPO3\Flow\Security\Account
 	 */
 	protected function updateAccount(Account $account, array $userdata) {
-		$person = $account->getParty();
+		$person = $this->partyService->getAssignedPartyOfAccount($account);
 		if ($person === null) {
 			$person = new Person();
 			$this->partyRepository->add($person);
-			$this->persistenceManager->whitelistObject($person);
-			$account->setParty($person);
+			$this->partyService->assignAccountToParty($account, $person);
 		}
 		if (!$account->getRoles()) {
 			$account->setRoles(array(
@@ -165,8 +161,7 @@ class Typo3OrgSsoProvider extends \TYPO3\Flow\Security\Authentication\Provider\T
 		$this->updatePerson($person, $userdata);
 
 		$this->accountRepository->update($account);
-		$this->persistenceManager->whitelistObject($account);
-		$this->persistenceManager->persistAll(true);
+		$this->persistenceManager->persistAll();
 		return $account;
 	}
 

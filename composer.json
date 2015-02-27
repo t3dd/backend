@@ -7,15 +7,18 @@
         "bin-dir": "bin"
     },
     "require": {
-        "typo3/flow": "2.3.*",
-        "typo3/welcome": "2.3.*",
+        "typo3/flow": "3.0.0-beta1",
+        "typo3/welcome": "3.0.0-beta1",
+        "typo3/party": "3.0.0-beta1",
+        "typo3/fluid": "@beta",
+        "typo3/eel": "@beta",
         "doctrine/migrations": "@dev",
         "netlogix/crud": "dev-master"
     },
     "require-dev": {
-        "typo3/kickstart": "2.3.*",
-        "typo3/buildessentials": "2.3.*",
-        "phpunit/phpunit": "4.3.*",
+        "typo3/kickstart": "3.0.0-beta1",
+        "typo3/buildessentials": "3.0.0-beta1",
+        "phpunit/phpunit": "4.5.*",
         "mikey179/vfsstream": "1.4.*"
     },
     "repositories": [

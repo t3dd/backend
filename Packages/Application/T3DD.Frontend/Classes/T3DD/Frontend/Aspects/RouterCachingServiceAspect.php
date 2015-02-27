@@ -26,6 +26,7 @@ class RouterCachingServiceAspect {
 	/**
 	 * @param \TYPO3\Flow\Aop\JoinPoint $joinPoint
 	 * @Flow\Around("method(TYPO3\Flow\Mvc\Routing\RouterCachingService->buildRouteCacheIdentifier())")
+	 * @return string
 	 */
 	public function buildRouteCacheIdentifierWithAcceptHeader(\TYPO3\Flow\Aop\JoinPoint $joinPoint) {
 		/** @var \TYPO3\Flow\Http\Request $httpRequest */

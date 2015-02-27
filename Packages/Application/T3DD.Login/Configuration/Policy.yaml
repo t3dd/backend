@@ -1,8 +1,11 @@
-resources:
-  methods:
-    T3DD_Login_PublicFrontendAccess: 'method(T3DD\Login\Controller\AuthenticationController->(login|authenticate|callback|status)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
 
-acls:
-  Everybody:
-    methods:
-      T3DD_Login_PublicFrontendAccess: GRANT
+privilegeTargets:
+  TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
+    T3DD_Login_PublicFrontendAccess:
+      matcher: 'method(T3DD\Login\Controller\AuthenticationController->(login|authenticate|callback|status)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
+roles:
+  'TYPO3.Flow:Everybody':
+    privileges:
+      -
+        privilegeTarget: T3DD_Login_PublicFrontendAccess
+        permission: GRANT

@@ -225,9 +225,10 @@ class FlowContext implements Context {
 	 */
 	protected function resetRolesAndPolicyService() {
 		$this->objectManager->get('TYPO3\Flow\Security\Policy\PolicyService')->reset();
-
-		$roleRepository = $this->objectManager->get('TYPO3\Flow\Security\Policy\RoleRepository');
-		\TYPO3\Flow\Reflection\ObjectAccess::setProperty($roleRepository, 'newRoles', array(), TRUE);
+		if ($this->objectManager->isRegistered('TYPO3\Flow\Security\Policy\RoleRepository')) {
+			$roleRepository = $this->objectManager->get('TYPO3\Flow\Security\Policy\RoleRepository');
+			\TYPO3\Flow\Reflection\ObjectAccess::setProperty($roleRepository, 'newRoles', array(), TRUE);
+		}
 	}
 
 	/**
