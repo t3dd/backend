@@ -24,6 +24,12 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 	protected $dataTransferObjectFactory;
 
 	/**
+	 * @Flow\Inject
+	 * @var \TYPO3\Flow\Security\Context
+	 */
+	protected $securityContext;
+
+	/**
 	 * Name of the action method argument which acts as the resource for the
 	 * RESTful controller. If an argument with the specified name is passed
 	 * to the controller, the show, update and delete actions can be triggered
@@ -53,6 +59,7 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 	 * @Flow\Validate(argumentName="session", type="T3DD\Backend\Validation\Validator\UniqueSessionTitleValidator")
 	 */
 	public function createAction(Session $session) {
+		$session->setAccount($this->securityContext->getAccount());
 		$this->sessionRepository->add($session);
 		$this->persistenceManager->persistAll();
 		$this->reportSuccess($session, 201);

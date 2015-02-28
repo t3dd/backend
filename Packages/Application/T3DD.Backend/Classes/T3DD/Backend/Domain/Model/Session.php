@@ -21,6 +21,12 @@ class Session {
 	protected $date;
 
 	/**
+	 * @var \TYPO3\Flow\Security\Account
+	 * @ORM\ManyToOne
+	 */
+	protected $account = NULL;
+
+	/**
 	 * @var string
 	 * @Flow\Validate(type="StringLength", options={ "minimum"=1, "maximum"=120 })
 	 * @Flow\Identity
@@ -32,6 +38,7 @@ class Session {
 	 * @var string
 	 * @ORM\Column(type="text")
 	 * @Flow\Validate(type="Raw")
+	 * @Flow\Validate(type="NotEmpty")
 	 */
 	protected $description;
 
@@ -41,9 +48,44 @@ class Session {
 	 */
 	protected $speakers;
 
+	/**
+	 * @var \T3DD\Backend\Domain\Model\Value
+	 * @ORM\ManyToOne
+	 * @Flow\Validate(type="NotEmpty")
+	 */
+	protected $theme;
+
+	/**
+	 * @var \T3DD\Backend\Domain\Model\Value
+	 * @ORM\ManyToOne
+	 * @Flow\Validate(type="NotEmpty")
+	 */
+	protected $type;
+
+	/**
+	 * @var \T3DD\Backend\Domain\Model\Value
+	 * @ORM\ManyToOne
+	 * @Flow\Validate(type="NotEmpty")
+	 */
+	protected $expertiseLevel;
+
 	public function __construct() {
 		$this->date = new \DateTime();
 		$this->speakers = new \Doctrine\Common\Collections\ArrayCollection();
+	}
+
+	/**
+	 * @return \TYPO3\Flow\Security\Account
+	 */
+	public function getAccount() {
+		return $this->account;
+	}
+
+	/**
+	 * @param \TYPO3\Flow\Security\Account $account
+	 */
+	public function setAccount($account) {
+		$this->account = $account;
 	}
 
 	/**
@@ -107,6 +149,48 @@ class Session {
 	 */
 	public function setDate($date) {
 		$this->date = $date;
+	}
+
+	/**
+	 * @return Value
+	 */
+	public function getTheme() {
+		return $this->theme;
+	}
+
+	/**
+	 * @param Value $theme
+	 */
+	public function setTheme(Value $theme) {
+		$this->theme = $theme;
+	}
+
+	/**
+	 * @return Value
+	 */
+	public function getType() {
+		return $this->type;
+	}
+
+	/**
+	 * @param Value $type
+	 */
+	public function setType(Value $type) {
+		$this->type = $type;
+	}
+
+	/**
+	 * @return Value
+	 */
+	public function getExpertiseLevel() {
+		return $this->expertiseLevel;
+	}
+
+	/**
+	 * @param Value $expertiseLevel
+	 */
+	public function setExpertiseLevel(Value $expertiseLevel) {
+		$this->expertiseLevel = $expertiseLevel;
 	}
 
 }

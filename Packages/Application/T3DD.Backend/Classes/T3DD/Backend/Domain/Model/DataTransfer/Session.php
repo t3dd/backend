@@ -31,7 +31,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'title', 'description', 'speakers', 'date', 'voteUri');
+		return array('resource', 'title', 'description', 'theme', 'type', 'expertiseLevel', 'speakers', 'date', 'voteUri');
 	}
 
 	/**
@@ -51,6 +51,27 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 			'actionName' => 'index',
 			'arguments' => array('session' => $this->payload),
 		));
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTheme() {
+		return $this->payload->getTheme()->getTitle();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getType() {
+		return $this->payload->getType()->getTitle();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getExpertiseLevel() {
+		return $this->payload->getExpertiseLevel()->getTitle();
 	}
 
 	/**
