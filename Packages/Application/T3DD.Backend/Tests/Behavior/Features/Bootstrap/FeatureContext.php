@@ -121,12 +121,23 @@ class FeatureContext extends MinkContext {
 		$propertyMappingConfiguration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
 		/** @var \TYPO3\Flow\Property\PropertyMapper $propertyMapper */
 		$propertyMapper = $this->objectManager->get('TYPO3\Flow\Property\PropertyMapper');
-		$entity = $propertyMapper->convert($values->getRowsHash(), 'T3DD\Backend\Domain\Model\\' . $class, $propertyMappingConfiguration);
+		$row = $values->getRowsHash();
+		$identifier = '';
+		if (isset($row['persistence_object_identifier'])) {
+			$identifier = $row['persistence_object_identifier'];
+			unset($row['persistence_object_identifier']);
+		}
+		$entity = $propertyMapper->convert($row, 'T3DD\Backend\Domain\Model\\' . $class, $propertyMappingConfiguration);
 		if ($propertyMapper->getMessages()->hasErrors()) {
 			throw new \Exception('Error while mapping entity: ' . print_r($propertyMapper->getMessages(), TRUE));
 		}
+		if ($identifier) {
+			\TYPO3\Flow\Reflection\ObjectAccess::setProperty($entity, 'Persistence_Object_Identifier', $identifier, TRUE);
+		}
 		$this->objectManager->get('T3DD\Backend\Domain\Repository\\' . $class . 'Repository')->add($entity);
-		$this->flowContext->resolvePageUri('Single ' . $class, array(lcfirst($class) => $entity));
+		try {
+			$this->flowContext->resolvePageUri('Single ' . $class, array(lcfirst($class) => $entity));
+		} catch (\InvalidArgumentException $e) {}
 		$this->flowContext->persistAll();
 	}
 
