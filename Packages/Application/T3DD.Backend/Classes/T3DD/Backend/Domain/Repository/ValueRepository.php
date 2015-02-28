@@ -15,6 +15,6 @@ use TYPO3\Flow\Persistence\Repository;
  */
 class ValueRepository extends Repository {
 
-	protected $defaultOrderings = array('value' => QueryInterface::ORDER_DESCENDING);
+	protected $defaultOrderings = array('title' => QueryInterface::ORDER_DESCENDING);
 
 }

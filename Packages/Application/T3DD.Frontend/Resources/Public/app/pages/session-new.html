@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/marked-element/marked-element.html">
 
 <link rel="import" href="../elements/site-form/site-form.html">
+<link rel="import" href="../elements/site-ajax/site-ajax.html">
 <link rel="import" href="../bower_components/marked-element/marked-element.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
@@ -12,6 +13,7 @@
 
 <polymer-element name="session-new">
 	<template>
+		<core-style ref="main"></core-style>
 		<style>
 			:host, core-scroll-header-panel {
 				display: block;
@@ -27,6 +29,7 @@
 				margin-bottom: 30px;
 			}
 		</style>
+		<site-ajax url="/values" response="{{values}}"></site-ajax>
 		<core-scroll-header-panel>
 			<core-toolbar>
 				<div>Register a new session</div>
@@ -41,6 +44,33 @@
 							<textarea name="description" placeholder="Describe your session" value="{{formData.description}}" required></textarea>
 						</paper-autogrow-textarea>
 					</paper-input-decorator>
+
+					<fieldset>
+						<h4>Select your theme</h4>
+						<paper-radio-group selected="{{formData.theme}}">
+							<template repeat="{{v in values.theme}}">
+								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
+							</template>
+						</paper-radio-group>
+						<input name="theme" value="{{formData.theme}}" is="core-input" required hidden>
+
+						<h4>Select your type</h4>
+						<paper-radio-group selected="{{formData.type}}">
+							<template repeat="{{v in values.type}}">
+								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
+							</template>
+						</paper-radio-group>
+						<input name="type" value="{{formData.type}}" is="core-input" required hidden>
+
+						<h4>Select the expertise level of the session</h4>
+						<paper-radio-group selected="{{formData.expertiseLevel}}">
+							<template repeat="{{v in values.expertiseLevel}}">
+								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
+							</template>
+						</paper-radio-group>
+						<input name="expertiseLevel" value="{{formData.expertiseLevel}}" is="core-input" required hidden>
+					</fieldset>
+
 					<paper-button on-click="{{submit}}">
 						<core-icon icon="check"></core-icon>
 						Register
@@ -63,10 +93,10 @@
 					description: '',
 					timestamp: new Date().getTime()
 				},
-				ready: function() {
+				ready: function () {
 					this.$.form.addEventListener('submitted', this.$.form.changePageToResource);
 				},
-				submit: function() {
+				submit: function () {
 					this.$.form.submit();
 				}
 			});

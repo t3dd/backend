@@ -77,3 +77,26 @@
     '@action':     'index'
   appendExceedingArguments: TRUE
   httpMethods: ['GET']
+
+-
+  name: 'Single Value'
+  uriPattern: 'values/{value}'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Value'
+    '@action':     'index'
+  appendExceedingArguments: TRUE
+  httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
+  routeParts:
+    session:
+      objectType: T3DD\Backend\Domain\Model\Value
+
+-
+  name: 'Value list'
+  uriPattern: 'values'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Value'
+    '@action':     'index'
+  appendExceedingArguments: TRUE
+  httpMethods: ['HEAD', 'GET', 'POST']
