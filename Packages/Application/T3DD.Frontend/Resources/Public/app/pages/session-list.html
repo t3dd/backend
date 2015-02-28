@@ -37,8 +37,22 @@
 				background: #e6e6e6;
 			}
 
-			.session h3 {
-				padding-left: 8px;
+			.session .profileImage {
+				width: 45px;
+				height: 45px;
+				border-radius: 50%;
+				vertical-align: middle;
+				margin: 0 8px;
+			}
+			.session .theme {
+				color: #B4B4B4;
+				padding-right: 5px;
+			}
+			.session .theme:before {
+				content: '[';
+			}
+			.session .theme:after {
+				content: ']';
 			}
 		</style>
 		<site-ajax url="/sessions" response="{{sessions}}"></site-ajax>
@@ -47,7 +61,14 @@
 				<div class="session__container">
 					<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>
 						<div flex horizontal layout center>
-							<h3 site-font="title">{{model.title}}</h3>
+							<core-image class="profileImage" src="{{model.creator.profileImage}}" sizing="cover" preload fade></core-image>
+							<div layout vertical>
+								<h3 site-font="title"><span class="theme">{{model.theme}}</span>{{model.title}}</h3>
+								<div class="caption" site-font="caption">
+									<span>{{model.type}}</span>
+									<span>{{model.expertiseLevel}}</span>
+								</div>
+							</div>
 						</div>
 						<site-vote sessionResource="{{model.resource}}" voteUri="{{model.voteUri}}"></site-vote>
 					</div>

@@ -34,6 +34,12 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 	protected $securityContext;
 
 	/**
+	 * @var \TYPO3\Party\Domain\Service\PartyService
+	 * @Flow\Inject
+	 */
+	protected $partyService;
+
+	/**
 	 * @var string
 	 */
 	protected $requestIDProtocol = 'requestID://';
@@ -131,8 +137,7 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 	 * @return \stdClass
 	 */
 	protected function buildAccountDTO(\TYPO3\Flow\Security\Account $account, \TYPO3\Flow\Http\Cookie $sessionCookie = NULL) {
-		/** @var \TYPO3\Party\Domain\Model\Person $person */
-		$person = $account->getParty();
+		$person = $this->partyService->getAssignedPartyOfAccount($account);
 		$simpleAccount = new \stdClass();
 		$simpleAccount->displayName = (string) $person->getName();
 		if ($sessionCookie !== NULL) {

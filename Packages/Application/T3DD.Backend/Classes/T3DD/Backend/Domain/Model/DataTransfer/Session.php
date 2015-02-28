@@ -8,6 +8,7 @@ namespace T3DD\Backend\Domain\Model\DataTransfer;
 
 use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
+use Netlogix\Crud\Domain\Model\DataTransfer\UriPointer as UriPointer;
 
 /**
  * @Flow\Scope("prototype")
@@ -31,7 +32,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'title', 'description', 'theme', 'type', 'expertiseLevel', 'speakers', 'date', 'voteUri');
+		return array('resource', 'creator', 'title', 'description', 'theme', 'type', 'expertiseLevel', 'speakers', 'date', 'voteUri');
 	}
 
 	/**
@@ -42,15 +43,22 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	}
 
 	/**
-	 * @return \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer
+	 * @return UriPointer
 	 */
 	public function getResource() {
-		return new \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer(array(
+		return new UriPointer(array(
 			'packageKey' => 'T3DD.Backend',
 			'controllerName' => 'Session',
 			'actionName' => 'index',
 			'arguments' => array('session' => $this->payload),
 		));
+	}
+
+	/**
+	 * @return Account
+	 */
+	public function getCreator() {
+		return $this->objectManager->get(Account::class, $this->payload->getAccount());
 	}
 
 	/**
@@ -82,10 +90,10 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	}
 
 	/**
-	 * @return \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer
+	 * @return UriPointer
 	 */
 	public function getVoteUri() {
-		return new \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer(array(
+		return new UriPointer(array(
 			'packageKey' => 'T3DD.Backend',
 			'controllerName' => 'Vote',
 			'actionName' => 'index',
