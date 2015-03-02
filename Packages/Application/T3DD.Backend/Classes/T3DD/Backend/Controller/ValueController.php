@@ -55,7 +55,6 @@ class ValueController extends \Netlogix\Crud\Controller\RestController {
 	 */
 	public function createAction(Value $value) {
 		$this->valueRepository->add($value);
-		$this->persistenceManager->persistAll();
 		$this->reportSuccess($value, 201);
 	}
 
@@ -64,7 +63,6 @@ class ValueController extends \Netlogix\Crud\Controller\RestController {
 	 */
 	public function updateAction(Value $value) {
 		$this->valueRepository->update($value);
-		$this->persistenceManager->persistAll();
 		$this->reportSuccess($value);
 	}
 

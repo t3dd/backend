@@ -61,7 +61,6 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 	public function createAction(Session $session) {
 		$session->setAccount($this->securityContext->getAccount());
 		$this->sessionRepository->add($session);
-		$this->persistenceManager->persistAll();
 		$this->reportSuccess($session, 201);
 	}
 
@@ -70,7 +69,6 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 	 */
 	public function updateAction(Session $session) {
 		$this->sessionRepository->update($session);
-		$this->persistenceManager->persistAll();
 		$this->reportSuccess($session);
 	}
 
