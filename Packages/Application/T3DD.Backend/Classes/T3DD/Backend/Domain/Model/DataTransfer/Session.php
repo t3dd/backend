@@ -32,7 +32,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'creator', 'title', 'description', 'theme', 'type', 'expertiseLevel', 'speakers', 'date', 'voteUri');
+		return array('resource', 'creator', 'title', 'description', 'themes', 'type', 'expertiseLevel', 'speakers', 'date', 'voteUri');
 	}
 
 	/**
@@ -69,8 +69,8 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	/**
 	 * @return string
 	 */
-	public function getTheme() {
-		return $this->payload->getTheme()->getTitle();
+	public function getThemes() {
+		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getPayload()->getThemes());
 	}
 
 	/**

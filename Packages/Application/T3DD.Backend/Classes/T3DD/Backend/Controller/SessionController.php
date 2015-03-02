@@ -54,6 +54,16 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 		$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObject($session));
 	}
 
+	public function initializeCreateAction() {
+		parent::initializeCreateAction();
+
+		/** @var \TYPO3\Flow\Mvc\Controller\Argument $argument */
+		$argument = $this->arguments['session'];
+		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('themes.*');
+		$configuration->allowAllProperties();
+		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
+	}
+
 	/**
 	 * @param Session $session
 	 * @Flow\Validate(argumentName="session", type="T3DD\Backend\Validation\Validator\UniqueSessionTitleValidator")

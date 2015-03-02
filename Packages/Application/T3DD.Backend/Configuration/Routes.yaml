@@ -88,7 +88,7 @@
   appendExceedingArguments: TRUE
   httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
   routeParts:
-    session:
+    value:
       objectType: T3DD\Backend\Domain\Model\Value
 
 -

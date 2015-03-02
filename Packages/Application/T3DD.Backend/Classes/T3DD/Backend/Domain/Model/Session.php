@@ -49,11 +49,10 @@ class Session {
 	protected $speakers;
 
 	/**
-	 * @var \T3DD\Backend\Domain\Model\Value
-	 * @ORM\ManyToOne
-	 * @Flow\Validate(type="NotEmpty")
+	 * @var Collection<\T3DD\Backend\Domain\Model\Value>
+	 * @ORM\ManyToMany
 	 */
-	protected $theme;
+	protected $themes;
 
 	/**
 	 * @var \T3DD\Backend\Domain\Model\Value
@@ -72,6 +71,7 @@ class Session {
 	public function __construct() {
 		$this->date = new \DateTime();
 		$this->speakers = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->themes = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	/**
@@ -152,17 +152,18 @@ class Session {
 	}
 
 	/**
-	 * @return Value
+	 * @return Collection<\T3DD\Backend\Domain\Model\Value>
 	 */
-	public function getTheme() {
-		return $this->theme;
+	public function getThemes() {
+		return $this->themes;
 	}
 
 	/**
-	 * @param Value $theme
+	 * @param Collection $themes
+	 * @internal param Collection $theme
 	 */
-	public function setTheme(Value $theme) {
-		$this->theme = $theme;
+	public function setThemes(Collection $themes) {
+		$this->themes = $themes;
 	}
 
 	/**

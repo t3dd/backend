@@ -9,6 +9,7 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-input/paper-autogrow-textarea.html">
 <link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../elements/site-overlay-spinner/site-overlay-spinner.html">
 
 <polymer-element name="session-new">
@@ -27,6 +28,10 @@
 			paper-autogrow-textarea {
 				width: 100%;
 				margin-bottom: 30px;
+			}
+
+			paper-checkbox {
+				padding: 12px;
 			}
 		</style>
 		<site-ajax url="/values" response="{{values}}"></site-ajax>
@@ -47,12 +52,11 @@
 
 					<fieldset>
 						<h4>Select your theme</h4>
-						<paper-radio-group selected="{{formData.theme}}">
-							<template repeat="{{v in values.theme}}">
-								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
-							</template>
-						</paper-radio-group>
-						<input name="theme" value="{{formData.theme}}" is="core-input" required hidden>
+						<template repeat="{{v, i in values.theme}}">
+							<paper-checkbox label="{{v.title}}">
+								<input value="{{v.identifier}}" name="themes" type="checkbox" multiple hidden>
+							</paper-checkbox>
+						</template>
 
 						<h4>Select your type</h4>
 						<paper-radio-group selected="{{formData.type}}">
@@ -60,7 +64,7 @@
 								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
 							</template>
 						</paper-radio-group>
-						<input name="type" value="{{formData.type}}" is="core-input" required hidden>
+						<input value="{{formData.type}}" name="type" type="text" hidden>
 
 						<h4>Select the expertise level of the session</h4>
 						<paper-radio-group selected="{{formData.expertiseLevel}}">
@@ -68,7 +72,7 @@
 								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
 							</template>
 						</paper-radio-group>
-						<input name="expertiseLevel" value="{{formData.expertiseLevel}}" is="core-input" required hidden>
+						<input value="{{formData.expertiseLevel}}" name="expertiseLevel" type="text" hidden>
 					</fieldset>
 
 					<paper-button on-click="{{submit}}">

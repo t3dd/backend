@@ -63,8 +63,9 @@
 						<div flex horizontal layout center>
 							<core-image class="profileImage" src="{{model.creator.profileImage}}" sizing="cover" preload fade></core-image>
 							<div layout vertical>
-								<h3 site-font="title"><span class="theme">{{model.theme}}</span>{{model.title}}</h3>
+								<h3 site-font="title">{{model.title}}</h3>
 								<div class="caption" site-font="caption">
+									<template repeat="{{theme in model.themes}}"><span>{{theme.title}}</span></template>
 									<span>{{model.type}}</span>
 									<span>{{model.expertiseLevel}}</span>
 								</div>

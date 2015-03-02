@@ -43,7 +43,7 @@ class Value extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransfe
 			'packageKey' => 'T3DD.Backend',
 			'controllerName' => 'Value',
 			'actionName' => 'index',
-			'arguments' => array('session' => $this->payload),
+			'arguments' => array('value' => $this->payload),
 		));
 	}
 
