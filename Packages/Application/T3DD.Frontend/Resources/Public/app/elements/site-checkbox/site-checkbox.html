@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
+
+<polymer-element name="site-checkbox" extends="paper-checkbox">
+	<script>
+		Polymer({
+			ready: function() {
+				this.super();
+				this.applyInputAttributes();
+			},
+			checkedChanged: function () {
+				this.super();
+				this.applyInputAttributes();
+			},
+			applyInputAttributes: function () {
+				var self = this;
+				[].forEach.call(this.querySelectorAll('input'), function (input) {
+					var type = input.type;
+					if (self.checked) {
+						input.removeAttribute('disabled');
+					} else {
+						input.setAttribute('disabled', 'disabled');
+					}
+					if (type === 'checkbox') {
+						input.setAttribute('checked', self.checked ? 'checked' : '');
+					}
+				});
+			}
+		});
+	</script>
+</polymer-element>
