@@ -1,30 +1,27 @@
-<polymer-element name="site-logo" attributes="figureColor">
+<polymer-element name="site-logo" attributes="hideDate hideLocation">
 	<template>
 		<style>
 			:host {
 				display: inline-block;
 			}
 
-			.logo__figure {
-				fill: {{figureColor}};
+			:host([hideLocation]) .location {
+				display: none;
 			}
 
-			.logo__name {
-			}
-
-			:host(.no-location) .logo__location {
+			:host([hideDate]) .date {
 				display: none;
 			}
 		</style>
 		<svg id="logo" version="1.1" viewBox="0 0 223 85" preserveAspectRatio="xMinYMid meet">
-			<g id="figure" class="logo__figure">
+			<g id="figure" class="figure" fill="#FF8700">
 				<path d="M43.865,39.913c-0.87,0.252-1.564,0.348-2.474,0.348c-7.459,0-18.412-25.706-18.412-34.262
 					c0-3.149,0.755-4.201,1.823-5.102C15.674,1.948,4.72,5.253,1.218,9.452C0.461,10.504,0,12.153,0,14.256
 					c0,13.355,14.454,43.66,24.65,43.66C29.369,57.917,37.322,50.27,43.865,39.913" />
 				<path d="M39.104,0c9.433,0,18.871,1.5,18.871,6.752c0,10.652-6.851,23.562-10.348,23.562
 					c-6.238,0-13.999-17.11-13.999-25.666C33.628,0.748,35.149,0,39.104,0" />
 			</g>
-			<g id="name" class="logo__name">
+			<g id="name" class="name" fill="#000000">
 				<path d="M80.038,24.273v33.534h-7.943V24.273h-8.348v-7.007h24.639v7.008L80.038,24.273L80.038,24.273z" />
 				<path d="M100.619,58.327c-2.841,0-7.652-0.869-8.174-0.984v-6.428c1.392,0.289,4.696,0.984,7.247,0.984
 					c2.783,0,4.58-1.97,4.58-5.561c0-4.517-1.159-6.428-4.696-6.428h-4.465v-6.312h3.885c3.304,0,4.638-2.027,4.638-5.502
@@ -39,12 +36,12 @@
 					c9.333,0,14.436,3.127,14.436,20.212C176.621,54.158,171.868,58.386,162.881,58.386z M163.462,23.694
 					c-2.145,0-3.594,0.232-3.594,0.232v27.219c0,0,1.102,0.232,3.536,0.232c3.595,0,5.16-2.954,5.16-14.074
 					C168.564,24.853,166.94,23.694,163.462,23.694z" />
-				<path d="M184.739,57.807v-4.344h7.015V21.84l-7.594,3.012v-4.691l7.014-2.896h5.508v36.197h5.74v4.344H184.739z" />
-				<path d="M211.406,21.493v11.931h1.16c8.349,0,10.435,3.765,10.435,12.104c0,9.672-3.478,12.684-9.854,12.684
+				<path class="date" d="M184.739,57.807v-4.344h7.015V21.84l-7.594,3.012v-4.691l7.014-2.896h5.508v36.197h5.74v4.344H184.739z" />
+				<path class="date"  d="M211.406,21.493v11.931h1.16c8.349,0,10.435,3.765,10.435,12.104c0,9.672-3.478,12.684-9.854,12.684
 					c-2.957,0-5.508-0.637-7.247-0.984v-4.228c1.044,0.232,4.29,0.985,7.479,0.985c3.421,0,4.638-2.953,4.638-7.877
 					c0-6.661-1.334-8.456-5.16-8.456h-6.376V17.266h15.362v4.228L211.406,21.493L211.406,21.493z" />
 			</g>
-			<g id="location" class="logo__location">
+			<g id="location" class="location" fill="#000000">
 				<path d="M78.11,84.82l-3.942-16.111V84.82h-2.086V66.804h3.659l3.967,16.111V66.804h2.087V84.82H78.11z" />
 				<path d="M95.708,80.057c0,3.475-1.854,4.942-4.818,4.942c-2.963,0-4.843-1.467-4.843-4.942V66.804h2.241v13.743
 					c0,1.801,1.057,2.573,2.602,2.573c1.546,0,2.577-0.772,2.577-2.573V66.804h2.241V80.057z M87.258,65.903v-2.059h2.189v2.059
@@ -72,21 +69,37 @@
 	</template>
 	<script>
 		Polymer('site-logo', {
-			figureColor: '#000',
+
+			hideDate: false,
+
+			hideLocation: false,
+
+			observe: {
+				'hideDate': 'determineHeight',
+				'hideLocation': 'determineHeight'
+			},
+
 			ready: function() {
-				this.observeAttributes(['class'], this.determineHeight);
 				this.determineHeight();
 			},
-			determineHeight: function() {
-				if (this.classList.contains('no-location')) {
-					this.$.logo.setAttribute('viewBox', '0 0 223 60');
-				}  else {
-					this.$.logo.setAttribute('viewBox', '0 0 223 85');
-				}
+
+			domReady: function() {
+				this.setFillFromStyle();
 			},
-			observeAttributes: function(attributes, listener) {
-				var observer = new MutationObserver(listener.bind(this));
-				observer.observe(this, {attributes: true, attributeFilter: attributes});
+
+			determineHeight: function() {
+				var width = this.hideDate ? '180' : '223',
+					height = this.hideLocation ? '60' : '85';
+				this.$.logo.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+			},
+
+			setFillFromStyle: function() {
+				var style = getComputedStyle(this);
+				if (typeof style['fill'] !== 'undefined' && style['fill'] !== 'rgb(0, 0, 0)') {
+					this.$.figure.setAttribute('fill', style['fill']);
+					this.$.name.setAttribute('fill', style['fill']);
+					this.$.location.setAttribute('fill', style['fill']);
+				}
 			}
 		});
 	</script>
