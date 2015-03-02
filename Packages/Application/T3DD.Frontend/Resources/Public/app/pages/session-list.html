@@ -93,20 +93,6 @@
 					this.selectedSessionResource = event.detail.resource;
 				}
 			},
-			/*selectedSessionResourceChanged: function(oldResource, newResource) {
-				if (this.sessions !== null && typeof newResource === 'string') {
-					this.sessions.every(function(session, index) {
-						if (session.resource === newResource) {
-							this.async(function(index) {
-								this.$.list.setItemSelected(index, true);
-								this.$.list.scrollToItem(index);
-							  }, [index], 3000);
-							return false;
-						}
-						return true;
-					}, this);
-				}
-			},*/
 			unselectSession: function() {
 				this.selectedSessionResource = null;
 				this.$.list.clearSelection();

@@ -34,7 +34,8 @@ class DisqusRemoteAuthAspect {
 		$data = array(
 			'id' => $account->getAccountIdentifier(),
 			'username' => $person->getName()->getFullName(),
-			'email' => $person->getPrimaryElectronicAddress()->getIdentifier()
+			'email' => $person->getPrimaryElectronicAddress()->getIdentifier(),
+			'avatar' => sprintf('http://typo3.org/services/userimage.php?username=%s&size=big', $account->getAccountIdentifier())
 		);
 
 		$message = base64_encode(json_encode($data));

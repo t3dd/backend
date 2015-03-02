@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/core-overlay/core-overlay.html">
+<link rel="import" href="site-overlay-layer.html">
+<polymer-element name="site-overlay" extends="core-overlay">
+	<script>
+		Polymer({
+			sizingTarget: document.body,
+
+			// NOTE: wait to call this until we're as sure as possible that target
+			// is styled.
+			ensureTargetSetup: function() {
+				if(!this.target || this.target.__overlaySetup) {
+					return;
+				}
+				if(!this.sizingTarget) {
+					this.sizingTarget = this.target;
+				}
+				this.target.__overlaySetup = true;
+				this.target.style.display = '';
+				var transition = this.getTransition();
+				if(transition) {
+					transition.setup(this.target);
+				}
+				var style = this.target.style;
+				var computed = getComputedStyle(this.target);
+				if(computed.position === 'static') {
+					style.position = 'absolute';
+				}
+				style.top = '25vh';
+				style.marginBottom = '25vh';
+				style.outline = 'none';
+				style.display = 'none';
+			},
+
+			// vertically and horizontally center if not positioned
+			repositionTarget: function() {
+				// only center if position fixed.
+				if(this.dimensions.position.css !== 'absolute') {
+					return;
+				}
+
+				if(!this.dimensions.position.h) {
+					var l = (window.innerWidth - this.target.offsetWidth) / 2;
+					l -= this.dimensions.margin.left;
+					this.target.style.left = l + 'px';
+				}
+			},
+			registerCallback: function(element) {
+				this.layer = document.createElement('site-overlay-layer');
+				this.keyHelper = document.createElement('core-key-helper');
+				this.meta = document.createElement('core-transition');
+				this.scrim = document.createElement('div');
+				this.scrim.className = 'core-overlay-backdrop';
+			}
+		});
+	</script>
+</polymer-element>
