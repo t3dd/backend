@@ -89,14 +89,18 @@ class FeatureContext extends MinkContext {
 	 * @Then there should be a persisted :class :identifier with values:
 	 */
 	public function theThereShouldBeAPersistedEntityWithValues($class, $identifier, TableNode $table) {
-		$identityProperties = $this->objectManager->get('TYPO3\Flow\Reflection\ReflectionService')->getClassSchema('T3DD\Backend\Domain\Model\\' . $class)->getIdentityProperties();
-		if (count($identityProperties) !== 1) {
-			throw new \Exception('Finding a persisted entity only works for entities with exactly one identity property');
-		}
-		$identityProperty = array_keys($identityProperties)[0];
-		$findMethodName = 'findOneBy' . ucfirst($identityProperty);
+		$className = 'T3DD\Backend\Domain\Model\\' . $class;
+		$identityProperties = $this->objectManager->get('TYPO3\Flow\Reflection\ReflectionService')->getClassSchema($className)->getIdentityProperties();
+		if (count($identityProperties) > 1) {
+			throw new \Exception('Finding a persisted entity only works for entities with at most one identity property');
+		} elseif (count($identityProperties) === 1) {
+			$identityProperty = array_keys($identityProperties)[0];
+			$findMethodName = 'findOneBy' . ucfirst($identityProperty);
 
-		$entity = $this->objectManager->get('T3DD\Backend\Domain\Repository\\' . $class . 'Repository')->$findMethodName($identifier);
+			$entity = $this->objectManager->get('T3DD\Backend\Domain\Repository\\' . $class . 'Repository')->$findMethodName($identifier);
+		} else {
+			$entity = $this->objectManager->get('TYPO3\Flow\Persistence\PersistenceManagerInterface')->getObjectByIdentifier($identifier, $className);
+		}
 		if ($entity === NULL) {
 			throw new \Exception('No ' . $class . ' found with identity "' . $identifier . '"');
 		}

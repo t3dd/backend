@@ -58,7 +58,12 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @return Account
 	 */
 	public function getCreator() {
-		return $this->objectManager->get(Account::class, $this->payload->getAccount());
+		$account = $this->payload->getAccount();
+		if ($account !== NULL) {
+			return $this->objectManager->get(Account::class, $account);
+		} else {
+			return NULL;
+		}
 	}
 
 	/**
