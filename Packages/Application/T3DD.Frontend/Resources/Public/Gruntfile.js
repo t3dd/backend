@@ -168,8 +168,8 @@ module.exports = function(grunt) {
 					strip: true
 				},
 				files: {
-					'<%= yeoman.dist %>/elements/elements.vulcanized.html': [
-						'<%= yeoman.dist %>/elements/elements.html'
+					'<%= yeoman.app %>/index.vulcanized.html': [
+						'<%= yeoman.app %>/index.html'
 					]
 				}
 			}

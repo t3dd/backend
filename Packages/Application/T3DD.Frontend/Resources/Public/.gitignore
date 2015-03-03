@@ -3,6 +3,7 @@ dist
 test/temp
 .sass-cache
 app/bower_components
+app/index.vulcanized.html
 .tmp
 test/bower_components/
 .idea

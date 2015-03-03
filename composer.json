@@ -1,6 +1,6 @@
 {
-    "name": "typo3/flow-base-distribution",
-    "description": "TYPO3 Flow Base Distribution",
+    "name": "t3dd/t3dd-base-distribution",
+    "description": "TYPO3 developer days Base Distribution",
     "license": "LGPL-3.0+",
     "config": {
         "vendor-dir": "Packages/Libraries",

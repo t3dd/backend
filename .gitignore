@@ -15,3 +15,6 @@
 /flow.bat
 behat.yml
 /.idea/
+/node_modules
+*.sass-cache*
+/.vagrant
