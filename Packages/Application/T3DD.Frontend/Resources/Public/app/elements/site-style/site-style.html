@@ -31,7 +31,6 @@ styles. All other styles should exist as single lines."
 */
 [site-font=display4],
 [site-font=display3],
-[site-font=title],
 [site-font=caption],
 [site-font=menu],
 [site-font=button] {
@@ -120,24 +119,61 @@ styles. All other styles should exist as single lines."
 	text-transform: uppercase;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2 {
+	margin: 0 0 24px;
+}
+
+h3, h4, h5, h6 {
 	margin: 0;
+}
+
+p {
+	margin: 0 0 24px; /* 24 is lineheight */
 }
 
 a {
 	color: #000;
 	text-decoration: none;
+	border-bottom: 1px solid #ccc;
 }
 
-.bg-cover-multiply {
+
+.bg-cover {
 	background-position: 50% 50%;
-	background-blend-mode: multiply;
 	background-repeat: no-repeat;
 	background-size: cover;
 }
 
+.bg-multiply {
+	background-blend-mode: multiply;
+}
+
 .bg-orange {
 	background-color: #FF8700;
+	color: #fff;
+	fill: #fff;
+}
+
+.bg-white {
+	background-color: #fff;
+	color: #000;
+	fill: #000
+}
+
+.bg-light-grey {
+	background-color: #B9B9B9;
+	color: #000;
+	fill: #000
+}
+
+.bg-medium-grey {
+	background-color: #8C8C8C;
+	color: #fff;
+	fill: #fff;
+}
+
+.bg-dark-grey {
+	background-color: #515151;
 	color: #fff;
 	fill: #fff;
 }
@@ -155,6 +191,17 @@ a {
 
 .card .card__content {
 	padding: 16px;
+	-webkit-font-smoothing: antialiased;
+}
+
+.row {
+	margin-left: -16px;
+	margin-right: -16px;
+}
+
+.column {
+	margin-left: 16px;
+	margin-right: 16px;
 }
 
 form {

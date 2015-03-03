@@ -5,6 +5,9 @@
 <polymer-element name="site-menu" attributes="selected horizontal items">
 	<template>
 		<style>
+			a {
+				border-bottom: none;
+			}
 			core-menu {
 				margin: 16px 0;
 			}
@@ -55,10 +58,15 @@
 				'tap': 'route'
 			},
 			items: [
-				{
+				/*{
 					label: 'Register',
 					href: '/register',
 					icon: 'social:person-add'
+				},*/
+				{
+					label: 'Location',
+					href: '/location',
+					icon: 'location-city'
 				},
 				{
 					label: 'Sessions',

@@ -2,6 +2,18 @@
 <polymer-element name="site-map" extends="google-map">
 	<script>
 		Polymer('site-map', {
+			eventDelegates: {
+				'google-map-ready': 'openMarkerInfo'
+			},
+			openMarkerInfo: function() {
+				[].forEach.call(this.querySelectorAll('google-map-marker[opened]'), function(marker) {
+					var observer = new PathObserver(marker, 'info');
+					observer.open(function(info) {
+						if (!info instanceof google.maps.InfoWindow) return;
+						marker.info.open.call(marker.info, marker.map, marker.marker);
+					});
+				});
+			},
 			getMapOptions: function() {
 				var mapOptions = this.super();
 				mapOptions["streetViewControl"] = false;

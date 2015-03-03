@@ -110,8 +110,9 @@
 				</core-toolbar>
 				<app-router id="router" mode="pushstate" trailingSlash="ignore">
 					<app-route path="/" import="pages/page-home.html"></app-route>
-					<app-route path="/register" import="pages/register-new.html"></app-route>
-					<app-route path="/register/success" import="pages/register-success.html"></app-route>
+					<app-route path="/location" import="pages/page-location.html"></app-route>
+					<!--<app-route path="/register" import="pages/register-new.html"></app-route>
+					<app-route path="/register/success" import="pages/register-success.html"></app-route>-->
 					<app-route path="/sessions/new" import="pages/session-new.html"></app-route>
 					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter></app-route>
 				</app-router>

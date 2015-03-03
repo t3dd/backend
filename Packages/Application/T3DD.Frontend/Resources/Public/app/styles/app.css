@@ -21,7 +21,9 @@ body {
 	-webkit-tap-highlight-color: transparent;
 	tap-highlight-color: transparent;
 	background-color: #e7e7e7;
+	font-size: 16px;
 	font-weight: 400;
+	line-height: 24px;
 }
 
 #main-content > core-scroll-header-panel {
@@ -81,6 +83,10 @@ body {
 #navbar {
 	background-color: #fff;
 	z-index: 2;
+}
+
+#navbar a {
+	border-bottom: none;
 }
 
 #navbar .t3dd-logo {

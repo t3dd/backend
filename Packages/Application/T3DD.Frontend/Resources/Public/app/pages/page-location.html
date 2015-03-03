@@ -1,0 +1,172 @@
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../bower_components/core-image/core-image.html">
+<link rel="import" href="../bower_components/core-icon/core-icon.html">
+<link rel="import" href="../bower_components/core-icons/maps-icons.html">
+<link rel="import" href="../elements/site-map/site-map.html">
+<link rel="import" href="../elements/site-style/site-style.html">
+
+
+<polymer-element name="page-location" noscript>
+	<template>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+				background: #fff;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 0 16px;
+			}
+
+			@media (min-width: 768px) {
+				.container {
+					padding: 24px 32px;
+				}
+			}
+
+			@media (min-width: 768px) {
+				.card__container {
+					position: absolute;
+					left: 0;
+					right: 0;
+					margin: -64px auto 0;
+				}
+			}
+
+			.photos, site-map {
+				display: block;
+				height: 384px;
+			}
+		</style>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<main>
+			<section class="bg-dark-grey">
+				<div class="container" layout horizontal end>
+					<div>
+						<h1 site-font="display1">City</h1>
+						<p site-font="subhead">
+							Nuremberg offers a lot of franconian culture as well to its central location in Europe.
+							The history of Nuremberg goes back over a thousand years, being one of the three biggest
+							cities of the roman empire next to Prague and Cologne. On a technical side it has a lot to
+							offer like the first train in Germany, the world’s first watch - the famous Nuremberg Egg -
+							as well the the first globe ever built by Martin Behaim. But Nuremberg also gave famous
+							artists like Albrecht Dürer or Hans Sachs a home. Like TYPO3, which has a strong connection
+							between technology and design, Nuremberg also has this very same connection. And apart of
+							its primal-german “Bratwurst” Franconia is famous for its food pleasures as well as its
+							brewery culture - nowhere else on the planet you will find that many breweries per square-mile.
+						</p>
+					</div>
+				</div>
+			</section>
+			<div class="photos" horizontal layout>
+				<div flex two relative>
+					<core-image fit sizing="cover" src="../images/imperial-stables-hint.jpg"></core-image>
+				</div>
+				<div flex relative>
+					<core-image fit sizing="cover" src="../images/schoener-brunnen.jpg"></core-image>
+				</div>
+				<div flex vertical layout relative>
+					<core-image flex sizing="cover" src="../images/rettich.jpg"></core-image>
+					<core-image flex sizing="cover" src="../images/bratwurst.jpg"></core-image>
+				</div>
+			</div>
+			<section class="bg-medium-grey">
+				<div class="container" layout horizontal end>
+					<div>
+						<h1 site-font="display1">Venue</h1>
+						<p site-font="subhead">
+							The Nuremberg castle is almost a thousand years old (it has been documented first in 1050)
+							and offers the most modern youth hostel inside a castle. It has been modernized a couple of
+							years ago and has had its grand re-opening in February 2013. The location is very centrally
+							located, just above the historic city centre, with a magnificent view of the historic city centre.
+							355 beds in high standard rooms with 2 to 6 beds each, all with en-suite shower and toilet,
+							dining room, bistro, lounge, plenty seminar rooms, one great hall and state-of-the-art media
+							equipment make this an unique experience.
+						</p>
+					</div>
+				</div>
+			</section>
+			<div class="photos" horizontal layout>
+				<core-image flex sizing="cover" src="../images/stairs.jpg"></core-image>
+				<core-image flex sizing="cover" src="../images/lounge.jpg"></core-image>
+				<div flex two vertical layout>
+					<core-image flex sizing="cover" src="../images/eppeleinssaal.jpg"></core-image>
+					<core-image flex sizing="cover" src="../images/view-from-above.jpg"></core-image>
+				</div>
+				<core-image flex sizing="cover" src="../images/foyer.jpg"></core-image>
+			</div>
+			<section class="bg-white">
+				<div class="container">
+					<h1 site-font="display1">Directions</h1>
+					<div horizontal layout class="row">
+						<div flex class="column">
+							<h3 site-font="title"><core-icon icon="maps:directions-train"></core-icon> By Train</h3>
+							<p>
+								Take an ICE, IC or regional train to Nuremberg.
+								From Nuremberg Hauptbahnhof (Hbf - main station), it is about a 20-minute walk
+								through the historic city centre and up Burgberg.
+							</p>
+							<p>
+								Alternatively, take the U-Bahn (underground) to Lorenzkirche (next stop), from there
+								it is about a 10-minute footwalk. You can also take the bus in the direction of
+								Grossreuth at Heilig-Geist-Spital up to Maxtor. From there, it is about a 5-minute walk.
+							</p>
+						</div>
+						<div flex class="column">
+							<h3 site-font="title"><core-icon icon="maps:flight"></core-icon> By Plane</h3>
+							<p>
+								There are non-stop flights to Albrecht Dürer Airport Nürnberg from the major European
+								metropolises. The airport is close to the city and you can reach the city center in
+								about 25 minutes by U-Bahn (underground).
+							</p>
+							<p>
+								Take the U2 heading to Röthenbach and change
+								over at Hauptbahnhof (main station) to the U1 heading to Hardhöhe. Leave at the next
+								station Lorenzkirche. From there, it is about a 5-minute walk.
+							</p>
+							<p>
+								Get further information at the <a href="http://www.airport-nuernberg.de/flight-schedule">Albrecht Dürer Airport</a>
+							</p>
+						</div>
+						<div flex class="column">
+							<h3 site-font="title"><core-icon icon="maps:directions-car"></core-icon> By Car</h3>
+							<p>
+								Coming from any motorway exit, follow the signs to the city centre, then to
+								"Nördliche Altstadt" and then to the Youth Hostel. The location does not have any
+								parking spaces of its own. However, you can pull up in front of the Youth Hostel's
+								entrance to load or unload your luggage. Parking spaces on the streets immediately
+								by the Hostel are generally reserved for holders of a residential parking permit.
+								They can be used, but only for a very strictly limited period.
+							</p>
+							<p>
+								You can park at <a href="http://www.parkhaus-nuernberg.de/parkhaeuser/stadtgebiet/maxtorhof.html">Maxtorhof</a>
+								in walking distance for 6.50 € per day.
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+			<site-map latitude="49.458116" longitude="11.077652" zoom="15">
+				<google-map-marker latitude="49.458116" longitude="11.077652" icon="../images/pin.svg" title="T3DD15 Location" opened>
+					<strong>Youth Hostel Nuremberg</strong><br>
+					Burg 2<br>
+					90403 Nuremberg
+				</google-map-marker>
+			</site-map>
+			<!--<div class="card__container container">
+				<div class="card">
+					<div class="card__content" site-font="subhead">
+						Nuremberg offers a lot of franconian culture as well to its central location in Europe. The history of Nuremberg goes back over a thousand years, being one of the three biggest cities of the roman empire next to Prague and Cologne.
+						On a technical side it has a lot to offer like the first train in Germany, the world’s first watch - the famous Nuremberg Egg - as well the the first globe ever built by Martin Behaim.
+						But Nuremberg also gave famous artists like Albrecht Dürer or Hans Sachs a home.
+						Like TYPO3, which has a strong connection between technology and design, Nuremberg also has this very same connection.
+						And apart of its primal-german “Bratwurst” Franconia is famous for its food pleasures as well as its brewery culture - nowhere else on the planet you will find that many breweries per square-mile.
+					</div>
+				</div>
+			</div>-->
+
+		</main>
+	</template>
+</polymer-element>
