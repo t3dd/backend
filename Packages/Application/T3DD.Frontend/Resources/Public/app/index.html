@@ -116,6 +116,25 @@
 					<app-route path="/sessions/new" import="pages/session-new.html"></app-route>
 					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter></app-route>
 				</app-router>
+				<footer id="footer" vertical layout>
+					<div flex horizontal layout>
+						<div flex></div>
+						<div>
+							<a href="{{currentPath}}" on-click="{{scrollToTop}}">
+								<core-icon icon="arrow-drop-up"></core-icon>
+								Back to the top
+							</a>
+						</div>
+					</div>
+					<div horizontal layout>
+						<div flex></div>
+						<paper-tabs selected="{{currentPath}}" valueattr="href" noink>
+							<paper-tab href="/faq">FAQ</paper-tab>
+							<paper-tab href="/privacy">Privacy</paper-tab>
+							<paper-tab href="/imprint">Imprint</paper-tab>
+						</paper-tabs>
+					</div>
+				</footer>
 			</core-scroll-header-panel>
 		</div>
 	</core-drawer-panel>

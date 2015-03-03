@@ -118,6 +118,18 @@ body {
 	opacity: 0.6;
 }
 
+#footer {
+	box-sizing: border-box;
+	height: 192px;
+	padding: 24px 32px;
+	background-color: #fff;
+}
+
+
+#footer paper-tabs::shadow #selectionBar {
+	background-color: #000;
+}
+
 /*
 app-route > * {
 	margin-top: 64px;
