@@ -3,7 +3,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/core-transition/core-transition.html">
 
-<polymer-element name="site-form" attributes="cookies headers isSubmitting">
+<polymer-element name="site-form" extends="form" attributes="cookies headers isSubmitting">
 
 	<template>
 		<style>
@@ -15,7 +15,7 @@
 			}
 		</style>
 		<content></content>
-		<paper-action-dialog id="errorMessage" backdrop autoCloseDisabled layered="false" opened="{{hasError}}">
+		<paper-action-dialog id="errorMessage" backdrop autoCloseDisabled layered="true" opened="{{hasError}}">
 			<paper-button affirmative autofocus>
 				<core-icon icon="check"></core-icon>
 				OK
