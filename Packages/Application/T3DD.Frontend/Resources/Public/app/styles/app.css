@@ -69,7 +69,6 @@ body {
 #scrollHeader::shadow #headerContainer {
 	z-index: 1;
 }
-
 #navheader {
 	color: #000;
 	background-color: #FF8700;
@@ -117,6 +116,13 @@ body {
 	color: #000;
 	opacity: 0.6;
 }
+
+#router {
+	display: block;
+	/* height is without topbar 64px and footer 192px */
+	min-height: calc(100vh - 64px - 192px);
+}
+
 
 #footer {
 	box-sizing: border-box;
