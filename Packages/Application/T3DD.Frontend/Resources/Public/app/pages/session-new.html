@@ -1,7 +1,4 @@
-<link rel="import" href="../bower_components/core-scroll-header-panel/core-scroll-header-panel.html">
-<link rel="import" href="../bower_components/core-toolbar/core-toolbar.html">
-<link rel="import" href="../bower_components/marked-element/marked-element.html">
-
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
 <link rel="import" href="../elements/site-form/site-form.html">
 <link rel="import" href="../elements/site-ajax/site-ajax.html">
 <link rel="import" href="../elements/site-checkbox/site-checkbox.html">
@@ -14,17 +11,38 @@
 
 <polymer-element name="session-new">
 	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
 		<core-style ref="main"></core-style>
 		<style>
-			:host, core-scroll-header-panel {
+			:host {
 				display: block;
 				height: 100%;
+				padding: 16px;
 			}
 
-			.session {
-				padding: 32px;
+			@media (min-width: 768px) {
+				:host {
+					padding: 32px;
+				}
 			}
 
+			.card__container {
+				margin: -16px;
+			}
+
+			.card {
+				margin: 16px;
+			}
+
+			.card__content {
+				padding-top: 16px;
+				padding-bottom: 16px;
+				margin-bottom: 0;
+			}
+
+			form {
+				padding: 0;
+			}
 			paper-autogrow-textarea {
 				width: 100%;
 				margin-bottom: 30px;
@@ -35,12 +53,10 @@
 			}
 		</style>
 		<site-ajax url="/values" response="{{values}}"></site-ajax>
-		<core-scroll-header-panel>
-			<core-toolbar>
-				<div>Register a new session</div>
-			</core-toolbar>
-			<div class="session" horizontal layout>
-				<form id="form" is="site-form" action="/sessions" method="post" enctype="application/json" headers='{"Accept": "application/json"}' flex>
+		<div class="session card__container" horizontal?="{{globals.isDesktopSize}}" layout>
+			<form is="site-form" id="form" class="card" action="/sessions" method="post" enctype="application/json" headers='{"Accept": "application/json"}' flex>
+				<h2 class="card__content" site-font="title">Register new Session</h2>
+				<div class="card__content">
 					<paper-input-decorator label="Session title" floatingLabel error="Enter a session title!">
 						<input name="title" value="{{formData.title}}" is="core-input" required>
 					</paper-input-decorator>
@@ -50,43 +66,45 @@
 						</paper-autogrow-textarea>
 					</paper-input-decorator>
 
-					<fieldset>
-						<h4>Select your theme</h4>
-						<template repeat="{{v, i in values.theme}}">
-							<site-checkbox label="{{v.title}}">
-								<input value="{{v.identifier}}" name="themes" type="checkbox" multiple hidden>
-							</site-checkbox>
+					<h4 site-font="subhead">Select your theme</h4>
+					<template repeat="{{v, i in values.theme}}">
+						<site-checkbox label="{{v.title}}">
+							<input value="{{v.identifier}}" name="themes" type="checkbox" multiple hidden>
+						</site-checkbox>
+					</template>
+
+					<h4 site-font="subhead">Select your type</h4>
+					<paper-radio-group selected="{{formData.type}}">
+						<template repeat="{{v in values.type}}">
+							<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
 						</template>
+					</paper-radio-group>
+					<input value="{{formData.type}}" name="type" type="text" hidden>
 
-						<h4>Select your type</h4>
-						<paper-radio-group selected="{{formData.type}}">
-							<template repeat="{{v in values.type}}">
-								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
-							</template>
-						</paper-radio-group>
-						<input value="{{formData.type}}" name="type" type="text" hidden>
-
-						<h4>Select the expertise level of the session</h4>
-						<paper-radio-group selected="{{formData.expertiseLevel}}">
-							<template repeat="{{v in values.expertiseLevel}}">
-								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
-							</template>
-						</paper-radio-group>
-						<input value="{{formData.expertiseLevel}}" name="expertiseLevel" type="text" hidden>
-					</fieldset>
-
+					<h4 site-font="subhead">Select the expertise level of the session</h4>
+					<paper-radio-group selected="{{formData.expertiseLevel}}">
+						<template repeat="{{v in values.expertiseLevel}}">
+							<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
+						</template>
+					</paper-radio-group>
+					<input value="{{formData.expertiseLevel}}" name="expertiseLevel" type="text" hidden>
+				</div>
+				<div class="card__content">
 					<paper-button on-click="{{submit}}">
 						<core-icon icon="check"></core-icon>
 						Register
 					</paper-button>
 					<site-overlay-spinner active="{{$.form.isSubmitting}}"></site-overlay-spinner>
-				</form>
-				<div class="preview" flex>
+				</div>
+			</form>
+			<div class="card preview" flex>
+				<h1 class="card__content" site-font="title">Preview</h1>
+				<div class="card__content">
 					<h3>{{formData.title}}</h3>
 					<marked-element text="{{formData.description}}"></marked-element>
 				</div>
 			</div>
-		</core-scroll-header-panel>
+		</div>
 	</template>
 	<script>
 		(function () {
