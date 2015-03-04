@@ -10,10 +10,10 @@
 
 <polymer-element name="session-show" attributes="sessionId router">
 	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
 		<core-style ref="main"></core-style>
 		<h1>{{resource}}</h1>
 		<site-ajax url="/sessions/{{sessionId}}" on-core-response="{{handleSession}}"></site-ajax>
-		<pvc-globals values="{{globals}}"></pvc-globals>
 		<site-overlay id="overlay" opened backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
 			<core-style ref="main"></core-style>
 			<style>
@@ -26,6 +26,7 @@
 				#title {
 					min-height: 32px;
 					margin-right: 54px;
+					margin-bottom: 0;
 				}
 				#spinner {
 					position: absolute;
