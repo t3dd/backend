@@ -43,6 +43,25 @@
 				.card {
 					min-height: 30vh;
 				}
+				dt {
+					float: left;
+					width: 160px;
+					overflow: hidden;
+					clear: left;
+					text-align: right;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					font-weight: bold;
+				}
+
+				dd {
+					margin-left: 180px;
+				}
+
+				dd.theme span:not(:last-child):after {
+					content: ', ';
+				}
+
 				@media (min-width: 768px) {
 					.card .card__content {
 						padding: 16px 32px;
@@ -57,7 +76,19 @@
 						<h1 id="title" site-font="headline">{{session.title}}</h1>
 					</div>
 					<div class="card__content">
-						<marked-element text="{{session.description}}"></marked-element>
+						<div layout horizontal>
+							<div flex>
+								<marked-element text="{{session.description}}"></marked-element>
+							</div>
+							<dl>
+								<dt>Themes:</dt>
+								<dd class="theme"><template repeat="{{theme in session.themes}}"><span>{{theme.title}}</span></template></dd>
+								<dt>Type:</dt>
+								<dd>{{session.type}}</dd>
+								<dt>Expertise level:</dt>
+								<dd>{{session.expertiseLevel}}</dd>
+							</dl>
+						</div>
 					</div>
 					<div class="card__content">
 						<template if="{{$.overlay.opened}}">
