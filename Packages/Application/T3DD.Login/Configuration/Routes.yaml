@@ -8,6 +8,15 @@
     '@format':     'json'
 
 -
+  name: 'SSO Logout'
+  uriPattern: 'sso/logout'
+  defaults:
+    '@package':    'T3DD.Login'
+    '@controller': 'Authentication'
+    '@action':     'logout'
+    '@format':     'json'
+
+-
   name: 'User Status'
   uriPattern: 'sso/status'
   defaults:

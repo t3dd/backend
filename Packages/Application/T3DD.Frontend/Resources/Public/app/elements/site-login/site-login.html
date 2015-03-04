@@ -1,14 +1,17 @@
 
-<link rel="import" href="../../bower_components/core-ajax/core-ajax.html">
+<link rel="import" href="../site-ajax/site-ajax.html">
 <polymer-element name="site-login" attributes="ssoUrl user statusKnown">
 	<template>
-		<core-ajax
-		    auto
-		    url="{{ssoUrl}}status/"
-			contentType="application/json"
-			headers='{"Accept": "application/json"}'
-		    handleAs="json"
-		    on-core-response="{{handleUser}}"></core-ajax>
+		<site-ajax
+				id="status"
+				auto
+				url="{{ssoUrl}}status/"
+				on-core-response="{{handleUser}}"></site-ajax>
+		<site-ajax
+				auto="false"
+				id="logout"
+				url="{{ssoUrl}}logout/"
+				on-core-response="{{handleUser}}"></site-ajax>
 	</template>
 	<script>
 		(function() {
@@ -65,6 +68,7 @@
 				},
 
 				logout: function() {
+					this.$.logout.go();
 				},
 
 				handleUser: function(ajaxEvent) {

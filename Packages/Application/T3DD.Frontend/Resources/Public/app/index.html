@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>T3DD15 TYPO3 Developer Days 2015</title>
+	<title>T3DD15 - TYPO3 Developer Days 2015</title>
 	<meta name="description" content="TYPO3 Developer Days is the developer gathering of the TYPO3 community worldwide, taking place July 16-19, Nuremberg, Germany">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 	<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -101,8 +101,8 @@
 					<div>
 						<core-image id="userImage" src="{{globals.user.profile}}" sizing="cover" preload fade></core-image>
 						<paper-dropdown-menu id="userLogin" label="{{ globals.isSmallPhoneSize ? '' : (!statusKnown || !globals.user) ? 'Anonymous' : globals.user.displayName}}">
-							<paper-dropdown layered class="dropdown">
-								<paper-item on-click="{{login}}" hidden?="{{statusKnown && globals.user}}">Login</paper-item>
+							<paper-dropdown layered class="dropdown" halign="right">
+								<paper-item on-click="{{login}}" hidden?="{{statusKnown && globals.user}}">Login with typo3.org</paper-item>
 								<paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !globals.user}}">Logout</paper-item>
 							</paper-dropdown>
 						</paper-dropdown-menu>
@@ -112,10 +112,10 @@
 					<app-route path="/" import="pages/page-home.html"></app-route>
 					<app-route path="/location" import="pages/page-location.html"></app-route>
 					<app-route path="/lodging" import="pages/page-lodging.html"></app-route>
-					<!--<app-route path="/register" import="pages/register-new.html"></app-route>
-					<app-route path="/register/success" import="pages/register-success.html"></app-route>-->
 					<app-route path="/sessions/new" import="pages/session-new.html"></app-route>
 					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter></app-route>
+					<!--<app-route path="/register" import="pages/register-new.html"></app-route>
+					<app-route path="/register/success" import="pages/register-success.html"></app-route>-->
 				</app-router>
 				<footer id="footer" vertical layout>
 					<div flex horizontal layout>

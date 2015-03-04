@@ -70,6 +70,17 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 	/**
 	 *
 	 */
+	public function logoutAction() {
+		parent::logoutAction();
+		$this->response->setHeader('Content-Type', 'application/json', TRUE);
+		$this->response->setContent('null');
+		throw new \TYPO3\Flow\Mvc\Exception\StopActionException();
+	}
+
+
+	/**
+	 *
+	 */
 	public function statusAction() {
 		$account = $this->securityContext->getAccount();
 		if (is_object($account)) {

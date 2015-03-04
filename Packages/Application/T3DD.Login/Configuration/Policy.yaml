@@ -2,7 +2,7 @@
 privilegeTargets:
   TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
     T3DD_Login_PublicFrontendAccess:
-      matcher: 'method(T3DD\Login\Controller\AuthenticationController->(login|authenticate|callback|status)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->authenticateAction())'
+      matcher: 'method(T3DD\Login\Controller\AuthenticationController->(login|logout|authenticate|callback|status)Action()) || method(TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController->(logout|authenticate)Action())'
 roles:
   'TYPO3.Flow:Everybody':
     privileges:
