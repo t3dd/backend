@@ -17,7 +17,7 @@
 
 			.container {
 				margin: 0 auto;
-				padding: 0 16px;
+				padding: 16px;
 			}
 
 			@media (min-width: 768px) {
@@ -37,7 +37,13 @@
 
 			.photos, site-map {
 				display: block;
-				height: 384px;
+				height: 80vh;
+			}
+
+			@media (min-width: 768px) {
+				.photos, site-map {
+					height: 384px;
+				}
 			}
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
@@ -60,16 +66,14 @@
 					</div>
 				</div>
 			</section>
-			<div class="photos" horizontal layout>
-				<div flex two relative>
-					<core-image fit sizing="cover" src="../images/imperial-stables-hint.jpg"></core-image>
-				</div>
-				<div flex relative>
-					<core-image fit sizing="cover" src="../images/schoener-brunnen.jpg"></core-image>
-				</div>
-				<div flex vertical layout relative>
-					<core-image flex sizing="cover" src="../images/rettich.jpg"></core-image>
-					<core-image flex sizing="cover" src="../images/bratwurst.jpg"></core-image>
+			<div class="photos" horizontal?="{{!globals.isPhoneSize}}" vertical?="{{globals.isPhoneSize}}" layout>
+				<core-image flex sizing="cover" src="../images/imperial-stables-hint.jpg"></core-image>
+				<div flex horizontal layout>
+					<core-image flex sizing="cover" src="../images/schoener-brunnen.jpg"></core-image>
+					<div flex vertical layout>
+						<core-image flex sizing="cover" src="../images/rettich.jpg"></core-image>
+						<core-image flex sizing="cover" src="../images/bratwurst.jpg"></core-image>
+					</div>
 				</div>
 			</div>
 			<section class="bg-medium-grey">
@@ -88,14 +92,18 @@
 					</div>
 				</div>
 			</section>
-			<div class="photos" horizontal layout>
-				<core-image flex sizing="cover" src="../images/stairs.jpg"></core-image>
-				<core-image flex sizing="cover" src="../images/lounge.jpg"></core-image>
-				<div flex two vertical layout>
-					<core-image flex sizing="cover" src="../images/eppeleinssaal.jpg"></core-image>
-					<core-image flex sizing="cover" src="../images/view-from-above.jpg"></core-image>
+			<div class="photos" horizontal?="{{!globals.isPhoneSize}}" vertical?="{{globals.isPhoneSize}}" layout>
+				<div flex two?="{{!globals.isPhoneSize}}" horizontal layout>
+					<core-image flex sizing="cover" src="../images/stairs.jpg"></core-image>
+					<core-image flex sizing="cover" src="../images/lounge.jpg"></core-image>
 				</div>
-				<core-image flex sizing="cover" src="../images/foyer.jpg"></core-image>
+				<div flex three?="{{!globals.isPhoneSize}}" horizontal layout>
+					<div flex two vertical layout>
+						<core-image flex sizing="cover" src="../images/eppeleinssaal.jpg"></core-image>
+						<core-image flex sizing="cover" src="../images/view-from-above.jpg"></core-image>
+					</div>
+					<core-image flex sizing="cover" src="../images/foyer.jpg"></core-image>
+				</div>
 			</div>
 			<section class="bg-white">
 				<div class="container">
