@@ -93,7 +93,7 @@
 		<div id="main-content" main>
 			<core-scroll-header-panel id="scrollHeader" headerHeight="64">
 				<core-toolbar id="navbar" justify="between">
-					<div horizontal layout center>
+					<div flex horizontal layout center>
 						<core-icon-button id="menuButton" icon="menu" hidden?="{{!globals.isPhoneSize}}" core-drawer-toggle></core-icon-button>
 						<a href="/" is="pushstate-anchor" hidden?="{{currentPath == '/'}}"><site-logo class="t3dd-logo" hideLocation hideDate></site-logo></a>
 						<site-menu horizontal selected="{{currentPath}}" hidden?="{{globals.isPhoneSize}}"></site-menu>
@@ -110,7 +110,7 @@
 				</core-toolbar>
 				<app-router id="router" mode="pushstate" trailingSlash="ignore">
 					<app-route path="/" import="pages/page-home.html"></app-route>
-					<app-route path="/location" import="pages/page-location.html"></app-route>
+					<app-route path="/lodging" import="pages/page-lodging.html"></app-route>
 					<app-route path="/accommodation" import="pages/page-accommodation.html"></app-route>
 					<!--<app-route path="/register" import="pages/register-new.html"></app-route>
 					<app-route path="/register/success" import="pages/register-success.html"></app-route>-->
