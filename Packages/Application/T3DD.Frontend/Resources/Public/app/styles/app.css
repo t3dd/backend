@@ -131,6 +131,9 @@ body {
 	background-color: #fff;
 }
 
+#footer a {
+	border-bottom: none;
+}
 
 #footer paper-tabs::shadow #selectionBar {
 	background-color: #000;

@@ -97,6 +97,14 @@
 				}
 			}
 
+			.actions {
+				height: 48px;
+			}
+
+			.card__buttons {
+				min-height: 48px;
+			}
+
 			.card__content.bg-orange, .card__content.bg-light-blue, .card__content.bg-mint {
 				padding-bottom: 24px;
 				padding-top: 24px;
@@ -167,7 +175,7 @@
 								you don't have one yet, use the button below to get to the sign up form.
 							</p>
 						</div>
-						<div class="card__content button-bar" horizontal layout>
+						<div class="card__content card__buttons" horizontal layout>
 							<a is="pushstate-anchor" href="http://typo3.org/my-account/sign-up/">
 								<paper-button>
 									<core-icon icon="add-circle"></core-icon>
@@ -179,10 +187,10 @@
 				</div>
 			</div>
 			<section>
-				<div class="container">
+				<div class="container container__wide">
 					<h2 site-font="display1">Admission Fees</h2>
 					<div class="card__container price__container" horizontal?="{{globals.isDesktopSize}}"  layout>
-						<div flex class="card">
+						<div class="card" vertical layout flex>
 							<div class="card__content bg-orange" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
 								<h3 site-font="title">Association Member</h3>
 								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">250,- €</h4>
@@ -210,7 +218,7 @@
 								</core-collapse>
 							</div>
 						</div>
-						<div flex class="card">
+						<div class="card" vertical layout flex>
 							<div class="card__content bg-light-blue" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
 								<h3 site-font="title">Non Association Member</h3>
 								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">355,- €</h4>
@@ -236,13 +244,13 @@
 									</p>
 								</core-collapse>
 							</div>
-							<div class="card__content button-bar">
+							<div class="card__content card__buttons actions" flex horizontal layout end>
 								<a href="http://association.typo3.org/membership/">
 									<paper-button>Become a member</paper-button>
 								</a>
 							</div>
 						</div>
-						<div flex class="card">
+						<div class="card" vertical layout flex>
 							<div class="card__content bg-mint" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
 								<h3 site-font="title">Speaker / Student / <abbr title="Active Contributor">AC</abbr></h3>
 								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">89,- €</h4>
@@ -270,7 +278,7 @@
 									</p>
 								</core-collapse>
 							</div>
-							<div class="card__content button-bar">
+							<div class="card__content card__buttons actions" flex horizontal layout end>
 								<a is="pushstate-anchor" href="/sessions/new">
 									<paper-button>Propose a session</paper-button>
 								</a>

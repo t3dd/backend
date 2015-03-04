@@ -219,9 +219,10 @@ abbr {
 
 .card {
 	position: relative;
-	margin: 16px;
-	background: #fff;
 	display: block;
+	margin: 16px;
+	overflow: hidden;
+	background: #fff;
 	color: #212121;
 }
 
@@ -238,19 +239,19 @@ abbr {
 	-webkit-font-smoothing: antialiased;
 }
 
-.button-bar.card__content {
+.card__buttons.card__content {
 	padding-right: 2px;
 	padding-left: 2px;
 }
 
 @media (min-width:745px) {
-	.button-bar.card__content {
+	.card__buttons.card__content {
 		padding-right: 18px;
 		padding-left: 18px;
 	}
 }
 
-.button-bar a {
+.card__buttons a {
 	border-bottom: none;
 }
 
@@ -326,6 +327,9 @@ legend {
 	.container {
 		max-width: 704px;
 		margin: 0 auto;
+	}
+	.container__wide {
+		max-width: 100%;
 	}
 }
 
