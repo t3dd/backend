@@ -1,0 +1,120 @@
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../bower_components/core-image/core-image.html">
+<link rel="import" href="../elements/site-style/site-style.html">
+
+
+<polymer-element name="page-accommodation" noscript>
+	<template>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+				background: #fff;
+			}
+			.masthead {
+				margin: 0 auto;
+				padding: 0 16px;
+			}
+
+			@media (min-width: 768px) {
+				.masthead__container {
+					background-image: url('../images/imperial-stables-night.jpg');
+				}
+
+				.masthead {
+					height: 60vh;
+					padding: 0 32px 80px;
+					-webkit-filter: drop-shadow(1px 1px 5px rgba(0,0,0,.5));
+					filter: drop-shadow(1px 1px 5px rgba(0,0,0,.5));
+				}
+
+				.masthead__meta {
+					text-align: right;
+				}
+			}
+			.container {
+				margin: 0 auto;
+				padding: 16px;
+			}
+
+			@media (min-width: 768px) {
+				.container {
+					padding: 24px 32px;
+				}
+			}
+
+			@media (min-width: 768px) {
+				.card__container {
+					position: absolute;
+					left: 0;
+					right: 0;
+					margin: -64px auto 0;
+				}
+			}
+
+			#stable {
+				height: 384px;
+				width: 100%;
+			}
+
+			.photos, site-map {
+				display: block;
+				height: 80vh;
+			}
+
+			@media (min-width: 768px) {
+				.photos, site-map {
+					height: 384px;
+				}
+			}
+		</style>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<header class="masthead__container bg-dark-grey bg-cover-bottom">
+			<div class="masthead container" layout vertical>
+				<div layout horizontal?="{{!globals.isSmallPhoneSize}}" >
+					<div flex hidden?="{{globals.isPhoneSize}}"></div>
+					<div class="masthead__meta" layout vertical flex?="{{!globals.isSmallPhoneSize}}">
+						<h1 site-font="display1">Accommodation</h1>
+						<p site-font="subhead">
+							Ancient vaults, thick walls - sleep in a real castle and enjoy the best Youth Hostel
+							standards at Nuremberg Youth Hostel. Like with earlier Developer Days we consider it
+							important to have everything bound to the event at the same location - sessions as well as
+							accommodation. So we booked a castle for the T3DD exclusively.
+						</p>
+					</div>
+				</div>
+			</div>
+		</header>
+		<main>
+			<core-image id="stable" hidden?="{{!globals.isPhoneSize}}" sizing="cover" position="bottom" src="../images/imperial-stables-night.jpg"></core-image>
+			<section class="bg-white">
+				<div class="container" layout horizontal end>
+					<div>
+						<h1 site-font="display1">Rooms</h1>
+						<p site-font="subhead">
+							There are 92 modern rooms that offer enough space. Every room comes with its own shower and
+							toilets. Rooms split up as follows: 20 two-bed, 10 three-bed, 47 four-bed, 4 five-bed,
+							11 six-bed. Unfortunately we cannot provide single bedrooms, but all double beds can be
+							split to twins. We expect rooms to be occupied with at least two and up to four people.
+						</p>
+						<p site-font="subhead">
+							Every room is booked with breakfast, bedding and towels. Each room has a fixed price of
+							<strong>216,– €</strong> for <strong>all three nights combined</strong> and will be split up
+							evenly between the people renting the room.
+						</p>
+						<p site-font="subhead">
+							You can tell us your room mates during registration. We will arrange the room occupation
+							accordingly and notify you upfront. The more you are per room, the bigger the assigned room
+							will be.
+						</p>
+					</div>
+				</div>
+			</section>
+			<div class="photos" horizontal?="{{!globals.isPhoneSize}}" vertical?="{{globals.isPhoneSize}}" layout>
+				<core-image flex sizing="cover" src="../images/twin-bed-room.jpg"></core-image>
+				<core-image flex sizing="cover" src="../images/bathroom.jpg"></core-image>
+				<core-image flex sizing="cover" src="../images/four-bed-room.jpg"></core-image>
+			</div>
+		</main>
+	</template>
+</polymer-element>

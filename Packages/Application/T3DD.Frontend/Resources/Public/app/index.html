@@ -111,6 +111,7 @@
 				<app-router id="router" mode="pushstate" trailingSlash="ignore">
 					<app-route path="/" import="pages/page-home.html"></app-route>
 					<app-route path="/location" import="pages/page-location.html"></app-route>
+					<app-route path="/accommodation" import="pages/page-accommodation.html"></app-route>
 					<!--<app-route path="/register" import="pages/register-new.html"></app-route>
 					<app-route path="/register/success" import="pages/register-success.html"></app-route>-->
 					<app-route path="/sessions/new" import="pages/session-new.html"></app-route>
@@ -126,8 +127,10 @@
 							</a>
 						</div>
 					</div>
-					<div horizontal layout>
-						<div flex></div>
+					<div horizontal layout end>
+						<div flex>
+							<small>All shown prices are exclusive of VAT.</small>
+						</div>
 						<paper-tabs selected="{{currentPath}}" valueattr="href" noink>
 							<paper-tab href="/faq">FAQ</paper-tab>
 							<paper-tab href="/privacy">Privacy</paper-tab>
