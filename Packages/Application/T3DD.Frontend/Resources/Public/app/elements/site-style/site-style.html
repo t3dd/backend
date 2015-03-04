@@ -137,6 +137,15 @@ a {
 	border-bottom: 1px solid #ccc;
 }
 
+paper-button {
+	color: #FF8700;
+}
+
+abbr {
+	border-bottom: 1px dotted;
+	cursor: help;
+}
+
 
 .bg-cover {
 	background-position: 50% 50%;
@@ -210,9 +219,14 @@ a {
 
 .card {
 	position: relative;
+	margin: 16px;
 	background: #fff;
 	display: block;
 	color: #212121;
+}
+
+.card__container {
+	margin: -16px;
 }
 
 .container, .card {
@@ -222,6 +236,26 @@ a {
 .card__content {
 	padding: 16px;
 	-webkit-font-smoothing: antialiased;
+}
+
+.button-bar.card__content {
+	padding-right: 2px;
+	padding-left: 2px;
+}
+
+@media (min-width:745px) {
+	.button-bar.card__content {
+		padding-right: 18px;
+		padding-left: 18px;
+	}
+}
+
+.button-bar a {
+	border-bottom: none;
+}
+
+h1.card__content, h2.card__content, .card__content > *:last-child {
+	margin-bottom: 0;
 }
 
 .row {
@@ -275,7 +309,7 @@ legend {
 		box-shadow: 0px 2px 5px 0px rgba(0,0,0,0.16),0px 2px 5px 0px rgba(0,0,0,0.23);
 	}
 	.card__content {
-		padding: 32px;
+		padding: 24px 32px;
 	}
 	.card__content:not(:last-child) {
 		border-bottom: 1px solid #eee;

@@ -26,14 +26,6 @@
 				}
 			}
 
-			.card__container {
-				margin: -16px;
-			}
-
-			.card {
-				margin: 16px;
-			}
-
 			.card__content {
 				padding-top: 16px;
 				padding-bottom: 16px;
@@ -55,7 +47,7 @@
 		<site-ajax url="/values" response="{{values}}"></site-ajax>
 		<div class="session card__container" horizontal?="{{globals.isDesktopSize}}" layout>
 			<form is="site-form" id="form" class="card" action="/sessions" method="post" enctype="application/json" headers='{"Accept": "application/json"}' flex>
-				<h2 class="card__content" site-font="title">Register new Session</h2>
+				<h2 class="card__content" site-font="title">Propose a Session</h2>
 				<div class="card__content">
 					<paper-input-decorator label="Session title" floatingLabel error="Enter a session title!">
 						<input name="title" value="{{formData.title}}" is="core-input" required>
