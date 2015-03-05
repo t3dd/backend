@@ -134,6 +134,7 @@
 					<app-route path="/sessions/new" import="pages/session-new.html" forceLogin?="{{!globals.user}}"></app-route>
 					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter></app-route>
 					<app-route path="/register" import="pages/page-register.html"></app-route>
+					<app-route path="/sponsoring" import="pages/page-sponsoring.html"></app-route>
 					<app-route path="/legal" import="pages/page-legal-info.html"></app-route>
 					<!--<app-route path="/register" import="pages/register-new.html"></app-route>
 					<app-route path="/register/success" import="pages/register-success.html"></app-route>-->
@@ -183,7 +184,8 @@
 							<small>All shown prices are exclusive of VAT.</small>
 						</div>
 						<paper-tabs selected="{{currentPath}}" on-core-select="{{changePage}}" valueattr="href" noink>
-							<paper-tab href="/faq">FAQ</paper-tab>
+							<paper-tab href="/sponsoring">Sponsoring</paper-tab>
+							<!--<paper-tab href="/faq">FAQ</paper-tab>-->
 							<paper-tab href="/legal">Legal</paper-tab>
 						</paper-tabs>
 					</div>

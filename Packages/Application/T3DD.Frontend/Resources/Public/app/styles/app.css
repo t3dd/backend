@@ -134,6 +134,10 @@ body {
 	border-bottom: none;
 }
 
+#footer paper-tabs {
+	min-width: 192px;
+}
+
 #footer paper-tabs::shadow #selectionBar {
 	background-color: #000;
 }

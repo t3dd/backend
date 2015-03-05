@@ -1,0 +1,363 @@
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../elements/site-style/site-style.html">
+<polymer-element name="page-sponsoring" noscript>
+	<template>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 16px;
+			}
+
+			p.card__content {
+				margin: 0;
+			}
+
+			.sponsoring__container {
+				margin: 0 -16px 16px;
+				text-align: left;
+			}
+
+			.sponsoring__container .card__content {
+				position: relative;
+				padding-bottom: 4px;
+				padding-top: 4px;
+			}
+
+			.sponsoring__container p {
+				margin: 0;
+			}
+
+			.sponsoring__container ul {
+				margin: 0;
+				padding: 0;
+				list-style-type: none;
+			}
+
+			.sponsoring__container li {
+				display: inline;
+			}
+
+			.sponsoring__container li:after {
+				content: '. ';
+			}
+
+			.helping-hands {
+				margin: 24px 0 0;
+				color: #515151;
+				text-align: right;
+			}
+
+			@media (min-width: 945px) {
+
+				.sponsoring__container h3 {
+					margin-bottom: 8px;
+				}
+
+				.sponsoring__container li {
+					display: block;
+					padding: 4px 32px;
+					border-bottom: 1px solid #eee;
+				}
+
+				.sponsoring__container li:after {
+					content: '';
+				}
+
+				.sponsoring__container li:last-child {
+					border-bottom: none;
+				}
+
+				.sponsoring__container .inclusive {
+					padding: 16px 0 4px;
+				}
+
+				.sponsoring__container .inclusive h5 {
+					padding: 0 32px;
+				}
+			}
+
+			.actions {
+				height: 48px;
+			}
+
+			.card__buttons {
+				min-height: 48px;
+			}
+
+			.card__content.bg-orange, .card__content.bg-light-blue, .card__content.bg-dark-grey, .card__content.bg-mint,
+			.card__content.bg-brown, .card__content.bg-medium-blue {
+				padding-bottom: 24px;
+				padding-top: 24px;
+				border-bottom: none;
+				text-align: center;
+			}
+
+			.inclusive:before {
+				content: '';
+				position: absolute;
+				width: 0;
+				height: 0;
+				top: 0;
+				left: 50%;
+				margin-left: -8px;
+				border-style: solid;
+				border-width: 8px 8px 0 8px;
+			}
+
+			.inclusive p {
+				padding: 16px 0;
+			}
+
+			@media (min-width: 945px) {
+				.inclusive p {
+					padding: 24px 32px;
+				}
+			}
+
+			.bg-orange + .inclusive::before {
+				border-color: #FF8700 transparent transparent transparent;
+			}
+
+			.bg-light-blue + .inclusive::before {
+				border-color: #00B5FF transparent transparent transparent;
+			}
+
+			.bg-brown + .inclusive::before {
+				border-color: #B25E00 transparent transparent transparent;
+			}
+
+			.bg-medium-blue + .inclusive::before {
+				border-color: #007FB2 transparent transparent transparent;
+			}
+
+			.bg-dark-grey + .inclusive::before {
+				border-color: #515151 transparent transparent transparent;
+			}
+
+			.bg-mint + .inclusive::before {
+				border-color: #14CC9D transparent transparent transparent;
+			}
+
+			.card__content.availability {
+				padding-bottom: 16px;
+			}
+
+			@media (min-width: 768px) {
+				.container {
+					padding: 24px 32px;
+				}
+			}
+
+			header h1 {
+				margin-bottom: 0;
+			}
+
+			@media (min-width: 768px) {
+				.masthead {
+					height: 160px;
+					padding: 0 32px 160px;
+				}
+
+				#headCard {
+					margin: -160px auto 0;
+				}
+			}
+
+			.become-sponsor p {
+				margin: 0;
+			}
+			.become-sponsor a {
+				border-bottom: none;
+			}
+			.become-sponsor paper-button {
+				background: #fff;
+			}
+		</style>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<header class="bg-medium-grey">
+			<div class="masthead container" layout horizontal end>
+				<div>
+					<h1 site-font="display1">Sponsoring</h1>
+				</div>
+			</div>
+		</header>
+		<main>
+			<div id="headCard" class="container">
+				<div class="card__container">
+					<div class="card">
+						<p class="card__content" site-font="subhead">
+							A true community-driven effort like TYPO3 depends upon the generosity of its members in every
+							thing it does. We invite you to give back to this project by becoming a financial sponsor of
+							this conference. We have listed the packages that we thought of so far and hope there's something
+							in for you and your budget. If you have any other idea for supporting the event, let us know.
+						</p>
+						<p class="card__content" site-font="subhead">
+							If you would like to help financially to make the Developer Days 2015 an exceptional event, we
+							would like to hear from you. Please contact Andrea via mail
+							<a href="mailto:andrea.herzog-kienast@typo3.org?subject=Sponsoring of T3DD15">andrea.herzog-kienast@typo3.org</a>
+						</p>
+						<div class="card__content card__buttons">
+							<a href="mailto:andrea.herzog-kienast@typo3.org?subject=Sponsoring of T3DD15">
+								<paper-button>Become a Sponsor</paper-button>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<section>
+				<div class="container container__wide">
+					<h2 site-font="display1">Sponsoring Packages</h2>
+
+					<div class="card__container sponsoring__container" horizontal?="{{globals.isDesktopSize}}" layout>
+						<div class="card" vertical layout flex>
+							<div class="card__content bg-orange" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
+								<h3 site-font="title">Premium Sponsor</h3>
+								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">3.500,- €</h4>
+							</div>
+							<div class="card__content inclusive">
+								<h5>Includes</h5>
+								<ul site-font="subhead">
+									<li>listing as a Premium Sponsor on the event website</li>
+									<li>will be mentioned at the conference as a Premium Sponsor</li>
+									<li>using the TYPO3 T3DD15 Logo for image-transfer on your own website</li>
+									<li>naming in the Twitter communication before, during and after the event</li>
+									<li>blog communication</li>
+									<li>two tickets for association members or one ticket for non-members</li>
+									<li>banner/flag/role-up in a prominent area of the event</li>
+								</ul>
+							</div>
+							<div class="card__content upgrade">
+								<h5>Upgrade with Main Room Sponsoring</h5>
+
+								<p site-font="subhead">Additionally the main room will be yours for 1.000,- €</p>
+							</div>
+							<div class="card__content availability">
+								<h5>Availability</h5>
+
+								<p site-font="subhead">We have 4 sponsor packages for a premium sponsoring</p>
+							</div>
+						</div>
+						<div class="card" vertical layout flex>
+							<div class="card__content bg-light-blue" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
+								<h3 site-font="title">T-Shirt Sponsor</h3>
+								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">3.000,- €</h4>
+							</div>
+							<div class="card__content inclusive">
+								<h5>Includes</h5>
+								<ul site-font="subhead">
+									<li>listed as a T-Shirt Sponsor on the event website</li>
+									<li>will be mentioned at the conference as a T-Shirt Sponsor</li>
+									<li>using the TYPO3 T3DD15s Logo for image-transfer on your own website</li>
+									<li>naming in the Twitter communication before, during and after the event</li>
+									<li>blog communication</li>
+									<li>one ticket for association members or half-price for the non-member ticket</li>
+									<li>banner/flag/role-up in a prominent area of the event</li>
+								</ul>
+							</div>
+							<div class="card__content availability">
+								<h5>Availability</h5>
+
+								<p site-font="subhead">We have 1 sponsor package for a T-Shirt sponsoring.</p>
+							</div>
+						</div>
+					</div>
+					<div class="card__container sponsoring__container" horizontal?="{{globals.isDesktopSize}}" layout>
+						<div class="card" vertical layout flex>
+							<div class="card__content bg-brown" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
+								<h3 site-font="title">Social Event Sponsor</h3>
+								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">1.500,- €</h4>
+							</div>
+							<div class="card__content inclusive">
+								<h5>Includes</h5>
+								<ul site-font="subhead">
+									<li>listing as a Social Event Sponsor on the event website</li>
+									<li>will be mentioned at the conference as a Social Event Sponsor</li>
+									<li>using the TYPO3 T3DD15 Logo for image-transfer on your own website</li>
+									<li>naming in the Twitter communication before, during and after the event</li>
+									<li>blog communication</li>
+									<li>one ticket for association members or half-price for the non-member ticket</li>
+									<li>banner/flag/role-up in a prominent area of the sub-event</li>
+								</ul>
+							</div>
+							<div class="card__content availability">
+								<h5>Availability</h5>
+
+								<p site-font="subhead">We offer 4 sponsor packages for the social event.</p>
+							</div>
+						</div>
+						<div class="card" vertical layout flex>
+							<div class="card__content bg-medium-blue" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
+								<h3 site-font="title">Coding Night Sponsor</h3>
+								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">1.500,- €</h4>
+							</div>
+							<div class="card__content inclusive">
+								<h5>Includes</h5>
+								<ul site-font="subhead">
+									<li>listed as a Coding Night Sponsor on the event website</li>
+									<li>will be mentioned at the conference as a Coding Night Sponsor</li>
+									<li>using the TYPO3 T3DD15s Logo for image-transfer on your own website</li>
+									<li>naming in the Twitter communication before, during and after the event</li>
+									<li>blog communication</li>
+									<li>one ticket for association members or half-price for the non-member ticket</li>
+									<li>banner/flag/role-up in a prominent area of the sub-event</li>
+								</ul>
+							</div>
+							<div class="card__content availability">
+								<h5>Availability</h5>
+
+								<p site-font="subhead">For the coding night, we offer 2 sponsor packages for the catering during the night.</p>
+							</div>
+						</div>
+					</div>
+					<div class="card__container sponsoring__container" horizontal?="{{globals.isDesktopSize}}" layout>
+						<div class="card" vertical layout flex>
+							<div class="card__content bg-mint" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
+								<h3 site-font="title">Value Sponsor</h3>
+								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">1.000,- €</h4>
+							</div>
+							<div class="card__content inclusive">
+								<h5>Includes</h5>
+								<ul site-font="subhead">
+									<li>listing as a Value Sponsor on the event website</li>
+									<li>will be mentioned at the conference as a Value Sponsor</li>
+									<li>naming in the Twitter communication before, during and after the event</li>
+									<li>blog communication</li>
+									<li>banner/flag/role-up in a prominent area  of a session room</li>
+								</ul>
+							</div>
+						</div>
+						<div class="card" vertical layout flex>
+							<div class="card__content bg-dark-grey" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
+								<h3 site-font="title">Open Sponsorship</h3>
+								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">?,- €</h4>
+							</div>
+							<div class="card__content inclusive">
+								<p site-font="subhead">
+									This is for all of you who would like to sponsor the event but won't find a package
+									that will fit to your needs. Please ascertain the amount of money by yourself.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section class="become-sponsor bg-brown ">
+				<div class="container" horizontal center layout>
+					<p site-font="subhead" flex>
+						Sponsors will be listed ordered by the size of their sponsoring package and the amount sponsored.<br>
+						If you like to have some more information, please contact Andrea via mail
+						<a href="mailto:andrea.herzog-kienast@typo3.org?subject=Sponsoring of T3DD15">andrea.herzog-kienast@typo3.org</a>.
+					</p>
+					<a href="mailto:andrea.herzog-kienast@typo3.org?subject=Sponsoring of T3DD15">
+						<paper-button raised>Become a Sponsor</paper-button>
+					</a>
+				</div>
+			</section>
+		</main>
+	</template>
+</polymer-element>
