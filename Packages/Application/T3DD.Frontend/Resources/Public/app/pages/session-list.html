@@ -1,5 +1,7 @@
 <link rel="import" href="../bower_components/core-list/core-list.html">
 <link rel="import" href="../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/pushstate-anchor/pushstate-anchor.html">
 <link rel="import" href="../elements/site-style/site-style.html">
 <link rel="import" href="../elements/site-ajax/site-ajax.html">
 <link rel="import" href="../elements/site-vote/site-vote.html">
@@ -11,21 +13,55 @@
 		<style>
 			:host {
 				display: block;
-				/*position: relative;*/
-				/*height: 100%;*/
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 16px;
+			}
+
+			@media (min-width: 768px) {
+				.container {
+					padding: 24px 32px;
+				}
+			}
+
+			header paper-button {
+				background-color: #fff;
+			}
+
+			header a, .request-session a {
+				border-bottom: none;
+			}
+
+			h2 {
+				margin-bottom: 16px;
+			}
+			@media (min-width: 768px) {
+				h2 {
+					margin-bottom: 24px;
+				}
+			}
+
+			#emptyWarning {
+				min-height: 35vh;
 			}
 
 			#list {
-				height: 100%;
-				max-width: 1024px;
-				margin: 0 auto;
+				margin: 0 -16px;
+			}
+
+			@media (min-width: 768px) {
+				#list {
+					margin: 0 -32px;
+				}
 			}
 
 			.session {
 				min-height: 60px;
 				background-color: #fff;
-				padding: 16px;
-				border-bottom: 1px solid #ccc;
+				padding: 16px ;
+				border-bottom: 1px solid #efefef;
 				will-change: transform, opacity;
 				cursor: pointer;
 				transition: background-color .2s ease-in;
@@ -36,13 +72,22 @@
 			.session.selected {
 				background: #e6e6e6;
 			}
+			.session:last-child {
+				border-bottom: none;
+			}
+
+			@media (min-width: 768px) {
+				.session {
+					padding: 16px 32px;
+				}
+			}
 
 			.session .profileImage {
 				width: 45px;
 				height: 45px;
 				border-radius: 50%;
 				vertical-align: middle;
-				margin: 0 8px;
+				margin: 0 8px 0 0;
 			}
 			.session .theme {
 				color: #B4B4B4;
@@ -54,29 +99,89 @@
 			.session .theme:after {
 				content: ']';
 			}
+
+			.request-session p {
+				margin: 0;
+			}
+			.request-session paper-button {
+				background: #fff;
+			}
 		</style>
 		<site-ajax url="/sessions" response="{{sessions}}"></site-ajax>
-		<core-list id="list" data="{{sessions}}" scrollTarget="{{globals.scrollTarget}}" on-core-activate="{{selectSession}}" selectionEnabled="true" on-ready="{{test}}">
-			<template>
-				<div class="session__container">
-					<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>
-						<div flex horizontal layout center>
-							<core-image class="profileImage" src="{{model.creator.profileImage}}" sizing="cover" preload fade></core-image>
-							<div layout vertical>
-								<h3 site-font="title">{{model.title}}</h3>
-								<div class="caption" site-font="caption">
-									<template repeat="{{theme in model.themes}}"><span>{{theme.title}}</span></template>
-									<span>{{model.type}}</span>
-									<span>{{model.expertiseLevel}}</span>
-								</div>
-							</div>
-						</div>
-						<site-vote sessionResource="{{model.resource}}" voteUri="{{model.voteUri}}"></site-vote>
+		<header class="bg-light-blue">
+			<div class="container" layout horizontal end>
+				<div>
+					<h1 site-font="display1">Sessions</h1>
+					<p site-font="subhead">
+						This works a bit different than the last years. Sessions have to be proposed and voted in public.
+						According to the amount of favs the T3DD team compiles a schedule and takes care that your faved
+						sessions don't overlap. The first schedule will be published by the beginning of May. Proposals
+						entered after can still make it into the schedule - given they are interesting - up to June 30.
+					</p>
+					<div horizontal layout>
+						<a is="pushstate-anchor" href="/sessions/format">
+							<paper-button raised>
+								What's the Session Format?
+							</paper-button>
+						</a>
+						<a is="pushstate-anchor" href="/sessions/new">
+							<paper-button raised>
+								Propose a new session
+							</paper-button>
+						</a>
 					</div>
 				</div>
+			</div>
+		</header>
+		<main>
+			<template if="{{sessions && !sessions.length}}">
+				<div id="emptyWarning" horizontal center center-justified layout>
+				  <p site-font="title">
+					  Seems like noone proposed a session yet. Be the first!
+				  </p>
+				</div>
 			</template>
-		</core-list>
-		<app-router id="sessionRouter">
+			<template if="{{sessions.length}}">
+				<section class="bg-white">
+					<div class="container">
+						<h2 site-font="title">Session Proposals</h2>
+						<core-list id="list" data="{{sessions}}" scrollTarget="{{globals.scrollTarget}}" on-core-activate="{{selectSession}}" selectionEnabled="true">
+							<template>
+								<div class="session__container">
+									<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>
+										<div flex horizontal layout center>
+											<core-image class="profileImage" src="{{model.creator.profileImage}}" sizing="cover" preload fade></core-image>
+											<div layout vertical>
+												<h3 site-font="title">{{model.title}}</h3>
+												<div class="caption" site-font="caption">
+													<template repeat="{{theme in model.themes}}"><span>{{theme.title}}</span></template>
+													<span>{{model.type}}</span>
+													<span>{{model.expertiseLevel}}</span>
+												</div>
+											</div>
+										</div>
+										<site-vote sessionResource="{{model.resource}}" voteUri="{{model.voteUri}}"></site-vote>
+									</div>
+								</div>
+							</template>
+						</core-list>
+					</div>
+				</section>
+			</template>
+			<section class="request-session bg-medium-blue">
+				<div class="container" horizontal center layout>
+					<p site-font="subhead" flex>
+						You didn't find an interesting session yet? You can also request one, maybe someone picks it up.
+					</p>
+					<a is="pushstate-anchor" href="/sessions/request">
+						<paper-button raised>Request a Session</paper-button>
+					</a>
+				</div>
+			</section>
+		</main>
+		<app-router id="sessionRouter" on-state-change="{{interceptRouting}}">
+			<app-route path="/sessions/format" import="/_Resources/Static/Packages/T3DD.Frontend/app/pages/session-format.html"></app-route>
+			<app-route path="/sessions/request" import="/_Resources/Static/Packages/T3DD.Frontend/app/pages/session-request.html"></app-route>
 			<app-route path="/sessions/:sessionId" import="/_Resources/Static/Packages/T3DD.Frontend/app/pages/session-show.html"></app-route>
 		</app-router>
 	</template>
@@ -87,6 +192,13 @@
 			eventDelegates: {
 				'session-open': 'focusOpenSession',
 				'session-close': 'unselectSession'
+			},
+			interceptRouting: function(event) {
+				switch (event.detail.path) {
+					case '/sessions/new':
+						event.preventDefault();
+						break;
+				}
 			},
 			focusOpenSession: function(event) {
 				// selectedSessionResource is only set when selected from list, but not when routed upon first call

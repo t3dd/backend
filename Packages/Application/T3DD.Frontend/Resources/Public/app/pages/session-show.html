@@ -14,7 +14,6 @@
 	<template>
 		<pvc-globals values="{{globals}}"></pvc-globals>
 		<core-style ref="main"></core-style>
-		<h1>{{resource}}</h1>
 		<site-ajax url="/sessions/{{sessionId}}" on-core-response="{{handleSession}}"></site-ajax>
 		<site-overlay id="overlay" opened backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
 			<core-style ref="main"></core-style>

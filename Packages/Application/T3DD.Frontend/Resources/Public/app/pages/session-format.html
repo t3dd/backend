@@ -1,0 +1,92 @@
+
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+
+<link rel="import" href="../elements/site-overlay/site-overlay.html">
+<link rel="import" href="../elements/site-style/site-style.html">
+
+<polymer-element name="session-format" attributes="sessionId router">
+	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<core-style ref="main"></core-style>
+		<site-overlay id="overlay" opened backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
+			<core-style ref="main"></core-style>
+			<style>
+				#close {
+					position: absolute;
+					right: 8px;
+					top: 8px;
+					background: #fff;
+				}
+				#title {
+					min-height: 32px;
+					margin-right: 54px;
+					margin-bottom: 0;
+				}
+				#spinner {
+					position: absolute;
+					left: 50%;
+					margin-left: -14px;
+					top: 50%;
+					margin-top: -14px;
+				}
+				.card__container {
+					width: 2048px;
+				}
+				.card {
+					min-height: 30vh;
+				}
+
+			</style>
+			<div class="card__container container">
+				<div class="card">
+					<div class="card__content">
+						<core-icon-button id="close" icon="clear" core-overlay-toggle></core-icon-button>
+						<h1 id="title" site-font="headline">Session Format</h1>
+					</div>
+					<div class="card__content">
+						<p site-font="subhead">
+							The most important task of T3DD is to foster communication and exchange between participants. In
+							this regard, we identified several issues in the session format of the last years.
+						</p>
+						<p site-font="subhead">
+							The main room will be used as a working room apart from the opening and closing sessions and
+							will thus act as a central point of information during that time. A new speaker will enter the
+							stage every 15 min and present his/her prepared topic from the session proposal in a
+							<strong>lightning-talk</strong> format. Much like in a barcamp we will then ask how many people
+							in the main room would be interested in such a topic and assign the most fitting room to that
+							group in order to dive into said topic. This room can then be used for a presentation, a
+							discussion, to code or to build a new initiative, although that part <strong>should not exceed
+							 90 minutes.</strong> Depending on the amount of proposals received in advance there will be
+							room for spontaneous talks or topics that might emerge during the social interaction with other
+							developers. We consider it important to keep room for these talks as well since they would
+							need to be postponed until the next T3DD otherwise and we’d lose the opportunity to react to
+							demands from the community if all talks would have been planned out beforehand. This overall
+							format allows to have up to 63 sessions with a maximum of 6 tracks in parallel and thus should
+							offer more than enough space to cope with next-to-all topics that might come up.
+						</p>
+					</div>
+					<div class="card__content card__buttons">
+						<paper-button on-tap="{{changeToSessionNew}}">
+							Propose a new session
+						</paper-button>
+					</div>
+				</div>
+			</div>
+		</site-overlay>
+	</template>
+	<script>
+		Polymer({
+			changePageToAfterClose: '/sessions',
+			changeToSessionNew: function() {
+				this.changePageToAfterClose = '/sessions/new';
+				this.$.overlay.opened = false;
+			},
+			onClose: function() {
+				document.getElementById('router').go(this.changePageToAfterClose);
+			}
+		});
+	</script>
+</polymer-element>

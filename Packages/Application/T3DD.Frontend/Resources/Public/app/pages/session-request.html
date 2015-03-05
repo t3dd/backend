@@ -1,0 +1,69 @@
+
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/core-icon-button/core-icon-button.html">
+
+<link rel="import" href="../elements/site-overlay/site-overlay.html">
+<link rel="import" href="../elements/site-style/site-style.html">
+
+<polymer-element name="session-request" attributes="sessionId router">
+	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<core-style ref="main"></core-style>
+		<site-overlay id="overlay" opened backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
+			<core-style ref="main"></core-style>
+			<style>
+				#close {
+					position: absolute;
+					right: 8px;
+					top: 8px;
+					background: #fff;
+				}
+				#title {
+					min-height: 32px;
+					margin-right: 54px;
+					margin-bottom: 0;
+				}
+				.card__container {
+					width: 2048px;
+				}
+				.card {
+					min-height: 30vh;
+				}
+
+			</style>
+			<div class="card__container container">
+				<div class="card">
+					<div class="card__content">
+						<core-icon-button id="close" icon="clear" core-overlay-toggle></core-icon-button>
+						<h1 id="title" site-font="headline">Request a Session</h1>
+					</div>
+					<div class="card__content">
+						<p site-font="subhead">
+							The most important task of T3DD is to foster communication and exchange between participants. In
+							this regard, we identified several issues in the session format of the last years.
+						</p>
+					</div>
+					<div class="card__content card__buttons">
+						<paper-button on-tap="{{changeToSessionNew}}">
+							Propose a new session
+						</paper-button>
+					</div>
+				</div>
+			</div>
+		</site-overlay>
+	</template>
+	<script>
+		Polymer({
+			changePageToAfterClose: '/sessions',
+			changeToSessionNew: function() {
+				this.changePageToAfterClose = '/sessions/new';
+				this.$.overlay.opened = false;
+			},
+			onClose: function() {
+				document.getElementById('router').go(this.changePageToAfterClose);
+			}
+		});
+	</script>
+</polymer-element>

@@ -47,25 +47,25 @@
 			}
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
-		<main>
-			<section class="bg-dark-grey">
-				<div class="container" layout horizontal end>
-					<div>
-						<h1 site-font="display1">City</h1>
-						<p site-font="subhead">
-							Nuremberg offers a lot of franconian culture as well to its central location in Europe.
-							The history of Nuremberg goes back over a thousand years, being one of the three biggest
-							cities of the roman empire next to Prague and Cologne. On a technical side it has a lot to
-							offer like the first train in Germany, the world’s first watch - the famous Nuremberg Egg -
-							as well the the first globe ever built by Martin Behaim. But Nuremberg also gave famous
-							artists like Albrecht Dürer or Hans Sachs a home. Like TYPO3, which has a strong connection
-							between technology and design, Nuremberg also has this very same connection. And apart of
-							its primal-german “Bratwurst” Franconia is famous for its food pleasures as well as its
-							brewery culture - nowhere else on the planet you will find that many breweries per square-mile.
-						</p>
-					</div>
+		<header class="bg-dark-grey">
+			<div class="container" layout horizontal end>
+				<div>
+					<h1 site-font="display1">City</h1>
+					<p site-font="subhead">
+						Nuremberg offers a lot of franconian culture as well to its central location in Europe.
+						The history of Nuremberg goes back over a thousand years, being one of the three biggest
+						cities of the roman empire next to Prague and Cologne. On a technical side it has a lot to
+						offer like the first train in Germany, the world’s first watch - the famous Nuremberg Egg -
+						as well the the first globe ever built by Martin Behaim. But Nuremberg also gave famous
+						artists like Albrecht Dürer or Hans Sachs a home. Like TYPO3, which has a strong connection
+						between technology and design, Nuremberg also has this very same connection. And apart of
+						its primal-german “Bratwurst” Franconia is famous for its food pleasures as well as its
+						brewery culture - nowhere else on the planet you will find that many breweries per square-mile.
+					</p>
 				</div>
-			</section>
+			</div>
+		</header>
+		<main>
 			<div class="photos" horizontal?="{{!globals.isPhoneSize}}" vertical?="{{globals.isPhoneSize}}" layout>
 				<core-image flex sizing="cover" src="../images/imperial-stables-hint.jpg"></core-image>
 				<div flex horizontal layout>
@@ -163,18 +163,6 @@
 					90403 Nuremberg
 				</google-map-marker>
 			</site-map>
-			<!--<div class="card__container container">
-				<div class="card">
-					<div class="card__content" site-font="subhead">
-						Nuremberg offers a lot of franconian culture as well to its central location in Europe. The history of Nuremberg goes back over a thousand years, being one of the three biggest cities of the roman empire next to Prague and Cologne.
-						On a technical side it has a lot to offer like the first train in Germany, the world’s first watch - the famous Nuremberg Egg - as well the the first globe ever built by Martin Behaim.
-						But Nuremberg also gave famous artists like Albrecht Dürer or Hans Sachs a home.
-						Like TYPO3, which has a strong connection between technology and design, Nuremberg also has this very same connection.
-						And apart of its primal-german “Bratwurst” Franconia is famous for its food pleasures as well as its brewery culture - nowhere else on the planet you will find that many breweries per square-mile.
-					</div>
-				</div>
-			</div>-->
-
 		</main>
 	</template>
 </polymer-element>
