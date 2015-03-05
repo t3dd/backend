@@ -71,7 +71,7 @@
 	<link rel="import" href="elements/site-login/site-login.html">
 	<link rel="import" href="elements/site-logo/site-logo.html">
 	<link rel="import" href="elements/site-style/site-style.html">
-	<link rel="import" href="elements/site-content/site-content.html">
+	<link rel="import" href="elements/site-overlay/site-overlay.html">
 	<link rel="import" href="elements/site-map/site-map.html">
 	<!-- endbuild-->
 </head>
@@ -131,13 +131,43 @@
 					<app-route path="/" import="pages/page-home.html"></app-route>
 					<app-route path="/location" import="pages/page-location.html"></app-route>
 					<app-route path="/lodging" import="pages/page-lodging.html"></app-route>
-					<app-route path="/sessions/new" import="pages/session-new.html"></app-route>
+					<app-route path="/sessions/new" import="pages/session-new.html" forceLogin?="{{!globals.user}}"></app-route>
 					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter></app-route>
 					<app-route path="/register" import="pages/page-register.html"></app-route>
 					<app-route path="/legal" import="pages/page-legal-info.html"></app-route>
 					<!--<app-route path="/register" import="pages/register-new.html"></app-route>
 					<app-route path="/register/success" import="pages/register-success.html"></app-route>-->
 				</app-router>
+				<site-overlay id="loginInterceptor" backdrop layered>
+					<core-style ref="main"></core-style>
+					<div class="card__container container">
+						<div class="card">
+							<div class="card__content" horizontal center layout>
+								<core-icon icon="lock"></core-icon>
+								<h3 flex site-font="headline">
+									This action requires a typo3.org login
+								</h3>
+								<core-icon-button id="close" icon="clear" core-overlay-toggle></core-icon-button>
+							</div>
+							<div class="card__content" site-font="subhead">
+								<p>Make sure you have a typo3.org account. You can create one by using the "Create typo3.org account" button and return afterwards to this window and login.</p>
+								<p>If you already have one, you can login by clicking the "Login with typo3.org" Button. A popup will open and present you the typo3.org login box. Login there and you'll be logged in here too.</p>
+							</div>
+							<div class="card__content card__buttons" horizontal justified layout>
+								<paper-button on-click="{{login}}">
+									<core-icon icon="launch"></core-icon>
+									Login with typo3.org
+								</paper-button>
+								<a href="http://typo3.org/my-account/sign-up/" target="_blank">
+									<paper-button>
+										<core-icon icon="add-circle"></core-icon>
+										Create typo3.org account
+									</paper-button>
+								</a>
+							</div>
+						</div>
+					</div>
+				</site-overlay>
 				<footer id="footer" vertical layout>
 					<div flex horizontal layout>
 						<div flex></div>

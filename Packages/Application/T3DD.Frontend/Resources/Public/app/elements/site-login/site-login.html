@@ -6,7 +6,9 @@
 				id="status"
 				auto
 				url="{{ssoUrl}}status/"
-				on-core-response="{{handleUser}}"></site-ajax>
+				on-core-response="{{handleUser}}"
+				on-core-complete="{{handleStatusKnown}}"
+				></site-ajax>
 		<site-ajax
 				auto="false"
 				id="logout"
@@ -75,6 +77,11 @@
 					this._setUser(ajaxEvent.detail.response);
 				},
 
+				handleStatusKnown: function(ajaxEvent) {
+					var xhr = ajaxEvent.detail.xhr;
+					this.statusKnown = xhr.status < 400 || xhr.status === 401;
+				},
+
 				_openPopup: function(requestID) {
 					var windowName = requestID,
 						windowOptions = 'location=0,status=0,width=985,height=400';
@@ -89,7 +96,6 @@
 				},
 
 				_setUser: function(user) {
-					this.statusKnown = true;
 					this.user = user;
 				}
 

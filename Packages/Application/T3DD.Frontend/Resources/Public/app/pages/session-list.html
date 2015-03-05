@@ -106,6 +106,22 @@
 			.request-session paper-button {
 				background: #fff;
 			}
+			dl {
+				margin: 0;
+			}
+			dt,dd {
+				display: inline;
+			}
+			dt {
+				font-weight: 700;
+				margin-left: .5em;
+			}
+			dt:first-child {
+				margin-left: 0;
+			}
+			dd {
+				margin-left: 0;
+			}
 		</style>
 		<site-ajax url="/sessions" response="{{sessions}}"></site-ajax>
 		<header class="bg-light-blue">
@@ -141,33 +157,38 @@
 				  </p>
 				</div>
 			</template>
-			<template if="{{sessions.length}}">
-				<section class="bg-white">
-					<div class="container">
-						<h2 site-font="title">Session Proposals</h2>
-						<core-list id="list" data="{{sessions}}" scrollTarget="{{globals.scrollTarget}}" on-core-activate="{{selectSession}}" selectionEnabled="true">
-							<template>
-								<div class="session__container">
-									<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>
-										<div flex horizontal layout center>
-											<core-image class="profileImage" src="{{model.creator.profileImage}}" sizing="cover" preload fade></core-image>
-											<div layout vertical>
-												<h3 site-font="title">{{model.title}}</h3>
-												<div class="caption" site-font="caption">
-													<template repeat="{{theme in model.themes}}"><span>{{theme.title}}</span></template>
-													<span>{{model.type}}</span>
-													<span>{{model.expertiseLevel}}</span>
-												</div>
-											</div>
+			<section class="bg-white" hidden?="{{!sessions.length}}">
+				<div class="container">
+					<h2 site-font="title">Session Proposals</h2>
+					<core-list id="list" data="{{sessions}}" scrollTarget="{{globals.scrollTarget}}" on-core-activate="{{selectSession}}" selectionEnabled="true">
+						<template>
+							<div class="session__container">
+								<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>
+									<div flex horizontal layout center>
+										<core-image class="profileImage" src="{{model.creator.profileImage}}" sizing="cover" preload fade></core-image>
+										<div layout vertical>
+											<h3 site-font="title">{{model.title}}</h3>
+											<dl class="caption" site-font="caption">
+												<dt>Author:</dt>
+												<dd>{{model.creator.displayName}}</dd>
+												<template if="{{model.themes.length}}">
+													<dt>Theme: </dt>
+													<dd>{{model.themes | joinThemes}}</dd>
+												</template>
+												<dt>Type:</dt>
+												<dd>{{model.type}}</dd>
+												<dt>Expertise Level:</dt>
+												<dd>{{model.expertiseLevel}}</dd>
+											</dl>
 										</div>
-										<site-vote sessionResource="{{model.resource}}" voteUri="{{model.voteUri}}"></site-vote>
 									</div>
+									<site-vote sessionResource="{{model.resource}}" voteUri="{{model.voteUri}}"></site-vote>
 								</div>
-							</template>
-						</core-list>
-					</div>
-				</section>
-			</template>
+							</div>
+						</template>
+					</core-list>
+				</div>
+			</section>
 			<section class="request-session bg-medium-blue">
 				<div class="container" horizontal center layout>
 					<p site-font="subhead" flex>
@@ -199,6 +220,9 @@
 						event.preventDefault();
 						break;
 				}
+			},
+			joinThemes: function() {
+				console.log(arguments);
 			},
 			focusOpenSession: function(event) {
 				// selectedSessionResource is only set when selected from list, but not when routed upon first call

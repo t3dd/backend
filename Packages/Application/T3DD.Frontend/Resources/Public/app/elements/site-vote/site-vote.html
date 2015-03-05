@@ -21,14 +21,11 @@
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
 		<site-ajax cache="true" url="/votes" response="{{votes}}"></site-ajax>
-		<template if="{{globals.user}}">
-			<site-ajax cache="true" url="/votes/me" response="{{myVotes}}"></site-ajax>
-		</template>
+		<site-ajax id="myVoteAjax" cache="true" url="/votes/me" response="{{myVotes}}" auto="false"></site-ajax>
 		<site-ajax id="voteAjax" auto="false" url="{{voteUri}}" on-core-response="{{handleVoteResponse}}"></site-ajax>
-		<!--<template bind="{{votes | voteForSession(session)}}"></template>-->
 		<div layout vertical>
 			<div id="count" site-font="caption" layout horizontal center-center>{{vote.numberOfVotes || 'no'}} fav{{vote.numberOfVotes > 1 ? 's' : ''}}</div>
-			<paper-icon-button id="button" class="{{ {'voted':myVote} | tokenList}}" icon="{{myVote ? 'favorite' : 'favorite-outline'}}" on-tap="{{toggleVote}}" hidden?="{{!globals.user}}"></paper-icon-button>
+			<paper-icon-button id="button" class="{{ {'voted':myVote} | tokenList}}" icon="{{myVote ? 'favorite' : 'favorite-outline'}}" on-tap="{{toggleVote}}"></paper-icon-button>
 		</div>
 	</template>
 	<script>
@@ -38,8 +35,21 @@
 			Polymer({
 				vote: {},
 				myVote: null,
-				myVotes: null,
+				myVotes: [],
 				sessionResource: null,
+
+				observe: {
+					'globals.user': 'updateMyVotesUponLogout'
+				},
+
+				updateMyVotesUponLogout: function(oldValue, newValue) {
+					if (newValue === null) {
+						this.myVote = null;
+						this.myVotes = [];
+					} else {
+						this.$.myVoteAjax.go();
+					}
+				},
 
 				votesChanged: function () {
 					this.vote = this.votes.filter(function (vote) {
@@ -48,13 +58,25 @@
 				},
 
 				myVotesChanged: function () {
-					this.myVote = this.myVotes.filter(function (vote) {
-						return vote.session === this.sessionResource;
-					}.bind(this))[0];
+					if (!this.myVotes) {
+						this.myVote = null;
+					} else {
+						this.myVote = this.myVotes.filter(function (vote) {
+							return vote.session === this.sessionResource;
+						}.bind(this))[0];
+					}
 				},
 
 				toggleVote: function (event) {
 					event.stopPropagation();
+
+					if (!this.globals.user) {
+						var t = document.getElementById('t');
+						t.requireLogin((function() {
+							this.toggleVote(event);
+						}).bind(this));
+						return;
+					}
 
 					var voteAjax = this.$.voteAjax;
 					if (voteAjax.loading) {
