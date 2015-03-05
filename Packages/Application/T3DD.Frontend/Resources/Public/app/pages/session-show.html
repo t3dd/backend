@@ -46,10 +46,6 @@
 					margin-left: 180px;
 				}
 
-				dd.theme span:not(:last-child):after {
-					content: ', ';
-				}
-
 				@media (min-width: 768px) {
 					.card .card__content {
 						padding: 16px 32px;
@@ -70,7 +66,7 @@
 							</div>
 							<dl>
 								<dt>Themes:</dt>
-								<dd class="theme"><template repeat="{{theme in session.themes}}"><span>{{theme.title}}</span></template></dd>
+								<dd class="theme">{{session.themes | joinThemes}}</dd>
 								<dt>Type:</dt>
 								<dd>{{session.type}}</dd>
 								<dt>Expertise level:</dt>
@@ -97,7 +93,19 @@
 			onClose: function() {
 				this.session = null;
 				this.fire('session-close');
-			}
+			},
+			joinThemes: function(themes) {
+				if (typeof themes === 'undefined') {
+					return '';
+				}
+				var themeTitles = [];
+
+				themes.forEach(function (theme) {
+					themeTitles.push(theme.title);
+				});
+
+				return themeTitles.join(', ');
+			},
 		});
 	</script>
 </polymer-element>

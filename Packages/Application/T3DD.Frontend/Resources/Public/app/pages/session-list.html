@@ -221,8 +221,17 @@
 						break;
 				}
 			},
-			joinThemes: function() {
-				console.log(arguments);
+			joinThemes: function(themes) {
+				if (typeof themes === 'undefined') {
+					return '';
+				}
+				var themeTitles = [];
+
+				themes.forEach(function (theme) {
+					themeTitles.push(theme.title);
+				});
+
+				return themeTitles.join(', ');
 			},
 			focusOpenSession: function(event) {
 				// selectedSessionResource is only set when selected from list, but not when routed upon first call
