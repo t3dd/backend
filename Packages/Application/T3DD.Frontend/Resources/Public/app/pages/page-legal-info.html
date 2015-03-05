@@ -1,0 +1,63 @@
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../elements/site-style/site-style.html">
+<polymer-element name="page-legal-info" noscript>
+	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 16px;
+			}
+		</style>
+		<main>
+			<div class="container">
+				<h1>Legal Info</h1>
+				<h3>Provider of services</h3>
+				<p>
+					TYPO3 Association<br>
+					Sihlbruggstrasse 105<br>
+					6340 Baar<br>
+					Switzerland
+				</p>
+				<p>
+					Phone: +41 41 511 00 35 <br>
+					Fax: +41 41 511 00 39
+				</p>
+				<p>
+					E-Mail: <a href="mailto:info@typo3.org">info@typo3.org</a><br>
+					Web: <a href="http://association.typo3.org/">association.typo3.org</a>
+				</p>
+				<div class="row" horizontal?="{{!globals.isPhoneSize}}" layout>
+					<div class="column" flex>
+						<h3>Personal data protection</h3>
+						<p>The TYPO3 Association is committed to user privacy.<span id="1247043283077S"></span> For statistical reasons we collect the following technical data:</p>
+						<ul>
+							<li>type of browser</li>
+							<li>type of operating system</li>
+							<li>referrer Url</li>
+							<li>time and date of the use of the website</li>
+							<li>your IP address</li>
+						</ul>
+						<p>This data is collected anonymously and will be kept separately from private user data, you might have to give us at this website.</p>
+						<h3>Cookies</h3>
+						<p>We might use cookies to keep your session active. A cookie is a little textfile, that is stored from your browser on your system. We do not use cookies for personal data recognition.</p>
+					</div>
+					<div class="column" flex>
+						<h3>Private user data</h3>
+						<p>In some cases we need to collect your private user data, to process certain information on this website This data will not be give to any other third party without your explicit written notice.</p>
+						<p>In some cases we might be forced to give the data to official government agencies.</p>
+						<h3>Whom to ask</h3>
+						<p>In case you want to know what data we collect on our servers, feel free to send us an e-mail to
+							<a href="mailto:t3dd@typo3.org">t3dd@typo3.org</a>
+						</p>
+					</div>
+				</div>
+			</div>
+		</main>
+	</template>
+</polymer-element>

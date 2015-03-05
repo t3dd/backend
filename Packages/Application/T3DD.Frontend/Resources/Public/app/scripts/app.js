@@ -53,8 +53,13 @@
 	template.addEventListener('template-bound', function() {
 		this.globals.scrollTarget = this.$.scrollHeader.shadowRoot.getElementById('mainContainer');
 		this.$.router.addEventListener('activate-route-end', function(event) {
-			template.currentPath = event.detail.path;
+			template.globals.currentPath = template.currentPath = event.detail.path;
 		});
 	});
+
+	template.changePage = function(event) {
+		if (!event.detail.isSelected) return;
+		this.$.router.go(this.currentPath);
+	};
 
 })(wrap(document));
