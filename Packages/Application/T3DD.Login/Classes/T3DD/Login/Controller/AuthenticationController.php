@@ -72,9 +72,14 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 	 */
 	public function logoutAction() {
 		parent::logoutAction();
-		$this->response->setHeader('Content-Type', 'application/json', TRUE);
-		$this->response->setContent('null');
-		throw new \TYPO3\Flow\Mvc\Exception\StopActionException();
+		if ($this->request->getFormat() === 'json') {
+			$this->response->setHeader('Content-Type', 'application/json', TRUE);
+			$this->response->setContent('null');
+			throw new \TYPO3\Flow\Mvc\Exception\StopActionException();
+		} elseif($this->request->getFormat() === 'html') {
+			$returnTo = $this->getReturnTo();
+			$this->redirectToUri($returnTo);
+		}
 	}
 
 
@@ -97,10 +102,12 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 	 * @return string
 	 */
 	public function callbackAction($requestID) {
-		$requestID = $this->sanitizeRequestID($requestID);
+		$requestID = $this->sanitizeReturnTo($requestID);
 		return sprintf('<html><body>
 			<script>
-				window.opener.onSSOAuth("%s", %s);
+				if (typeof window.opener !== \'undefined\' && window.opener.length > 0) {
+					window.opener.onSSOAuth("%s", %s);
+				}
 				window.close();
 			</script>
 			</body></html>', $requestID, json_encode($this->buildAccountDTO($this->securityContext->getAccount(), $this->response->getCookie('TYPO3_Flow_Session'))));
@@ -131,15 +138,16 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 		if (strncmp($requestID, $this->requestIDProtocol, strlen($this->requestIDProtocol)) === 0) {
 			$requestID = substr($requestID, strlen($this->requestIDProtocol));
 		}
-		return $this->sanitizeRequestID($requestID);
+		return $this->sanitizeReturnTo($requestID);
 	}
 
 	/**
 	 * @param string $requestID
 	 * @return mixed
 	 */
-	protected function sanitizeRequestID($requestID) {
-		return preg_replace('/[^abcdefghijklmnopqrstuvwxyz0123456789]/', '', $requestID);
+	protected function sanitizeReturnTo($requestID) {
+		$requestID = parse_url($requestID, PHP_URL_PATH);
+		return preg_replace('/[^abcdefghijklmnopqrstuvwxyz0123456789\/-_]/i', '', $requestID);
 	}
 
 	/**

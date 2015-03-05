@@ -15,6 +15,15 @@
 		var disqusEmbedScript = null;
 		var oneDisqusRendered = false;
 
+		function generateRequestID() {
+			var text = "";
+			var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+			for(var i = 0; i < 5; i++)
+				text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+			return text;
+		}
+
 		function loadDisqus() {
 			if(disqusEmbedScript !== null) return;
 			disqusEmbedScript = document.createElement('script');
@@ -45,6 +54,9 @@
 			},
 
 			domReady: function() {
+				if (!this.url) {
+					this.url = window.location.href;
+				}
 				this.render();
 			},
 
@@ -95,7 +107,18 @@
 							el.reset.call(el);
 						}
 					})];
-					el.bodyDisqus.addElementListener('load', console.log);
+					var hostUrl = window.location.protocol + '//' + window.location.host,
+						ssoUrl = hostUrl + '/sso/',
+						returnTo = window.location.pathname;
+					this.sso = {
+						name: 'Login with typo3.org',
+						button: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/favicons/favicon-32.png',
+						icon: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/favicons/favicon-16.png',
+						url: ssoUrl + 'login/?returnTo=' + generateRequestID(),
+						logout: ssoUrl + 'logout/?returnTo=' + encodeURIComponent(returnTo),
+						width: '985',
+						height: '400'
+					};
 				};
 			},
 
