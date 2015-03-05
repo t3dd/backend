@@ -34,6 +34,18 @@
   routeParts:
     session:
       objectType: T3DD\Backend\Domain\Model\Session
+-
+  name: 'Single Session'
+  uriPattern: 'sessions/edit/{session}'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Session'
+    '@action':     'edit'
+  appendExceedingArguments: TRUE
+  httpMethods: ['HEAD', 'GET']
+  routeParts:
+    session:
+      objectType: T3DD\Backend\Domain\Model\Session
 
 -
   name: 'Session list'

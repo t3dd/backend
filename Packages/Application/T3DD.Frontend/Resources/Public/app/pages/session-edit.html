@@ -1,0 +1,155 @@
+<link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../elements/site-form/site-form.html">
+<link rel="import" href="../elements/site-ajax/site-ajax.html">
+<link rel="import" href="../elements/site-checkbox/site-checkbox.html">
+<link rel="import" href="../bower_components/marked-element/marked-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-autogrow-textarea.html">
+<link rel="import" href="../bower_components/paper-radio-group/paper-radio-group.html">
+<link rel="import" href="../elements/site-overlay-spinner/site-overlay-spinner.html">
+
+<polymer-element name="session-edit">
+	<template>
+		<site-ajax url="/sessions/edit/{{sessionId}}" on-core-response="{{handleSession}}"></site-ajax>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+				height: 100%;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 16px;
+			}
+
+			header h1 {
+				margin: 0;
+			}
+
+			main {
+				padding: 16px;
+			}
+
+			@media (min-width: 768px) {
+				main {
+					padding: 32px;
+				}
+			}
+
+			.card__content {
+				padding-top: 16px;
+				padding-bottom: 16px;
+				margin-bottom: 0;
+			}
+
+			form {
+				padding: 0;
+			}
+
+			paper-autogrow-textarea {
+				width: 100%;
+				margin-bottom: 30px;
+			}
+
+			site-checkbox {
+				padding: 12px;
+			}
+		</style>
+		<site-ajax url="/values" response="{{values}}"></site-ajax>
+		<header class="bg-light-blue">
+			<div class="container">
+				<h1 site-font="display1">Propose a session</h1>
+			</div>
+		</header>
+		<main>
+			<div class="session card__container" horizontal?="{{globals.isDesktopSize}}" layout>
+				<form is="site-form" id="form" class="card" action="/sessions/{{sessionId}}" method="put" enctype="application/json" headers='{"Accept": "application/json"}' flex>
+					<h2 class="card__content" site-font="title">Proposal</h2>
+
+					<div class="card__content">
+						<paper-input-decorator label="Session title" floatingLabel error="Enter a session title!">
+							<input name="title" value="{{formData.title}}" is="core-input" required>
+						</paper-input-decorator>
+						<paper-input-decorator label="Describe your session (supports markdown)" floatingLabel error="Enter a session description!">
+							<paper-autogrow-textarea rows="10">
+								<textarea name="description" placeholder="Describe your session (supports markdown)" value="{{formData.description}}" required></textarea>
+							</paper-autogrow-textarea>
+						</paper-input-decorator>
+
+						<h4 site-font="subhead">Select your theme</h4>
+						<template repeat="{{v, i in values.theme}}" if="{{values.theme && formData.themes}}">
+							<site-checkbox label="{{v.title}}" checked?="{{v.identifier | isThemeActive}}">
+								<input value="{{v.identifier}}" name="themes" type="checkbox" multiple hidden>
+							</site-checkbox>
+						</template>
+
+						<h4 site-font="subhead">Select your type</h4>
+						<paper-radio-group selected="{{formData.type}}">
+							<template repeat="{{v in values.type}}">
+								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
+							</template>
+						</paper-radio-group>
+						<input value="{{formData.type}}" name="type" type="text" hidden>
+
+						<h4 site-font="subhead">Select the expertise level of the session</h4>
+						<paper-radio-group selected="{{formData.expertiseLevel}}">
+							<template repeat="{{v in values.expertiseLevel}}">
+								<paper-radio-button name="{{v.identifier}}" label="{{v.title}}"></paper-radio-button>
+							</template>
+						</paper-radio-group>
+						<input value="{{formData.expertiseLevel}}" name="expertiseLevel" type="text" hidden>
+					</div>
+					<div class="card__content">
+						<paper-button on-click="{{submit}}">
+							<core-icon icon="check"></core-icon>
+							Update session
+						</paper-button>
+						<site-overlay-spinner active="{{$.form.isSubmitting}}"></site-overlay-spinner>
+					</div>
+				</form>
+				<div class="card preview" flex>
+					<h1 class="card__content" site-font="title">Preview</h1>
+
+					<div class="card__content">
+						<h3>{{formData.title}}</h3>
+						<marked-element text="{{formData.description}}"></marked-element>
+					</div>
+				</div>
+			</div>
+		</main>
+	</template>
+	<script>
+		(function () {
+			'use strict';
+			Polymer({
+				formData: {
+					title: '',
+					description: ''
+				},
+				ready: function () {
+					this.$.form.addEventListener('submitted', this.$.form.changePageToResource);
+				},
+				submit: function () {
+					this.$.form.submit();
+				},
+				handleSession: function (event) {
+					this.formData = event.detail.response;
+					Array.prototype.forEach.call(this.shadowRoot.querySelectorAll('paper-input-decorator'), (function (element) {
+						element.focused = true;
+						this.async(function() { element.focused = false; });
+					}).bind(this));
+				},
+				isThemeActive: function (identifier) {
+					if (typeof this.formData.themes === 'undefined') {
+						return false;
+					}
+					return this.formData.themes.indexOf(identifier) !== -1;
+				}
+			});
+
+		})();
+	</script>
+</polymer-element>

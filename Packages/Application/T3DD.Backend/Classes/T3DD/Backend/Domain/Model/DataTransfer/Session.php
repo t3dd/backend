@@ -8,6 +8,7 @@ namespace T3DD\Backend\Domain\Model\DataTransfer;
 
 use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 use Netlogix\Crud\Domain\Model\DataTransfer\UriPointer as UriPointer;
 
 /**
@@ -33,6 +34,27 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 */
 	public function getPropertyNamesToBeApiExposed() {
 		return array('resource', 'creator', 'title', 'description', 'themes', 'type', 'expertiseLevel', 'speakers', 'date', 'voteUri');
+	}
+
+	/**
+	 * @param string $title
+	 */
+	public function setTitle($title) {
+		$this->payload->setTitle($title);
+	}
+
+	/**
+	 * @param string $description
+	 */
+	public function setDescription($description) {
+		$this->payload->setTitle($description);
+	}
+
+	/**
+	 * @param Collection $themes
+	 */
+	public function setThemes(Collection $themes) {
+		$this->payload->setThemes($themes);
 	}
 
 	/**
@@ -67,7 +89,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	}
 
 	/**
-	 * @return string
+	 * @return array
 	 */
 	public function getThemes() {
 		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getPayload()->getThemes());

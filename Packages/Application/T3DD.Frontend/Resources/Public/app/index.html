@@ -132,6 +132,7 @@
 					<app-route path="/location" import="pages/page-location.html"></app-route>
 					<app-route path="/lodging" import="pages/page-lodging.html"></app-route>
 					<app-route path="/sessions/new" import="pages/session-new.html" forceLogin?="{{!globals.user}}"></app-route>
+					<app-route path="/sessions/edit/:sessionId" import="pages/session-edit.html"></app-route>
 					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter></app-route>
 					<app-route path="/register" import="pages/page-register.html"></app-route>
 					<app-route path="/sponsoring" import="pages/page-sponsoring.html"></app-route>

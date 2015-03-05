@@ -58,9 +58,9 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 		parent::initializeCreateAction();
 
 		/** @var \TYPO3\Flow\Mvc\Controller\Argument $argument */
-		$argument = $this->arguments['session'];
+		$argument = $this->arguments[$this->resourceArgumentName];
 		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('themes.*');
-		$configuration->allowAllProperties();
+		$configuration->allowAllProperties(TRUE);
 		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED, TRUE);
 	}
 
@@ -74,12 +74,38 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 		$this->reportSuccess($session, 201);
 	}
 
+	public function initializeUpdateAction() {
+		parent::initializeUpdateAction();
+
+		/** @var \TYPO3\Flow\Mvc\Controller\Argument $argument */
+		$argument = $this->arguments[$this->resourceArgumentName];
+
+		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('themes.*');
+		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter', \TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED, TRUE);
+		$configuration->allowAllProperties(TRUE);
+	}
+
 	/**
 	 * @param Session $session
 	 */
 	public function updateAction(Session $session) {
+		if ($session->getAccount() !== $this->securityContext->getAccount() && !$this->securityContext->hasRole('T3DD.Backend:Administrator')) {
+			$this->response->setStatus(403);
+			return;
+		}
 		$this->sessionRepository->update($session);
-		$this->reportSuccess($session);
+		$this->redirect('edit', NULL, NULL, array('session' => $session));
+	}
+
+	/**
+	 * @param Session $session
+	 */
+	public function editAction(Session $session) {
+		if ($session->getAccount() !== $this->securityContext->getAccount() && !$this->securityContext->hasRole('T3DD.Backend:Administrator')) {
+			$this->response->setStatus(403);
+			return;
+		}
+		$this->view->assign('value', $this->objectManager->get(\T3DD\Backend\Domain\Model\DataTransfer\Edit\Session::class, $session));
 	}
 
 	/**

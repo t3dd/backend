@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "b3107b5f71d75918fc319b3ddd70f7cd",
+    "hash": "fd8b4c0a55330989dd7c57c56dc85133",
     "packages": [
         {
             "name": "composer/installers",
@@ -714,7 +714,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/netlogix/Netlogix.Crud.git",
-                "reference": "c938cef7bf2037ff90d39cd71484ea91011bf2f4"
+                "reference": "e2f5d1e7176416fb18bf451f1d46b557b871567f"
             },
             "require": {
                 "typo3/flow": "*"
@@ -725,7 +725,7 @@
                     "Netlogix\\Crud": "Classes"
                 }
             },
-            "time": "2015-02-23 23:37:55"
+            "time": "2015-03-05 21:52:19"
         },
         {
             "name": "symfony/console",
@@ -2019,9 +2019,9 @@
     "stability-flags": {
         "typo3/flow": 10,
         "typo3/welcome": 10,
+        "typo3/party": 10,
         "typo3/fluid": 10,
         "typo3/eel": 10,
-        "typo3/party": 10,
         "doctrine/migrations": 20,
         "netlogix/crud": 20,
         "typo3/kickstart": 10,
