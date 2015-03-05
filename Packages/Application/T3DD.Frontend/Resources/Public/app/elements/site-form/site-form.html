@@ -170,30 +170,36 @@
 			 * @param HTMLFormElement form
 			 * @return Object key, value pairs representing the html form
 			 */
-			parseForm = function(form, parseFileInputs) {
+			parseForm = function (form, parseFileInputs) {
 				var formObj = {},
-						formElements = form.querySelectorAll('input'),
-						customElementsData = parseCustomElements(form, parseFileInputs);
+					formElements = form.querySelectorAll('input'),
+					customElementsData = parseCustomElements(form, parseFileInputs);
 
 				formElements = arrayOf(formElements);
 				formElements = formElements.concat(arrayOf(form.querySelectorAll('select')));
 				formElements = formElements.concat(arrayOf(form.querySelectorAll('textarea')));
 
-				formElements.forEach(function(formElement) {
-					if(formElement.getAttribute('type') === 'file') {
+				formElements.forEach(function (formElement) {
+					if (formElement.getAttribute('type') === 'file') {
 						parseFileInputs && maybeParseFileInput(formElement, formObj);
 					}
-					else {
-						var key = formElement.name,
-								val = parseElementValue(formElement);
+					var key = formElement.name,
+						val = parseElementValue(formElement),
+						multiple = formElement.multiple;
 
-						if(key && val) {
+					if (key && val) {
+						if (multiple) {
+							if (typeof formObj[key] === 'undefined') {
+								formObj[key] = [];
+							}
+							formObj[key].push(val);
+						} else {
 							formObj[key] = val;
 						}
 					}
 				});
 
-				Object.keys(customElementsData).forEach(function(fieldName) {
+				Object.keys(customElementsData).forEach(function (fieldName) {
 					formObj[fieldName] = customElementsData[fieldName];
 				});
 
