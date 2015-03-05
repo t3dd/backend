@@ -60,7 +60,7 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 		if (is_object($account)) {
 			$this->redirect('callback', NULL, NULL, array('requestID' => $requestID));
 		}
-		$ssoURL = 'https://typo3.org/my-account/sso/t3dd15/';
+		$ssoURL = $this->settings['ssoURL'];
 		if (!empty($requestID)) {
 			$ssoURL .= '?returnTo=' . urlencode($this->requestIDProtocol . $requestID);
 		}
