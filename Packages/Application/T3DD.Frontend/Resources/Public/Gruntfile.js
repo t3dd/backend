@@ -90,8 +90,8 @@ module.exports = function(grunt) {
 		},
 		clean: {
 			dist: ['.tmp', '<%= yeoman.dist %>/*'],
-			server: '.tmp',
-			vulcanization: ['<%= yeoman.dist %>/elements/*/',  '<%= yeoman.dist %>/elements/elements.html']
+			server: '.tmp'
+			//vulcanization: ['<%= yeoman.dist %>/elements/*/',  '<%= yeoman.dist %>/elements/elements.html']
 		},
 		jshint: {
 			options: {
@@ -129,7 +129,7 @@ module.exports = function(grunt) {
 				},
 				files: {
 					'<%= yeoman.dist %>/elements/elements.vulcanized.html': [
-						'<%= yeoman.app %>/elements/elements.html'
+						'<%= yeoman.dist %>/elements/elements.html'
 					]
 				}
 			}
@@ -197,7 +197,7 @@ module.exports = function(grunt) {
 							'fonts/**',
 							'images/{,*/}*.{webp,gif}',
 							'pages/**',
-							'!bower_components/**'
+							'bower_components/**'
 						]
 					}
 				]
@@ -280,7 +280,7 @@ module.exports = function(grunt) {
 		'uglify',
 		'cssmin',
 		'vulcanize',
-		'clean:vulcanization',
+		//'clean:vulcanization',
 		'usemin',
 		'minifyHtml'
 	]);
