@@ -105,9 +105,10 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 		$requestID = $this->sanitizeReturnTo($requestID);
 		return sprintf('<html><body>
 			<script>
-				if (typeof window.opener !== \'undefined\' && window.opener.length > 0) {
+				try {
+					// Catch Security error
 					window.opener.onSSOAuth("%s", %s);
-				}
+				} catch(exception){}
 				window.close();
 			</script>
 			</body></html>', $requestID, json_encode($this->buildAccountDTO($this->securityContext->getAccount(), $this->response->getCookie('TYPO3_Flow_Session'))));

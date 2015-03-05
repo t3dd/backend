@@ -5,7 +5,6 @@
     '@package':    'T3DD.Login'
     '@controller': 'Authentication'
     '@action':     'login'
-    '@format':     'json'
 
 -
   name: 'SSO Logout'
