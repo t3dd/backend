@@ -11,7 +11,20 @@ use TYPO3\Flow\Annotations as Flow;
  */
 class DisqusRemoteAuthAspect {
 
-	const DISQUS_SECRET_KEY = 'yHAieA0TLdgWafMf3K16XXYnwRn2m7RTVVzAaLIGfvF6dvD8mnu1nQqz3MMdGbFF';
+
+	/**
+	 * @var array
+	 */
+	protected $settings;
+
+	/**
+	 * Inject the settings
+	 *
+	 * @param array $settings
+	 */
+	public function injectSettings(array $settings) {
+		$this->settings = $settings;
+	}
 
 	/**
 	 * @param \TYPO3\Flow\Aop\JoinPointInterface $joinPoint
@@ -38,9 +51,15 @@ class DisqusRemoteAuthAspect {
 			'avatar' => sprintf('http://typo3.org/services/userimage.php?username=%s&size=big', $account->getAccountIdentifier())
 		);
 
+		if (!isset($this->settings['disqusApiSecret'])) {
+			throw new \InvalidArgumentException('You need to set up a disqusApiSecrect in your settings.', 1425572965);
+		}
+
 		$message = base64_encode(json_encode($data));
 		$timestamp = time();
-		$hmac = $this->disqusHmacSha1($message . ' ' . $timestamp, static::DISQUS_SECRET_KEY);
+		$apiSecret = $this->settings['disqusApiSecret'];
+
+		$hmac = $this->disqusHmacSha1($message . ' ' . $timestamp, $apiSecret);
 		return $message . ' ' . $hmac . ' ' . $timestamp;
 	}
 
