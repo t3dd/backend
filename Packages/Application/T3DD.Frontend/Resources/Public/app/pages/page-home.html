@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/pvc-globals/pvc-globals.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/pushstate-anchor/pushstate-anchor.html">
 <link rel="import" href="../elements/site-logo/site-logo.html">
-<link rel="import" href="../elements/site-map/site-map.html">
 <link rel="import" href="../elements/site-style/site-style.html">
 
 <polymer-element name="page-home" noscript>
@@ -9,6 +10,9 @@
 		<style>
 			:host {
 				display: block;
+				min-height: calc(100vh - 64px - 191px);
+				background-color: #fff;
+				border-bottom: 1px solid transparent;
 			}
 
 			.masthead__container {
@@ -57,10 +61,7 @@
 
 			@media (min-width: 768px) {
 				.card__container {
-					position: absolute;
-					left: 0;
-					right: 0;
-					margin: -64px auto 0;
+					margin: -64px -16px 0;
 				}
 			}
 
@@ -87,14 +88,9 @@
 			.nowrap {
 				white-space: nowrap;;
 			}
-
-			site-map {
-				display: block;
-				height: 384px;
-			}
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
-		<header class="masthead__container bg-orange bg-cover bg-multiply">
+		<header class="masthead__container bg-orange bg-cover">
 			<div class="masthead container" layout vertical center-justified?="{{globals.isSmallPhoneSize}}" end-justified?="{{!globals.isSmallPhoneSize}}">
 				<div layout horizontal?="{{!globals.isSmallPhoneSize}}" >
 					<site-logo class="t3dd-logo"></site-logo>
@@ -106,21 +102,33 @@
 			</div>
 		</header>
 		<main>
-			<div class="card__container container">
-				<div class="card">
-					<div class="card__content" site-font="subhead">
-						In 2015 the Developer days will be held for the 10th time - a decade of meeting new people, sparking inspiration and having a good time under the TYPO3 banner.
-						This time in Nuremberg at an exciting location. It takes place in a fully refurbished hostel in the 500 year-old imperial stables (Kaiserstallung) of the even older castle.
-						At the heart of Nuremberg's landmark, in the city centre and centre of Franconia.
-						From Thursday (13:00h), July 16 to Sunday (14:00h), July 19 2015 TYPO3 developers from around the world will meet each other and make this conference a great experience.
-						Be excited. We are looking forward to see you there!
+			<section>
+				<div class="container">
+					<div class="card__container">
+						<div class="card">
+							<div class="card__content" site-font="subhead">
+								In 2015 the Developer days will be held for the 10th time - a decade of meeting new people, sparking inspiration and having a good time under the TYPO3 banner.
+								This time in Nuremberg at an exciting location. It takes place in a fully refurbished hostel in the 500 year-old imperial stables (Kaiserstallung) of the even older castle.
+								At the heart of Nuremberg's landmark, in the city centre and centre of Franconia.
+								From Thursday (13:00h), July 16 to Sunday (14:00h), July 19 2015 TYPO3 developers from around the world will meet each other and make this conference a great experience.
+								Be excited. We are looking forward to see you there!
+							</div>
+							<div class="card__content card__buttons" horizontal layout>
+								<a is="pushstate-anchor" href="/location">
+									<paper-button>
+										Check out the location
+									</paper-button>
+								</a>
+								<a is="pushstate-anchor" href="/sponsoring">
+									<paper-button>
+										Become a sponsor
+									</paper-button>
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
-			<site-map latitude="49.458116" longitude="11.077652" zoom="15">
-				<google-map-marker latitude="49.458116" longitude="11.077652" icon="../images/pin.svg" title="T3DD15 Location">
-				</google-map-marker>
-			</site-map>
+			</section>
 		</main>
 	</template>
 </polymer-element>
