@@ -16,8 +16,13 @@ if [ -n "${bamboo_capability_system_builder_command_bower}" ] ; then
 	BOWER="${bamboo_capability_system_builder_command_bower}"
 fi
 
+if [ "$BUILD_ENV" = "ci" ] ; then
+	COMPOSER_OPTS=--ignore-platform-reqs php
+else
+	COMPOSER_OPTS=
+fi
 
-$COMPOSER install
+$COMPOSER $COMPOSER_OPTS install
 $NPM install
 
 for D in Packages/*/T3DD.*/Resources/Public ; do
