@@ -83,47 +83,6 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-//    connect: {
-//      options: {
-//        port: 9000,
-//        // change this to '0.0.0.0' to access the server from outside
-//        hostname: 'localhost'
-//      },
-//      livereload: {
-//        options: {
-//          middleware: function (connect) {
-//            return [
-//              lrSnippet,
-//              mountFolder(connect, '.tmp'),
-//              mountFolder(connect, yeomanConfig.app)
-//            ];
-//          }
-//        }
-//      },
-//      test: {
-//        options: {
-//          open: {
-//            target: 'http://localhost:<%= connect.options.port %>/test'
-//          },
-//          middleware: function (connect) {
-//            return [
-//              mountFolder(connect, '.tmp'),
-//              mountFolder(connect, yeomanConfig.app)
-//            ];
-//          },
-//          keepalive: true
-//        }
-//      },
-//      dist: {
-//        options: {
-//          middleware: function (connect) {
-//            return [
-//              mountFolder(connect, yeomanConfig.dist)
-//            ];
-//          }
-//        }
-//      }
-//    },
 		open: {
 			server: {
 				url: 'http://localhost:<%= express.options.port %>'
@@ -131,7 +90,8 @@ module.exports = function(grunt) {
 		},
 		clean: {
 			dist: ['.tmp', '<%= yeoman.dist %>/*'],
-			server: '.tmp'
+			server: '.tmp',
+			vulcanization: ['<%= yeoman.dist %>/elements/*/',  '<%= yeoman.dist %>/elements/elements.html']
 		},
 		jshint: {
 			options: {
@@ -168,8 +128,8 @@ module.exports = function(grunt) {
 					strip: true
 				},
 				files: {
-					'<%= yeoman.app %>/index.vulcanized.html': [
-						'<%= yeoman.app %>/index.html'
+					'<%= yeoman.dist %>/elements/elements.vulcanized.html': [
+						'<%= yeoman.app %>/elements/elements.html'
 					]
 				}
 			}
@@ -234,9 +194,10 @@ module.exports = function(grunt) {
 							'.htaccess',
 							'*.html',
 							'elements/**',
-							'!elements/**/*.css',
+							'fonts/**',
 							'images/{,*/}*.{webp,gif}',
-							'bower_components/**'
+							'pages/**',
+							'!bower_components/**'
 						]
 					}
 				]
@@ -319,6 +280,7 @@ module.exports = function(grunt) {
 		'uglify',
 		'cssmin',
 		'vulcanize',
+		'clean:vulcanization',
 		'usemin',
 		'minifyHtml'
 	]);

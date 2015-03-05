@@ -32,47 +32,12 @@
 	<link rel="stylesheet" href="styles/app.css">
 	<!-- endbuild-->
 
-	<!-- build:js bower_components/webcomponentsjs/webcomponents.min.js -->
+	<!-- build:js scripts/webcomponents.min.js -->
 	<script src="bower_components/webcomponentsjs/webcomponents.js"></script>
 	<!-- endbuild -->
 
 	<!-- build:vulcanized elements/elements.vulcanized.html -->
-	<link rel="import" href="bower_components/core-ajax/core-ajax.html">
-
-	<link rel="import" href="bower_components/app-router/src/app-router.html">
-	<link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
-	<link rel="import" href="bower_components/core-animated-pages/transitions/cross-fade.html">
-	<link rel="import" href="bower_components/pushstate-anchor/pushstate-anchor.html">
-	<link rel="import" href="bower_components/pvc-globals/pvc-globals.html">
-
-	<link rel="import" href="bower_components/core-media-query/core-media-query.html">
-	<link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
-	<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-	<link rel="import" href="bower_components/core-icons/core-icons.html">
-	<link rel="import" href="bower_components/core-icons/social-icons.html">
-	<link rel="import" href="bower_components/core-image/core-image.html">
-	<link rel="import" href="bower_components/core-menu/core-menu.html">
-	<link rel="import" href="bower_components/core-localstorage/core-localstorage.html">
-	<link rel="import" href="bower_components/core-selector/core-selector.html">
-	<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
-	<link rel="import" href="bower_components/core-scroll-header-panel/core-scroll-header-panel.html">
-	<link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
-
-	<link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
-	<link rel="import" href="bower_components/paper-dropdown/paper-dropdown.html">
-	<link rel="import" href="bower_components/paper-item/paper-item.html">
-	<link rel="import" href="bower_components/paper-button/paper-button.html">
-	<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
-	<link rel="import" href="bower_components/paper-fab/paper-fab.html">
-
-	<link rel="import" href="bower_components/core-style/core-style.html">
-
-	<link rel="import" href="elements/site-menu/site-menu.html">
-	<link rel="import" href="elements/site-login/site-login.html">
-	<link rel="import" href="elements/site-logo/site-logo.html">
-	<link rel="import" href="elements/site-style/site-style.html">
-	<link rel="import" href="elements/site-overlay/site-overlay.html">
-	<link rel="import" href="elements/site-map/site-map.html">
+	<link rel="import" href="elements/elements.html">
 	<!-- endbuild-->
 </head>
 
@@ -137,8 +102,6 @@
 					<app-route path="/register" import="pages/page-register.html"></app-route>
 					<app-route path="/sponsoring" import="pages/page-sponsoring.html"></app-route>
 					<app-route path="/legal" import="pages/page-legal-info.html"></app-route>
-					<!--<app-route path="/register" import="pages/register-new.html"></app-route>
-					<app-route path="/register/success" import="pages/register-success.html"></app-route>-->
 				</app-router>
 				<site-overlay id="loginInterceptor" backdrop layered>
 					<core-style ref="main"></core-style>
