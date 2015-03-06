@@ -11,9 +11,15 @@
 			.container {
 				margin: 0 auto;
 				padding: 16px;
+				max-width:100%;
+			}
+			@media (min-width: 768px) {
+				.container {
+					padding: 24px 32px;
+				}
 			}
 
-			header h1 {
+			header h1, header p {
 				margin: 0;
 			}
 
@@ -49,6 +55,7 @@
 		<header class="bg-light-blue">
 			<div class="container">
 				<h1 site-font="display1">Propose a session</h1>
+				<p site-font="body1">But pay attention, editing is currently not possible. We're working hard to make this possible.</p>
 			</div>
 		</header>
 		<main>
