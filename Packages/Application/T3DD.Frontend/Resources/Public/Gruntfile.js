@@ -207,6 +207,8 @@ module.exports = function(grunt) {
 		},
 		minifyHtml: {
 			options: {
+				removeComments: true,
+				spare: true,
 				quotes: true,
 				empty: true
 			},
@@ -217,6 +219,18 @@ module.exports = function(grunt) {
 						cwd: '<%= yeoman.dist %>',
 						src: '*.html',
 						dest: '<%= yeoman.dist %>'
+					},
+					{
+						expand: true,
+						cwd: '<%= yeoman.dist %>/pages',
+						src: '*.html',
+						dest: '<%= yeoman.dist %>/pages'
+					},
+					{
+						expand: true,
+						cwd: '<%= yeoman.dist %>/elements',
+						src: '*.html',
+						dest: '<%= yeoman.dist %>/elements'
 					}
 				]
 			}
