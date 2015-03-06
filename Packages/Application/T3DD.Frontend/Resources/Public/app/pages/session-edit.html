@@ -48,6 +48,7 @@
 			}
 		</style>
 		<site-ajax url="/values" response="{{values}}"></site-ajax>
+		<core-ajax id="sessionDelete" url="/sessions/{{sessionId}}" method="DELETE" headers='{"Accept": "application/json"}' content-type="'application/json'"></core-ajax>
 		<header class="bg-light-blue">
 			<div class="container">
 				<h1 site-font="display1">Propose a session</h1>
@@ -96,6 +97,10 @@
 							<core-icon icon="check"></core-icon>
 							Update session
 						</paper-button>
+						<paper-button on-click="{{delete}}" hidden>
+							<core-icon icon="delete"></core-icon>
+							Delete session
+						</paper-button>
 						<site-overlay-spinner active="{{$.form.isSubmitting}}"></site-overlay-spinner>
 					</div>
 				</form>
@@ -123,6 +128,10 @@
 				},
 				submit: function () {
 					this.$.form.submit();
+				},
+				delete: function () {
+					// TODO: Report success and redirect
+					this.$.sessionDelete.go();
 				},
 				handleSession: function (event) {
 					this.formData = event.detail.response;

@@ -19,6 +19,12 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 
 	/**
 	 * @Flow\Inject
+	 * @var \T3DD\Backend\Domain\Repository\VoteRepository
+	 */
+	protected $voteRepository;
+
+	/**
+	 * @Flow\Inject
 	 * @var \Netlogix\Crud\Domain\Service\DataTransferObjectFactory
 	 */
 	protected $dataTransferObjectFactory;
@@ -116,7 +122,12 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 			$this->response->setStatus(403);
 			return;
 		}
+		foreach ($this->voteRepository->findBySession($session) as $vote) {
+			$this->voteRepository->remove($vote);
+		}
 		$this->sessionRepository->remove($session);
+
+		// TODO Fix redirect
 		$this->redirect('index');
 	}
 
