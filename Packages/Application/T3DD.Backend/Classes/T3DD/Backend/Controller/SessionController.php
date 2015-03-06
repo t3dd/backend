@@ -112,7 +112,12 @@ class SessionController extends \Netlogix\Crud\Controller\RestController {
 	 * @param Session $session
 	 */
 	public function deleteAction(Session $session) {
+		if ($session->getAccount() !== $this->securityContext->getAccount() && !$this->securityContext->hasRole('T3DD.Backend:Administrator')) {
+			$this->response->setStatus(403);
+			return;
+		}
 		$this->sessionRepository->remove($session);
+		$this->redirect('index');
 	}
 
 }
