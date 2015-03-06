@@ -41,7 +41,7 @@
 				if(!this.dimensions.position.h) {
 					var l = (window.innerWidth - this.target.offsetWidth) / 2;
 					l -= this.dimensions.margin.left;
-					this.target.style.left = l + 'px';
+					this.target.style.left = (l < 0 ? 0 :l) + 'px';
 				}
 			},
 			registerCallback: function(element) {

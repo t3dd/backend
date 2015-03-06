@@ -2,7 +2,7 @@
 	<template>
 		<pvc-globals values="{{globals}}"></pvc-globals>
 		<core-style ref="main"></core-style>
-		<site-overlay id="overlay" opened backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
+		<site-overlay id="overlay" backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
 			<core-style ref="main"></core-style>
 			<style>
 				#close {
@@ -16,9 +16,6 @@
 					margin-right: 54px;
 					margin-bottom: 0;
 				}
-				.card__container {
-					width: 2048px;
-				}
 				.card {
 					min-height: 30vh;
 				}
@@ -26,9 +23,9 @@
 			</style>
 			<div class="card__container container">
 				<div class="card">
-					<div class="card__content">
+					<div class="card__content" horizontal center layout>
+						<h1 id="title" flex site-font="headline">Request a Session</h1>
 						<core-icon-button id="close" icon="clear" core-overlay-toggle></core-icon-button>
-						<h1 id="title" site-font="headline">Request a Session</h1>
 					</div>
 					<div class="card__content">
 						<p site-font="subhead">
@@ -49,6 +46,9 @@
 	</template>
 	<script>
 		Polymer({
+			ready: function () {
+				this.$.overlay.opened = true;
+			},
 			changePageToAfterClose: '/sessions',
 			changeToSessionNew: function() {
 				this.changePageToAfterClose = '/sessions/new';

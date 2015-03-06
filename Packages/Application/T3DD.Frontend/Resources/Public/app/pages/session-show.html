@@ -3,7 +3,7 @@
 		<pvc-globals values="{{globals}}"></pvc-globals>
 		<core-style ref="main"></core-style>
 		<site-ajax url="/sessions/{{sessionId}}" on-core-response="{{handleSession}}"></site-ajax>
-		<site-overlay id="overlay" opened backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
+		<site-overlay id="overlay" backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
 			<core-style ref="main"></core-style>
 			<style>
 				#spinner {
@@ -12,9 +12,6 @@
 					margin-left: -14px;
 					top: 50%;
 					margin-top: -14px;
-				}
-				.card__container {
-					width: 2048px;
 				}
 				.card {
 					min-height: 30vh;
@@ -74,6 +71,9 @@
 	<script>
 		Polymer({
 			session: null,
+			ready: function () {
+				this.$.overlay.opened = true;
+			},
 			handleSession: function(event) {
 				this.session = event.detail.response;
 				this.fire('session-open', this.session);
