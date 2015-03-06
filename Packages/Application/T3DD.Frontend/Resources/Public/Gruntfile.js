@@ -394,8 +394,7 @@ module.exports = function (grunt) {
 		'vulcanize',
 		'clean:vulcanization',
 		'filerev',
-		'usemin',
-		'minifyHtml'
+		'usemin'
 	]);
 
 	grunt.registerTask('default', [
