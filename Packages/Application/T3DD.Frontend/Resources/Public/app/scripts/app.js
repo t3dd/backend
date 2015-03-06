@@ -30,11 +30,14 @@
 	};
 
 	template.requireLogin = function(pathOrCallback) {
-		var listener = (function() {
-			if (this.currentPath !== pathOrCallback) {
-				this.$.router.go(this.currentPath);
-			} else {
-				this.$.router.go('/');
+		var loggedIn = false,
+			listener = (function() {
+			if (!loggedIn) {
+				if (this.currentPath !== pathOrCallback) {
+					this.$.router.go(this.currentPath);
+				} else {
+					this.$.router.go('/');
+				}
 			}
 			this.$.loginInterceptor.removeEventListener('core-overlay-close-completed', listener);
 		}).bind(this);
@@ -42,15 +45,18 @@
 		this.$.loginInterceptor.opened = true;
 		this.$.loginInterceptor.addEventListener('core-overlay-close-completed', listener);
 
-		this.observeOnce('globals.user', function() {
+		this.observeOnce('globals.user', (function() {
+			loggedIn = true;
 			this.$.loginInterceptor.removeEventListener('core-overlay-close-completed', listener);
-			this.$.loginInterceptor.opened = false;
-			if (typeof pathOrCallback === 'string') {
-				this.$.router.go(pathOrCallback);
-			} else {
-				pathOrCallback();
-			}
-		});
+			this.async(function() {
+				this.$.loginInterceptor.opened = false;
+				if (typeof pathOrCallback === 'string') {
+					this.$.router.go(pathOrCallback);
+				} else {
+					pathOrCallback();
+				}
+			});
+		}).bind(this));
 	};
 
 	template.scrollToTop = function(event) {
