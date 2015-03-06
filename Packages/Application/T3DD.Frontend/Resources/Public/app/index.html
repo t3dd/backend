@@ -133,7 +133,9 @@
 				</site-overlay>
 				<footer id="footer" vertical layout>
 					<div flex horizontal layout>
-						<div flex></div>
+						<div flex>
+							<small>All shown prices are exclusive of VAT.</small>
+						</div>
 						<div>
 							<a href="{{currentPath}}" on-click="{{scrollToTop}}">
 								<core-icon icon="arrow-drop-up"></core-icon>
@@ -142,8 +144,20 @@
 						</div>
 					</div>
 					<div horizontal layout end>
-						<div flex>
-							<small>All shown prices are exclusive of VAT.</small>
+						<div flex vertical layout site-font="body1" class="builders">
+							<div>
+								Built with bleeding edge technology
+								(<a href="https://www.polymer-project.org/" target="_blank">Polymer</a>,
+								<a href="http://flow.typo3.org" target="_blank">TYPO3 Flow 3</a>) by:
+							</div>
+							<div horizontal layout center>
+							<a href="http://www.dfau.de" target="_blank">
+								<img src="/images/dfau-logo.svg" alt="DFAU" height="45">
+							</a>
+							<a href="http://media.netlogix.de/" target="_blank">
+								<img src="/images/netlogix-media-logo.svg" alt="Netlogix Media" height="45">
+							</a>
+							</div>
 						</div>
 						<div>
 							<a is="pushstate-anchor" href="/legal">Legal</a>

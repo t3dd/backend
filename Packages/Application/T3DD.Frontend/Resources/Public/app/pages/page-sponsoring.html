@@ -166,6 +166,10 @@
 				}
 			}
 
+			.sold-out {
+				background: url(../images/sold-out.png) 50% 50% no-repeat rgba(0,0,0,.3);
+			}
+
 			.become-sponsor p {
 				margin: 0;
 			}
@@ -212,7 +216,7 @@
 					<h2 site-font="display1">Sponsoring Packages</h2>
 
 					<div class="card__container sponsoring__container" horizontal?="{{globals.isDesktopSize}}" layout>
-						<div class="card" vertical layout flex>
+						<div class="card" vertical layout flex relative>
 							<div class="card__content bg-orange" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
 								<h3 site-font="title">Premium Sponsor</h3>
 								<h4 site-font="{{globals.isDesktopSize ? 'display2' : 'display1'}}">3.500,- €</h4>
@@ -229,15 +233,17 @@
 									<li>banner/flag/role-up in a prominent area of the event</li>
 								</ul>
 							</div>
-							<div class="card__content upgrade">
+							<div class="card__content upgrade" relative>
 								<h5>Upgrade with Main Room Sponsoring</h5>
 
 								<p site-font="subhead">Additionally the main room will be yours for 1.000,- €</p>
+
+								<div class="sold-out" fit></div>
 							</div>
 							<div class="card__content availability">
 								<h5>Availability</h5>
 
-								<p site-font="subhead">We have 4 sponsor packages for a premium sponsoring</p>
+								<p site-font="subhead">We have 3 sponsor packages for a premium sponsoring left</p>
 							</div>
 						</div>
 						<div class="card" vertical layout flex>
@@ -262,6 +268,7 @@
 
 								<p site-font="subhead">We have 1 sponsor package for a T-Shirt sponsoring.</p>
 							</div>
+							<div class="sold-out" fit></div>
 						</div>
 					</div>
 					<div class="card__container sponsoring__container" horizontal?="{{globals.isDesktopSize}}" layout>

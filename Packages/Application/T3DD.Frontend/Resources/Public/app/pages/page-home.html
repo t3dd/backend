@@ -5,8 +5,8 @@
 			:host {
 				display: block;
 				min-height: calc(100vh - 64px - 191px);
-				background-color: #fff;
 				border-bottom: 1px solid transparent;
+				background-color: #fff;
 			}
 
 			.masthead__container {
@@ -55,7 +55,9 @@
 
 			@media (min-width: 768px) {
 				.card__container {
-					margin: -64px -16px 0;
+					position: relative;
+					top: -64px;
+					margin: 0 -16px -48px;
 				}
 			}
 
@@ -81,6 +83,18 @@
 
 			.nowrap {
 				white-space: nowrap;;
+			}
+
+			.sponsors {
+				text-align: center;
+			}
+			.sponsors a {
+				border-bottom: none;
+			}
+
+			section.divider {
+				min-height: 2px;
+				background-color: #e7e7e7;
 			}
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
@@ -122,6 +136,28 @@
 						</div>
 					</div>
 				</div>
+			</section>
+			<section>
+				<div class="container sponsors">
+					<p site-font="subhead">We thank our sponsors for supporting us!</p>
+					<div horizontal layout>
+						<div flex>
+							<h3 site-font="title">Premium Sponsors</h3>
+							<a href="https://jweiland.net/" title="jweiland.net TYPO3 Hosting and Support, Sponsor of the T3DD15" target="_blank">
+								<img src="../images/jweiland-net-logo.png" alt="Logo jweiland.net TYPO3 Hosting">
+							</a>
+						</div>
+						<div flex>
+							<h3 site-font="title">T-Shirt Sponsor</h3>
+							<a href="https://sitegeist.de/" title="sitegeist - Internet agency for TYPO3 | NEOS | Internet agency Hamburg - tourism, social media, finances" target="_blank">
+								<img src="../images/sitegeist-logo.png" alt="sitegeist - Internet agency for TYPO3 | NEOS | Internet agency Hamburg - tourism, social media, finances">
+							</a>
+						</div>
+					</div>
+				</div>
+			</section>
+			<section class="divider">
+
 			</section>
 		</main>
 	</template>
