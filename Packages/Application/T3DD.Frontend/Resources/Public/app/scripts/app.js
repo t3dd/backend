@@ -82,6 +82,7 @@
 				this.interceptRouting(event);
 			}
 			template.globals.currentPath = template.currentPath = event.detail.path;
+			document.getElementById('scrollHeader').shadowRoot.getElementById('mainContainer').scrollTop = 0;
 			firstRequest = false;
 		}).bind(this));
 		this.$.router.addEventListener('activate-route-start', this.interceptRouting.bind(this));
