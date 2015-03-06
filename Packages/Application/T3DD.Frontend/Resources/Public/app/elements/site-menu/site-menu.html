@@ -29,6 +29,7 @@
 			}
 			paper-tab {
 				text-transform: uppercase;
+				cursor: pointer;
 			}
 		</style>
 		<template if="{{!horizontal}}">
@@ -77,6 +78,11 @@
 					label: 'Register',
 					href: '/register',
 					icon: 'social:person-add'
+				},
+				{
+					label: 'Sponsor',
+					href: '/sponsoring',
+					icon: 'face'
 				}
 			],
 			route: function(event, index, target) {

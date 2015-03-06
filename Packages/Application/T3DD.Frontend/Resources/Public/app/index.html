@@ -145,11 +145,9 @@
 						<div flex>
 							<small>All shown prices are exclusive of VAT.</small>
 						</div>
-						<paper-tabs selected="{{currentPath}}" on-core-select="{{changePage}}" valueattr="href" noink>
-							<paper-tab href="/sponsoring">Sponsoring</paper-tab>
-							<!--<paper-tab href="/faq">FAQ</paper-tab>-->
-							<paper-tab href="/legal">Legal</paper-tab>
-						</paper-tabs>
+						<div>
+							<a is="pushstate-anchor" href="/legal">Legal</a>
+						</div>
 					</div>
 				</footer>
 			</core-scroll-header-panel>
