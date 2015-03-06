@@ -1,6 +1,6 @@
 var path = require('path');
 
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 	// show elapsed time at the end
 	require('time-grunt')(grunt);
 	// load all grunt tasks
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
 		watch: {
 			options: {
 				nospawn: true,
-				livereload: { liveCSS: false }
+				livereload: {liveCSS: false}
 			},
 			livereload: {
 				options: {
@@ -90,8 +90,8 @@ module.exports = function(grunt) {
 		},
 		clean: {
 			dist: ['.tmp', '<%= yeoman.dist %>/*'],
-			server: '.tmp'
-			//vulcanization: ['<%= yeoman.dist %>/elements/*/',  '<%= yeoman.dist %>/elements/elements.html']
+			server: '.tmp',
+			vulcanization: ['<%= yeoman.dist %>/elements/*/', '<%= yeoman.dist %>/elements/elements.html']
 		},
 		jshint: {
 			options: {
@@ -103,6 +103,24 @@ module.exports = function(grunt) {
 				'!<%= yeoman.app %>/scripts/vendor/*',
 				'test/spec/{,*/}*.js'
 			]
+		},
+		filerev: {
+			options: {
+				algorithm: 'md5',
+				length: 8
+			},
+			source: {
+				files: [{
+					src: [
+						'<%= yeoman.dist %>/images/**/*.{jpg,jpeg,gif,png,ico,svg}',
+						'<%= yeoman.dist %>/fonts/*',
+						'<%= yeoman.dist %>/scripts/*',
+						'<%= yeoman.dist %>/styles/*',
+						'<%= yeoman.dist %>/pages/*',
+						'<%= yeoman.dist %>/elements/elements.vulcanized.html'
+					]
+				}]
+			}
 		},
 		useminPrepare: {
 			html: '<%= yeoman.app %>/index.html',
@@ -116,9 +134,89 @@ module.exports = function(grunt) {
 			options: {
 				dirs: ['<%= yeoman.dist %>'],
 				blockReplacements: {
-					vulcanized: function(block) {
+					vulcanized: function (block) {
 						return '<link rel="import" href="' + block.dest + '">';
 					}
+				},
+				patterns: {
+					html: [
+						[
+							/<script.+src=['"]([^"']+)["']/gm,
+							'Update the HTML to reference our concat/min/revved script files'
+						],
+						[
+							/<link[^\>]+href=['"]([^"']+)["']/gm,
+							'Update the HTML with the new css filenames'
+						],
+						[
+							/<img[^\>]*[^\>\S]+src=['"]([^'"\)#]+)(#.+)?["']/gm,
+							'Update the HTML with the new img filenames'
+						],
+						[
+							/<video[^\>]+src=['"]([^"']+)["']/gm,
+							'Update the HTML with the new video filenames'
+						],
+						[
+							/<video[^\>]+poster=['"]([^"']+)["']/gm,
+							'Update the HTML with the new poster filenames'
+						],
+						[
+							/<source[^\>]+src=['"]([^"']+)["']/gm,
+							'Update the HTML with the new source filenames'
+						],
+						[
+							/data-main\s*=['"]([^"']+)['"]/gm,
+							'Update the HTML with data-main tags',
+							function (m) {
+								return m.match(/\.js$/) ? m : m + '.js';
+							},
+							function (m) {
+								return m.replace('.js', '');
+							}
+						],
+						[
+							/data-(?!main).[^=]+=['"]([^'"]+)['"]/gm,
+							'Update the HTML with data-* tags'
+						],
+						[
+							/url\(\s*['"]?([^"'\)]+)["']?\s*\)/gm,
+							'Update the HTML with background imgs, case there is some inline style'
+						],
+						[
+							/<a[^\>]+href=['"]([^"']+)["']/gm,
+							'Update the HTML with anchors images'
+						],
+						[
+							/<input[^\>]+src=['"]([^"']+)["']/gm,
+							'Update the HTML with reference in input'
+						],
+						[
+							/<meta[^\>]+content=['"]([^"']+)["']/gm,
+							'Update the HTML with the new img filenames in meta tags'
+						],
+						[
+							/<object[^\>]+data=['"]([^"']+)["']/gm,
+							'Update the HTML with the new object filenames'
+						],
+						[
+							/<image[^\>]*[^\>\S]+xlink:href=['"]([^"'#]+)(#.+)?["']/gm,
+							'Update the HTML with the new image filenames for svg xlink:href links'
+						],
+						[
+							/<image[^\>]*[^\>\S]+src=['"]([^'"\)#]+)(#.+)?["']/gm,
+							'Update the HTML with the new image filenames for src links'
+						],
+						[
+							/<(?:img|source)[^\>]*[^\>\S]+srcset=['"]([^"'\s]+)\s*?(?:\s\d*?[w])?(?:\s\d*?[x])?\s*?["']/gm,
+							'Update the HTML with the new image filenames for srcset links'
+						],
+						[
+							/<(?:use|image)[^\>]*[^\>\S]+xlink:href=['"]([^'"\)#]+)(#.+)?["']/gm,
+							'Update the HTML within the <use> tag when referencing an external url with svg sprites as in svg4everybody'
+						],
+						[/<app-route[^\>]+import=['"]([^"']+)["']/gm, 'Update the HTML with the new object filenames'],
+						[/<core-image[^\>]+src=['"]([^"']+)["']/gm, 'Update the HTML with the new object filenames']
+					]
 				}
 			}
 		},
@@ -167,6 +265,7 @@ module.exports = function(grunt) {
 		},
 		minifyHtml: {
 			options: {
+				removeComments: true,
 				quotes: true,
 				empty: true
 			},
@@ -177,6 +276,12 @@ module.exports = function(grunt) {
 						cwd: '<%= yeoman.dist %>',
 						src: '*.html',
 						dest: '<%= yeoman.dist %>'
+					},
+					{
+						expand: true,
+						cwd: '<%= yeoman.dist %>/pages',
+						src: '*.html',
+						dest: '<%= yeoman.dist %>/pages'
 					}
 				]
 			}
@@ -195,7 +300,7 @@ module.exports = function(grunt) {
 							'*.html',
 							'elements/**',
 							'fonts/**',
-							'images/{,*/}*.{webp,gif}',
+							'images/{,*/}*.{webp,gif,png,ico,xml,svg}',
 							'pages/**',
 							'bower_components/**'
 						]
@@ -246,13 +351,13 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.registerTask('server', function(target) {
+	grunt.registerTask('server', function (target) {
 		grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
 		grunt.task.run(['serve:' + target]);
 	});
 
-	grunt.registerTask('serve', function(target) {
-		if(target === 'dist') {
+	grunt.registerTask('serve', function (target) {
+		if (target === 'dist') {
 			return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
 		}
 
@@ -280,7 +385,8 @@ module.exports = function(grunt) {
 		'uglify',
 		'cssmin',
 		'vulcanize',
-		//'clean:vulcanization',
+		'clean:vulcanization',
+		'filerev',
 		'usemin',
 		'minifyHtml'
 	]);

@@ -16,6 +16,7 @@
     "grunt-contrib-uglify": "^0.5.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express": "^1.4.1",
+    "grunt-filerev": "^2.2.0",
     "grunt-minify-html": "^0.1.0",
     "grunt-open": "^0.2.3",
     "grunt-pagespeed": "^0.3.0",
