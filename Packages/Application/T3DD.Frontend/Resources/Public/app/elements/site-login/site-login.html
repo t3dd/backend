@@ -12,8 +12,7 @@
 		<site-ajax
 				auto="false"
 				id="logout"
-				url="{{ssoUrl}}logout/"
-				on-core-response="{{handleUser}}"></site-ajax>
+				url="{{ssoUrl}}logout/"></site-ajax>
 	</template>
 	<script>
 		(function() {
@@ -71,6 +70,7 @@
 
 				logout: function() {
 					this.$.logout.go();
+					this._setUser(null);
 				},
 
 				handleUser: function(ajaxEvent) {
