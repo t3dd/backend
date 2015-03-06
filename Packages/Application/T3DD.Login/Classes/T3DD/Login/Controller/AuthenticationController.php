@@ -93,6 +93,7 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 			$this->response->setContent(json_encode($this->buildAccountDTO($this->securityContext->getAccount(), $this->response->getCookie('TYPO3_Flow_Session'))));
 		} else {
 			$this->response->setStatus(401, 'Not logged in.');
+			$this->response->setContent('null');
 		}
 		throw new \TYPO3\Flow\Mvc\Exception\StopActionException();
 	}
