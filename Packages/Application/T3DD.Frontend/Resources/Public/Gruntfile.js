@@ -13,51 +13,70 @@ module.exports = function (grunt) {
 		dist: 'dist'
 	};
 
+	(function() {
+		// So hacky, wow, ugly
+		var path = require('path');
+		var RevvedFinder = require('grunt-usemin/lib/revvedfinder');
+		RevvedFinder.prototype.find = function find(ofile, searchDirs) {
+			var file = ofile;
+			var searchPaths = searchDirs;
+			var absolute;
+			var prefix;
+			var rewriteToAbsolute;
+
+			if(typeof searchDirs === 'string') {
+				searchPaths = [searchDirs];
+			}
+
+			//console.log('Looking for revved version of %s in ', ofile, searchPaths);
+
+			//do not touch external files or the root
+			// FIXME: Should get only relative files
+			if(ofile.match(/:\/\//) || ofile === '') {
+				return ofile;
+			}
+
+			if(file[0] === '/') {
+				// We need to remember this is an absolute file, but transform it
+				// to a relative one
+				absolute = true;
+				file = file.replace(/^(\/+)/, function(match, header) {
+					prefix = header;
+					return '';
+				});
+			} else {
+				rewriteToAbsolute = true;
+			}
+
+			var filepaths = this.getRevvedCandidates(file, searchPaths);
+
+			var filepath = filepaths[0];
+			//console.log('filepath is now ', filepath);
+
+			// not a file in temp, skip it
+			if(!filepath) {
+				return ofile;
+			}
+
+			if(absolute) {
+				filepath = prefix + filepath;
+			} else if (rewriteToAbsolute) {
+				filepath = path.resolve('/_Resources/Static/Packages/T3DD.Frontend/', searchPaths[0], filepath);
+			}
+
+			//console.log('Let\'s return %s', filepath);
+			return filepath;
+		};
+	})();
+
 	grunt.initConfig({
 		yeoman: yeomanConfig,
-		watch: {
-			options: {
-				nospawn: true,
-				livereload: {liveCSS: false}
-			},
-			livereload: {
-				options: {
-					livereload: true
-				},
-				files: [
-					'<%= yeoman.app %>/*.html',
-					'<%= yeoman.app %>/elements/{,*/}*.html',
-					'{.tmp,<%= yeoman.app %>}/elements/{,*/}*.css',
-					'{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-					'{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-					'<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-				]
-			},
-			js: {
-				files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-				tasks: ['jshint']
-			},
-			styles: {
-				files: [
-					'<%= yeoman.app %>/styles/{,*/}*.css',
-					'<%= yeoman.app %>/elements/{,*/}*.css'
-				],
-				tasks: ['copy:styles', 'autoprefixer:server']
-			}
+		clean: {
+			dist: ['<%= yeoman.dist %>/*']
 		},
 		autoprefixer: {
 			options: {
 				browsers: ['last 2 versions']
-			},
-			server: {
-				files: [
-					{
-						expand: true,
-						cwd: '.tmp',
-						src: '**/*.css',
-						dest: '.tmp'
-					}
-				]
 			},
 			dist: {
 				files: [
@@ -70,29 +89,6 @@ module.exports = function (grunt) {
 				]
 			}
 		},
-		express: {
-			options: {
-				port: 9000,
-				hostname: "localhost",
-				livereload: true
-			},
-			livereload: {
-				options: {
-					server: path.resolve('./server'),
-					bases: [path.resolve('./.tmp'), path.resolve(__dirname, yeomanConfig.app)]
-				}
-			}
-		},
-		open: {
-			server: {
-				url: 'http://localhost:<%= express.options.port %>'
-			}
-		},
-		clean: {
-			dist: ['.tmp', '<%= yeoman.dist %>/*'],
-			server: '.tmp',
-			vulcanization: ['<%= yeoman.dist %>/elements/*/', '<%= yeoman.dist %>/elements/elements.html']
-		},
 		jshint: {
 			options: {
 				jshintrc: '.jshintrc',
@@ -104,32 +100,14 @@ module.exports = function (grunt) {
 				'test/spec/{,*/}*.js'
 			]
 		},
-		filerev: {
-			options: {
-				algorithm: 'md5',
-				length: 8
-			},
-			source: {
-				files: [{
-					src: [
-						'<%= yeoman.dist %>/images/**/*.{jpg,jpeg,gif,png,ico,svg}',
-						'<%= yeoman.dist %>/fonts/*',
-						'<%= yeoman.dist %>/scripts/*',
-						'<%= yeoman.dist %>/styles/*',
-						'<%= yeoman.dist %>/pages/*',
-						'<%= yeoman.dist %>/elements/elements.vulcanized.html'
-					]
-				}]
-			}
-		},
 		useminPrepare: {
-			html: '<%= yeoman.app %>/index.html',
+			html: ['<%= yeoman.app %>/{,*/}*.html', '<%= yeoman.app %>/elements/elements.*.html'],
 			options: {
 				dest: '<%= yeoman.dist %>'
 			}
 		},
 		usemin: {
-			html: ['<%= yeoman.dist %>/{,*/}*.html'],
+			html: ['<%= yeoman.dist %>/{,*/}*.html', '<%= yeoman.dist %>/elements/elements.*.html'],
 			css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
 			options: {
 				dirs: ['<%= yeoman.dist %>'],
@@ -214,8 +192,17 @@ module.exports = function (grunt) {
 							/<(?:use|image)[^\>]*[^\>\S]+xlink:href=['"]([^'"\)#]+)(#.+)?["']/gm,
 							'Update the HTML within the <use> tag when referencing an external url with svg sprites as in svg4everybody'
 						],
-						[/<app-route[^\>]+import=['"]([^"']+)["']/gm, 'Update the HTML with the new object filenames'],
-						[/<core-image[^\>]+src=['"]([^"']+)["']/gm, 'Update the HTML with the new object filenames']
+						[
+							/<app-route[^\>]+import=['"]([^"']+)["']/gm,
+							'Update the HTML with the new app-route filenames'],
+						[
+							/<core-image[^\>]+src=['"]([^"']+)["']/gm,
+							'Update the HTML with the new core-image filenames'
+						],
+						[
+							/<polymer-element[^\>]+assetpath=['"]([^"']+)["']/gm,
+							'Update the polymer-elments with  asset paths'
+						],
 					]
 				}
 			}
@@ -223,11 +210,13 @@ module.exports = function (grunt) {
 		vulcanize: {
 			default: {
 				options: {
-					strip: true
+					strip: true,
+					inline: true,
+					csp: false
 				},
 				files: {
 					'<%= yeoman.dist %>/elements/elements.vulcanized.html': [
-						'<%= yeoman.dist %>/elements/elements.html'
+						'<%= yeoman.app %>/elements/elements.html'
 					]
 				}
 			}
@@ -240,25 +229,6 @@ module.exports = function (grunt) {
 						cwd: '<%= yeoman.app %>/images',
 						src: '{,*/}*.{png,jpg,jpeg,svg}',
 						dest: '<%= yeoman.dist %>/images'
-					}
-				]
-			}
-		},
-		cssmin: {
-			main: {
-				files: {
-					'<%= yeoman.dist %>/styles/main.css': [
-						'.tmp/concat/styles/{,*/}*.css'
-					]
-				}
-			},
-			elements: {
-				files: [
-					{
-						expand: true,
-						cwd: '.tmp/elements',
-						src: '{,*/}*.css',
-						dest: '<%= yeoman.dist %>/elements'
 					}
 				]
 			}
@@ -305,96 +275,52 @@ module.exports = function (grunt) {
 							'*.{ico,txt}',
 							'.htaccess',
 							'*.html',
-							'elements/**',
+							'elements/',
 							'fonts/**',
 							'images/{,*/}*.{webp,gif,png,ico,xml,svg}',
 							'pages/**',
-							'bower_components/**'
+							'!bower_components/**'
 						]
 					}
 				]
-			},
-			styles: {
-				files: [
-					{
-						expand: true,
-						cwd: '<%= yeoman.app %>',
-						dest: '.tmp',
-						src: ['{styles,elements}/{,*/}*.css']
-					}
-				]
 			}
 		},
-		'wct-test': {
+		filerev: {
 			options: {
-				root: '<%= yeoman.app %>'
+				algorithm: 'md5',
+				length: 8
 			},
-			local: {
-				options: {remote: false}
-			},
-			remote: {
-				options: {remote: true}
-			}
-		},
-		// See this tutorial if you'd like to run PageSpeed
-		// against localhost: http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/
-		pagespeed: {
-			options: {
-				// By default, we use the PageSpeed Insights
-				// free (no API key) tier. You can use a Google
-				// Developer API key if you have one. See
-				// http://goo.gl/RkN0vE for info
-				nokey: true
-			},
-			// Update `url` below to the public URL for your site
-			mobile: {
-				options: {
-					url: "https://developers.google.com/web/fundamentals/",
-					locale: "en_GB",
-					strategy: "mobile",
-					threshold: 80
-				}
+			source: {
+				files: [{
+					src: [
+						'<%= yeoman.dist %>/images/**/*.{jpg,jpeg,gif,png,ico,svg}',
+						'<%= yeoman.dist %>/fonts/*',
+						'<%= yeoman.dist %>/scripts/*',
+						'<%= yeoman.dist %>/styles/*',
+						'<%= yeoman.dist %>/pages/*',
+						'<%= yeoman.dist %>/elements/elements.vulcanized.html'
+					]
+				}]
 			}
 		}
 	});
 
-	grunt.registerTask('server', function (target) {
-		grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-		grunt.task.run(['serve:' + target]);
-	});
-
-	grunt.registerTask('serve', function (target) {
-		if (target === 'dist') {
-			return grunt.task.run(['build', 'open', 'connect:dist:keepalive']);
-		}
-
-		grunt.task.run([
-			'clean:server',
-			'copy:styles',
-			'autoprefixer:server',
-			'express:livereload',
-			'open',
-			'watch'
+	grunt.registerTask('debug', [
 		]);
-	});
-
-	grunt.registerTask('test', ['wct-test:local']);
-	grunt.registerTask('test:browser', ['express:test']);
-	grunt.registerTask('test:remote', ['wct-test:remote']);
 
 	grunt.registerTask('build', [
 		'clean:dist',
 		'copy',
+		'vulcanize',
 		'useminPrepare',
 		'imagemin',
 		'concat',
 		'autoprefixer',
 		'uglify',
 		'cssmin',
-		'vulcanize',
-		'clean:vulcanization',
 		'filerev',
-		'usemin'
+		'usemin',
+		'minifyHtml'
 	]);
 
 	grunt.registerTask('default', [

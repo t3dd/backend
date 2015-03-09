@@ -193,9 +193,9 @@
 			</section>
 		</main>
 		<app-router id="sessionRouter" on-state-change="{{interceptRouting}}">
-			<app-route path="/sessions/format" import="/_Resources/Static/Packages/T3DD.Frontend/app/pages/session-format.html"></app-route>
-			<app-route path="/sessions/request" import="/_Resources/Static/Packages/T3DD.Frontend/app/pages/session-request.html"></app-route>
-			<app-route path="/sessions/:sessionId" import="/_Resources/Static/Packages/T3DD.Frontend/app/pages/session-show.html"></app-route>
+			<app-route path="/sessions/format" import="session-format.html" element="session-format"></app-route>
+			<app-route path="/sessions/request" import="session-request.html" element="session-request"></app-route>
+			<app-route path="/sessions/:sessionId" import="session-show.html" element="session-show"></app-route>
 		</app-router>
 	</template>
 	<script>
