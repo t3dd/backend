@@ -84,6 +84,7 @@
 	template.addEventListener('template-bound', function() {
 		this.globals.scrollTarget = this.$.scrollHeader.shadowRoot.getElementById('mainContainer');
 		this.$.router.addEventListener('activate-route-end', (function(event) {
+			_paq.push(['trackPageView']);
 			if (firstRequest) {
 				this.interceptRouting(event);
 			}
