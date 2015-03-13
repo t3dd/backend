@@ -48,7 +48,7 @@
 			}
 		</style>
 		<site-ajax url="/values" response="{{values}}"></site-ajax>
-		<core-ajax id="sessionDelete" url="/sessions/{{sessionId}}" method="DELETE" headers='{"Accept": "application/json"}' content-type="'application/json'"></core-ajax>
+		<site-ajax auto="false" id="sessionDelete" url="/sessions/{{sessionId}}" method="DELETE"></site-ajax>
 		<header class="bg-light-blue">
 			<div class="container">
 				<h1 site-font="display1">Propose a session</h1>
