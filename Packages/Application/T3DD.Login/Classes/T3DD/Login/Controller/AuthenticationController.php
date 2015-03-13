@@ -165,6 +165,11 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 			$simpleAccount->sessionIdentifier = $sessionCookie->getValue();
 		}
 		$simpleAccount->profile = sprintf('http://typo3.org/services/userimage.php?username=%s&size=big', $account->getAccountIdentifier());
+		$simpleAccount->roles = [];
+		foreach ($account->getRoles() as $role) {
+			/** @var $role \TYPO3\Flow\Security\Policy\Role */
+			$simpleAccount->roles[] = $role->getName();
+		}
 		return $simpleAccount;
 	}
 }
