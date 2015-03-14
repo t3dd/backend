@@ -16,6 +16,26 @@ module.exports = function (grunt) {
 	(function() {
 		// So hacky, wow, ugly
 		var path = require('path');
+		var FileProcessor = require('grunt-usemin/lib/fileprocessor');
+		var File = require('grunt-usemin/lib/file');
+		FileProcessor.prototype.process = function (filename, assetSearchPath) {
+		  //console.log('processing file %s', filename, assetSearchPath);
+
+		  if (typeof filename === 'string') {
+		    this.file = new File(filename);
+		  } else {
+		    // filename is an object and should conform to lib/file.js API
+		    this.file = filename;
+		  }
+
+		  if (assetSearchPath && assetSearchPath.length !== 0) {
+		    this.file.searchPath = this.file.searchPath.concat(assetSearchPath);
+		  }
+
+		  var content = this.replaceWithRevved(this.replaceBlocks(this.file), this.file.searchPath);
+
+		  return content;
+		};
 		var RevvedFinder = require('grunt-usemin/lib/revvedfinder');
 		RevvedFinder.prototype.find = function find(ofile, searchDirs) {
 			var file = ofile;
@@ -49,7 +69,7 @@ module.exports = function (grunt) {
 			}
 
 			var filepaths = this.getRevvedCandidates(file, searchPaths);
-
+//console.log(file, searchPaths, rewriteToAbsolute, filepaths);
 			var filepath = filepaths[0];
 			//console.log('filepath is now ', filepath);
 
@@ -101,17 +121,32 @@ module.exports = function (grunt) {
 			]
 		},
 		useminPrepare: {
-			html: ['<%= yeoman.app %>/{,*/}*.html', '<%= yeoman.app %>/elements/elements.*.html'],
+			html: [
+				'<%= yeoman.app %>/{,*/}*.html',
+				'<%= yeoman.app %>/elements/elements.*.html',
+				'<%= yeoman.app %>/pages/*.html'
+			],
 			options: {
 				dest: '<%= yeoman.dist %>'
 			}
 		},
 		usemin: {
-			html: ['<%= yeoman.dist %>/{,*/}*.html', '<%= yeoman.dist %>/elements/elements.*.html'],
+			html: [
+				'<%= yeoman.dist %>/{,*/}*.html',
+				'<%= yeoman.dist %>/elements/elements.*.html',
+				'<%= yeoman.dist %>/pages/*.html'
+			],
 			css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
 			options: {
 				dirs: ['<%= yeoman.dist %>'],
+				assetsDirs: ['<%= yeoman.dist %>'],
 				blockReplacements: {
+					css: function(block) {
+						var hasShadowShim = block.raw.some(function(item) {
+							return item.indexOf('shim-shadowdom') !== -1;
+						});
+						return '<link rel="stylesheet" href="' + block.dest + '"' + (hasShadowShim ? ' shim-shadowdom' : '') + '>';
+					},
 					vulcanized: function (block) {
 						return '<link rel="import" href="' + block.dest + '">';
 					}
@@ -193,7 +228,7 @@ module.exports = function (grunt) {
 							'Update the HTML within the <use> tag when referencing an external url with svg sprites as in svg4everybody'
 						],
 						[
-							/<app-route[^\>]+import=['"]([^"']+)["']/gm,
+							/<app-route[^\>]+import=['"](?:\{\{[^\}]+\}\})?([^"']+)["']/gm,
 							'Update the HTML with the new app-route filenames'],
 						[
 							/<core-image[^\>]+src=['"]([^"']+)["']/gm,
@@ -202,7 +237,7 @@ module.exports = function (grunt) {
 						[
 							/<polymer-element[^\>]+assetpath=['"]([^"']+)["']/gm,
 							'Update the polymer-elments with  asset paths'
-						],
+						]
 					]
 				}
 			}
@@ -279,6 +314,7 @@ module.exports = function (grunt) {
 							'fonts/**',
 							'images/{,*/}*.{webp,gif,png,ico,xml,svg}',
 							'pages/**',
+							'styles/polymer-layout.css',
 							'!bower_components/**'
 						]
 					}
@@ -294,7 +330,6 @@ module.exports = function (grunt) {
 				files: [{
 					src: [
 						'<%= yeoman.dist %>/images/**/*.{jpg,jpeg,gif,png,ico,svg}',
-						'<%= yeoman.dist %>/fonts/*',
 						'<%= yeoman.dist %>/scripts/*',
 						'<%= yeoman.dist %>/styles/*',
 						'<%= yeoman.dist %>/pages/*',

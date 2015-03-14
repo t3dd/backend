@@ -1,4 +1,13 @@
 -
+  name:  'T3DD Frontend Disqus'
+  uriPattern: 'disqus'
+  defaults:
+    '@package':    'T3DD.Frontend'
+    '@controller': 'Frontend'
+    '@action':     'disqus'
+    '@format':     'html'
+
+-
   name:  'T3DD Frontend'
   uriPattern: '{route}'
   defaults:

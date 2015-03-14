@@ -6,6 +6,9 @@
 		<site-overlay id="overlay" backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
 			<core-style ref="main"></core-style>
 			<style>
+				:host .title {
+					margin-bottom: 0;
+				}
 				#spinner {
 					position: absolute;
 					left: 50%;
@@ -41,7 +44,7 @@
 				<div class="card">
 					<paper-spinner id="spinner" active?="{{!session}}" hidden?="{{session}}"></paper-spinner>
 					<div class="card__content" horizontal center layout>
-						<h1 flex site-font="headline">{{session.title}}</h1>
+						<h1 class="title" flex site-font="headline">{{session.title}}</h1>
 						<core-icon-button icon="clear" core-overlay-toggle></core-icon-button>
 					</div>
 					<div class="card__content">

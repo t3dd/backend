@@ -82,6 +82,7 @@
 	};
 
 	template.addEventListener('template-bound', function() {
+		this.globals.assetRootPath = this.hasAttribute('assetrootpath') ? this.getAttribute('assetrootpath').replace('/.', '') : '';
 		this.globals.scrollTarget = this.$.scrollHeader.shadowRoot.getElementById('mainContainer');
 		this.$.router.addEventListener('activate-route-end', (function(event) {
 			_paq.push(['trackPageView']);
@@ -109,8 +110,8 @@
 		var path = event.detail.path;
 		if (!this.isLoginRequired(path)) return;
 		event.preventDefault();
-		if (!this.statusKnown) {
-			this.observeOnce('statusKnown', function(newValue) {
+		if (!this.globals.userStatusKnown) {
+			this.observeOnce('globals.userStatusKnown', function(newValue) {
 				if (newValue) this.async(function() { this.interceptRouting(event); }.bind(this));
 			});
 			return;

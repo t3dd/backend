@@ -1,155 +1,63 @@
 <link rel="import" href="../../bower_components/pvc-globals/pvc-globals.html">
+<script src="../../scripts/iframeResizer.js"></script>
 
-<polymer-element name="site-comments" attributes="identifier title url categoryId https">
+<polymer-element name="site-comments" attributes="pageTitle">
 	<template>
-		<pvc-globals id="globals"></pvc-globals>
+		<pvc-globals id="globals" values="{{globals}}"></pvc-globals>
 		<style>
 			:host {
 				display: block;
 			}
+			#disqusFrame {
+				border: none;
+			}
 		</style>
-		<div id="disqus_thread"></div>
+		<iframe id="disqusFrame" src="/disqus?title={{pageTitle|encodeURIComponent}}&uri={{globals.currentPath|encodeURIComponent}}" width="100%" scrolling="no"></iframe>
 	</template>
 	<script>
-		var disqus_shortname = 't3dd15';
-		var disqusEmbedScript = null;
-		var oneDisqusRendered = false;
-
-		function generateRequestID() {
-			var text = "";
-			var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
-			for(var i = 0; i < 5; i++)
-				text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-			return text;
-		}
-
-		function loadDisqus() {
-			if(disqusEmbedScript !== null) return;
-			disqusEmbedScript = document.createElement('script');
-			disqusEmbedScript.type = 'text/javascript';
-			disqusEmbedScript.async = true;
-			disqusEmbedScript.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(disqusEmbedScript);
-		}
-
 		Polymer({
-			apiKey: 'znwrc1OQ5pQ4sWwjE5ebu0RlHpM66R03lCBEsaJ3Q2CglW5YdVNbSRt86vi3BAzw',
-
-			remoteAuth: '',
-
+			iframeAuthtenticated: null,
+			userAuthenticated: null,
 			observe: {
-				'$.globals.values.user.disqusRemoteAuth': 'updateRemoteAuth',
-				'identifier': 'reset',
-				'title': 'reset',
-				'url': 'reset',
-				'categoryId': 'reset',
-				'remoteAuth': 'reset'
+				'$.globals.values.userStatusKnown': 'reloadOnAuthenticatedUser',
+				'$.globals.values.user': 'reloadOnAuthenticatedUser'
 			},
-
-			resetScheduled: false,
-
-			updateRemoteAuth: function(oldValue, newValue) {
-				this.remoteAuth = newValue;
-			},
-
 			domReady: function() {
-				if (!this.url) {
-					this.url = window.location.href;
-				}
-				this.render();
+				iFrameResize({
+					enablePublicMethods: true,
+					messageCallback: this.onIframeMessage.bind(this)
+				}, this.$.disqusFrame);
 			},
-
-			render: function() {
-				if(this.bodyDisqus !== null) return;
-
-				loadDisqus();
-
-				if(oneDisqusRendered) return this.reset();
-
-				this.localDisqus = null;
-				this.bodyDisqus = this.$.disqus_thread;
-
-				window.disqus_config = this.disqusConfig;
-			},
-
-			reset: function() {
-				if(!window.DISQUS || this.bodyDisqus) {
-					this.resetScheduled = true;
+			considerReload: function() {
+				if (this.userAuthenticated === null || this.iframeAuthtenticated === null)
 					return;
+
+				if (this.userAuthenticated !== this.iframeAuthtenticated)
+					this.$.disqusFrame.contentWindow.document.location.reload();
+			},
+			onIframeMessage: function(message) {
+				switch (message.message) {
+					case 'not-authenticated':
+						this.iframeAuthtenticated = false;
+						break;
+					case 'authenticated':
+						this.iframeAuthtenticated = true;
+						break;
 				}
-				this.resetScheduled = false;
-
-				this.localDisqus = null;
-				this.bodyDisqus = this.$.disqus_thread;
-
-				DISQUS.reset({
-					reload: true,
-					config: this.disqusConfig
-				});
+				this.considerReload();
 			},
-
-			get disqusConfig() {
-				var el = this;
-				return function() {
-					if(el.identifier) this.page.identifier = el.identifier;
-					if(el.title) this.page.title = el.title;
-					if(el.url) this.page.url = el.url;
-					if(el.categoryId) this.page.category_id = el.categoryId;
-					if(el.apiKey) this.page.api_key = el.apiKey;
-					if(el.remoteAuth) this.page.remote_auth_s3 = el.remoteAuth;
-					this.callbacks.onReady = [(function() {
-						if(!(el.bodyDisqus instanceof Node)) return;
-						el.localDisqus = el.bodyDisqus;
-						el.bodyDisqus = null;
-						oneDisqusRendered = true;
-						if (el.resetScheduled) {
-							el.reset.call(el);
-						}
-					})];
-					var hostUrl = window.location.protocol + '//' + window.location.host,
-						ssoUrl = hostUrl + '/sso/',
-						returnTo = window.location.pathname;
-					this.sso = {
-						name: 'Login with typo3.org',
-						button: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/favicons/favicon-32.png',
-						icon: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/favicons/favicon-16.png',
-						url: ssoUrl + 'login/?returnTo=' + generateRequestID(),
-						logout: ssoUrl + 'logout/?returnTo=' + encodeURIComponent(returnTo),
-						width: '985',
-						height: '400'
-					};
-				};
-			},
-
-			get localDisqus() {
-				return this.shadowRoot.getElementById('disqus_thread');
-			},
-
-			set localDisqus(node) {
-				if (node === null) {
-					var existing = this.shadowRoot.getElementById('disqus_thread');
-					if (existing) {
-						existing.parentNode.removeChild(existing);
-					}
-					return;
+			reloadOnAuthenticatedUser: function(oldValue, newValue) {
+				if (newValue === null) {
+					this.userAuthenticated = false;
+				} else if (typeof newValue === 'boolean' && newValue === true) {
+					this.userAuthenticated = this.$.globals.user ? true : false;
+				} else if (typeof newValue === 'object') {
+					this.userAuthenticated = true;
 				}
-				this.shadowRoot.appendChild(node);
+				this.considerReload();
 			},
-
-			get bodyDisqus() {
-				return document.getElementById('disqus_thread');
-			},
-
-			set bodyDisqus(node) {
-				if (node === null) {
-					var existing = document.getElementById('disqus_thread');
-					if (existing) {
-						existing.parentNode.removeChild(existing);
-					}
-					return;
-				}
-				return document.body.appendChild(node);
+			encodeURIComponent: function(value) {
+				return encodeURIComponent(value);
 			}
 		});
 	</script>

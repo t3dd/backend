@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>{title}</title>
+
+	<script src="{f:uri.resource(path:'app/bower_components/iframe-resizer/src/iframeResizer.contentWindow.js')}"></script>
+</head>
+<body>
+	<div id="disqus_thread"></div>
+	<script type="text/javascript">
+		/* * * CONFIGURATION VARIABLES * * */
+		// Required: on line below, replace text in quotes with your forum shortname
+		var disqus_shortname = 't3dd15';
+		var apiKey = 'znwrc1OQ5pQ4sWwjE5ebu0RlHpM66R03lCBEsaJ3Q2CglW5YdVNbSRt86vi3BAzw';
+		var remoteAuth = '{remoteAuth}';
+
+		if(top !== self) { // Check we are in an iFrame
+			var timer = setInterval(function() {
+				if('parentIFrame' in window) {
+					clearTimeout(timer);
+					window.parentIFrame.sendMessage(remoteAuth ? 'authenticated' : 'not-authenticated');
+				}
+			}, 32);
+		}
+
+		window.disqus_config = function() {
+			this.page.api_key = apiKey;
+			if(remoteAuth) this.page.remote_auth_s3 = remoteAuth;
+			var hostUrl = window.location.protocol + '//' + window.location.host,
+				ssoUrl = hostUrl + '/sso/',
+				returnTo = window.location.pathname;
+			this.sso = {
+				name: 'Login with typo3.org',
+				button: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/favicons/favicon-32.png',
+				icon: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/favicons/favicon-16.png',
+				url: ssoUrl + 'login/?returnTo=' + generateRequestID(),
+				logout: ssoUrl + 'logout/?returnTo=' + encodeURIComponent(returnTo),
+				width: '985',
+				height: '400'
+			};
+		};
+
+		/* * * DON'T EDIT BELOW THIS LINE * * */
+		(function() {
+			var dsq = document.createElement('script');
+			dsq.type = 'text/javascript';
+			dsq.async = true;
+			dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+			(document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+		})();
+	</script>
+</body>
+</html>

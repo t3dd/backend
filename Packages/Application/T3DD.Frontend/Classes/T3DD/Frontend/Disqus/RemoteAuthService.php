@@ -1,16 +1,10 @@
 <?php
-namespace T3DD\Frontend\Aspects;
-
-
-use TYPO3\Flow\Annotations as Flow;
+namespace T3DD\Frontend\Disqus;
 
 /**
  * Enter descriptions here
- *
- * @Flow\Aspect
  */
-class DisqusRemoteAuthAspect {
-
+class RemoteAuthService {
 
 	/**
 	 * @var array
@@ -27,21 +21,10 @@ class DisqusRemoteAuthAspect {
 	}
 
 	/**
-	 * @param \TYPO3\Flow\Aop\JoinPointInterface $joinPoint
-	 * @Flow\Around("method(T3DD\Login\Controller\AuthenticationController->buildAccountDTO())")
-	 */
-	public function addDisqusRemoteAuthToUserDto(\TYPO3\Flow\Aop\JoinPointInterface $joinPoint) {
-		$userDto = $joinPoint->getAdviceChain()->proceed($joinPoint);
-		$account = $joinPoint->getMethodArgument('account');
-		$userDto->disqusRemoteAuth = $this->generateDisqusRemoteAuth($account);
-		return $userDto;
-	}
-
-	/**
 	 * @param \TYPO3\Flow\Security\Account $account
 	 * @return string
 	 */
-	protected function generateDisqusRemoteAuth(\TYPO3\Flow\Security\Account $account) {
+	public function generateDisqusRemoteAuth(\TYPO3\Flow\Security\Account $account) {
 		/** @var \TYPO3\Party\Domain\Model\Person $person */
 		$person = $account->getParty();
 		$data = array(

@@ -152,7 +152,7 @@
 			<section class="bg-white" hidden?="{{!sessions.length}}">
 				<div class="container">
 					<h2 site-font="title">Session Proposals</h2>
-					<core-list id="list" data="{{sessions}}" scrollTarget="{{globals.scrollTarget}}" on-core-activate="{{selectSession}}" selectionEnabled="true">
+					<site-list id="list" data="{{sessions}}" scrollTarget="{{globals.scrollTarget}}" on-core-activate="{{selectSession}}" selectionEnabled="true">
 						<template>
 							<div class="session__container">
 								<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>
@@ -178,7 +178,7 @@
 								</div>
 							</div>
 						</template>
-					</core-list>
+					</site-list>
 				</div>
 			</section>
 			<section class="request-session bg-medium-blue">
@@ -193,9 +193,9 @@
 			</section>
 		</main>
 		<app-router id="sessionRouter" on-state-change="{{interceptRouting}}">
-			<app-route path="/sessions/format" import="session-format.html" element="session-format"></app-route>
-			<app-route path="/sessions/request" import="session-request.html" element="session-request"></app-route>
-			<app-route path="/sessions/:sessionId" import="session-show.html" element="session-show"></app-route>
+			<app-route path="/sessions/format" import="{{globals.assetRootPath}}/pages/session-format.html" element="session-format"></app-route>
+			<app-route path="/sessions/request" import="{{globals.assetRootPath}}/pages/session-request.html" element="session-request"></app-route>
+			<app-route path="/sessions/:sessionId" import="{{globals.assetRootPath}}/pages/session-show.html" element="session-show"></app-route>
 		</app-router>
 	</template>
 	<script>

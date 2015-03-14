@@ -7,6 +7,7 @@
 	<title>T3DD15 - TYPO3 Developer Days 2015</title>
 	<meta name="description" content="TYPO3 Developer Days is the developer gathering of the TYPO3 community worldwide, taking place July 16-19, Nuremberg, Germany">
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
 	<link rel="shortcut icon" href="images/favicons/favicon.ico">
 	<link rel="icon" sizes="16x16 32x32 64x64" href="images/favicons/favicon.ico">
 	<link rel="icon" type="image/png" sizes="196x196" href="images/favicons/favicon-192.png">
@@ -25,13 +26,16 @@
 	<link rel="apple-touch-icon" sizes="152x152" href="images/favicons/favicon-152.png">
 	<link rel="apple-touch-icon" sizes="180x180" href="images/favicons/favicon-180.png">
 
-	<!-- build:css styles/app.css -->
-	<link rel="stylesheet" href="styles/app.css">
-	<!-- endbuild-->
-
 	<!-- build:js scripts/webcomponents.min.js -->
-	<script src="bower_components/webcomponentsjs/webcomponents.js"></script>
+	<script src="scripts/webcomponents.js"></script>
 	<!-- endbuild -->
+
+	<!-- the layout file is necessary here, because the minifier scrumbles somehow the styles -->
+	<link rel="stylesheet" href="styles/polymer-layout.css" shim-shadowdom>
+
+	<!-- build:css styles/app.css -->
+	<link rel="stylesheet" href="styles/app.css" shim-shadowdom>
+	<!-- endbuild-->
 
 	<!-- build:vulcanized elements/elements.vulcanized.html -->
 	<link rel="import" href="elements/elements.html">
@@ -40,12 +44,12 @@
 
 <body unresolved fullbleed>
 
-<template id="t" is="auto-binding">
+<template id="t" is="auto-binding" assetrootpath=".">
 	<core-style ref="main"></core-style>
 
 	<pvc-globals values="{{globals}}"></pvc-globals>
 
-	<site-login id="baseLogin" user="{{globals.user}}" statusKnown="{{statusKnown}}" ssoUrl="/sso/"></site-login>
+	<site-login id="baseLogin" user="{{globals.user}}" statusKnown="{{globals.userStatusKnown}}" ssoUrl="/sso/"></site-login>
 
 	<core-media-query id="mq-phone" query="(max-width:767px)"
 					  queryMatches="{{globals.isPhoneSize}}"></core-media-query>
@@ -77,14 +81,14 @@
 					<div flex horizontal layout center>
 						<core-icon-button id="menuButton" icon="menu" hidden?="{{!globals.isPhoneSize}}" core-drawer-toggle></core-icon-button>
 						<a href="/" is="pushstate-anchor" hidden?="{{currentPath == '/'}}"><site-logo class="t3dd-logo" hideLocation hideDate></site-logo></a>
-						<site-menu horizontal selected="{{currentPath}}" hidden?="{{globals.isPhoneSize}}"></site-menu>
+						<site-menu class="menu" horizontal selected="{{currentPath}}" hidden?="{{globals.isPhoneSize}}"></site-menu>
 					</div>
 					<div>
 						<core-image id="userImage" src="{{globals.user.profile}}" sizing="cover" preload fade></core-image>
-						<paper-dropdown-menu id="userLogin" label="{{ globals.isSmallPhoneSize ? '' : (!statusKnown || !globals.user) ? 'Anonymous' : globals.user.displayName}}">
+						<paper-dropdown-menu id="userLogin" label="{{ globals.isSmallPhoneSize ? '' : (!globals.userStatusKnown || !globals.user) ? 'Anonymous' : globals.user.displayName}}">
 							<paper-dropdown layered class="dropdown" halign="right">
-								<paper-item on-click="{{login}}" hidden?="{{statusKnown && globals.user}}">Login with typo3.org</paper-item>
-								<paper-item on-click="{{logout}}" hidden?="{{!statusKnown || !globals.user}}">Logout</paper-item>
+								<paper-item on-click="{{login}}" hidden?="{{globals.userStatusKnown && globals.user}}">Login with typo3.org</paper-item>
+								<paper-item on-click="{{logout}}" hidden?="{{!globals.userStatusKnown || !globals.user}}">Logout</paper-item>
 							</paper-dropdown>
 						</paper-dropdown-menu>
 					</div>
@@ -95,7 +99,7 @@
 					<app-route path="/location" import="pages/page-location.html" element="page-location"></app-route>
 					<app-route path="/lodging" import="pages/page-lodging.html" element="page-lodging"></app-route>
 					<app-route path="/sessions/new" import="pages/session-new.html" element="session-new" forceLogin?="{{!globals.user}}"></app-route>
-					<app-route path="/sessions/edit/:sessionId" import="pages/session-edit.html" element="session-edit"></app-route>
+					<app-route path="/sessions/edit/:sessionId" import="pages/session-edit.html" element="session-edit" forceLogin?="{{!globals.user}}"></app-route>
 					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter element="session-list"></app-route>
 					<app-route path="/register" import="pages/page-register.html" element="page-register"></app-route>
 					<app-route path="/sponsoring" import="pages/page-sponsoring.html" element="page-sponsoring"></app-route>
@@ -150,7 +154,7 @@
 								(<a href="https://www.polymer-project.org/" target="_blank">Polymer</a>,
 								<a href="http://flow.typo3.org" target="_blank">TYPO3 Flow 3</a>) by:
 							</div>
-							<div horizontal layout center>
+							<div class="builders__logos" horizontal layout center>
 								<a href="http://www.dfau.de" target="_blank">
 									<img src="images/dfau-logo.svg" alt="DFAU" title="DFAU" height="40">
 								</a>

@@ -2,7 +2,7 @@
 privilegeTargets:
   TYPO3\Flow\Security\Authorization\Privilege\Method\MethodPrivilege:
     T3DD_Frontend_PublicFrontendAccess:
-      matcher: method(T3DD\Frontend\Controller\FrontendController->serveAction())
+      matcher: method(T3DD\Frontend\Controller\FrontendController->(serve|disqus)Action())
 roles:
   'TYPO3.Flow:Everybody':
     privileges:
