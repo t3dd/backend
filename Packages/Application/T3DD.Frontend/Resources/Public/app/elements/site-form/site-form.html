@@ -335,7 +335,7 @@
 
 			sendRequest = function(options) {
 				var xhr = new XMLHttpRequest(),
-						customHeaders = options.form.headers;
+						customHeaders = options.form.headers || {"Accept": "application/json"};
 
 				xhr.open(options.form.acceptableMethod, options.url || options.form.action);
 

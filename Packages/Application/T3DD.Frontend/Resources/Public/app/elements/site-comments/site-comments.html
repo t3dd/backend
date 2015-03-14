@@ -19,10 +19,15 @@
 			iframeAuthtenticated: null,
 			userAuthenticated: null,
 			observe: {
-				'$.globals.values.userStatusKnown': 'reloadOnAuthenticatedUser',
-				'$.globals.values.user': 'reloadOnAuthenticatedUser'
+				'globals.userStatusKnown': 'reloadOnAuthenticatedUser',
+				'globals.user': 'reloadOnAuthenticatedUser',
+				'iframeAuthtenticated': 'considerReload',
+				'userAuthenticated': 'considerReload'
 			},
 			domReady: function() {
+				if (this.globals.userStatusKnown) {
+					this.userAuthenticated = this.globals.user ? true : false;
+				}
 				iFrameResize({
 					enablePublicMethods: true,
 					messageCallback: this.onIframeMessage.bind(this)
@@ -32,8 +37,9 @@
 				if (this.userAuthenticated === null || this.iframeAuthtenticated === null)
 					return;
 
-				if (this.userAuthenticated !== this.iframeAuthtenticated)
+				if (this.userAuthenticated !== this.iframeAuthtenticated) {
 					this.$.disqusFrame.contentWindow.document.location.reload();
+				}
 			},
 			onIframeMessage: function(message) {
 				switch (message.message) {
@@ -44,17 +50,15 @@
 						this.iframeAuthtenticated = true;
 						break;
 				}
-				this.considerReload();
 			},
 			reloadOnAuthenticatedUser: function(oldValue, newValue) {
 				if (newValue === null) {
 					this.userAuthenticated = false;
 				} else if (typeof newValue === 'boolean' && newValue === true) {
-					this.userAuthenticated = this.$.globals.user ? true : false;
+					this.userAuthenticated = this.globals.user ? true : false;
 				} else if (typeof newValue === 'object') {
 					this.userAuthenticated = true;
 				}
-				this.considerReload();
 			},
 			encodeURIComponent: function(value) {
 				return encodeURIComponent(value);
