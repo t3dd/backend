@@ -88,7 +88,8 @@
 			this.$.drawerPanel.closeDrawer();
 		}).bind(this));
 		this.$.router.addEventListener('activate-route-end', (function(event) {
-			_paq.push(['trackPageView', event.detail.path]);
+			_paq.push(['setCustomUrl', event.detail.path]);
+			_paq.push(['trackPageView']);
 			if (firstRequest) {
 				this.interceptRouting(event);
 			}
