@@ -85,7 +85,7 @@
 		this.globals.assetRootPath = this.hasAttribute('assetrootpath') ? this.getAttribute('assetrootpath').replace('/.', '') : '';
 		this.globals.scrollTarget = this.$.scrollHeader.shadowRoot.getElementById('mainContainer');
 		this.$.router.addEventListener('activate-route-end', (function(event) {
-			_paq.push(['trackPageView']);
+			_paq.push(['trackPageView', event.detail.path]);
 			if (firstRequest) {
 				this.interceptRouting(event);
 			}
