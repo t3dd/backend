@@ -2,7 +2,7 @@
 <link rel="import" href="../site-style/site-style.html">
 <link rel="import" href="../site-ajax/site-ajax.html">
 
-<polymer-element name="site-vote" attributes="sessionResource voteUri">
+<polymer-element name="site-vote" attributes="sessionResource voteUri horizontal">
 	<template>
 		<core-style ref="main"></core-style>
 		<style>
@@ -15,6 +15,9 @@
 			#button::shadow #ripple {
 			  color: #FF8700;
 			}
+			#count {
+				line-height: 1;
+			}
 			#count, #button.voted {
 				color: #595959;
 			}
@@ -23,9 +26,9 @@
 		<site-ajax cache="true" url="/votes" response="{{votes}}"></site-ajax>
 		<site-ajax id="myVoteAjax" cache="true" url="/votes/me" response="{{myVotes}}" auto="false"></site-ajax>
 		<site-ajax id="voteAjax" auto="false" url="{{voteUri}}" on-core-response="{{handleVoteResponse}}"></site-ajax>
-		<div layout vertical>
-			<div id="count" site-font="caption" layout horizontal center-center>{{vote.numberOfVotes || 'no'}} fav{{vote.numberOfVotes > 1 ? 's' : ''}}</div>
+		<div layout vertical?="{{!horizontal}}" horizontal?="{{horizontal}}">
 			<paper-icon-button id="button" class="{{ {'voted':myVote} | tokenList}}" icon="{{myVote ? 'favorite' : 'favorite-outline'}}" on-tap="{{toggleVote}}"></paper-icon-button>
+			<div id="count" site-font="caption" layout horizontal center-center>{{vote.numberOfVotes || 'no'}} fav{{vote.numberOfVotes > 1 ? 's' : ''}}</div>
 		</div>
 	</template>
 	<script>
@@ -33,6 +36,7 @@
 			'use strict';
 
 			Polymer({
+				horizontal: false,
 				vote: {},
 				myVote: null,
 				myVotes: [],

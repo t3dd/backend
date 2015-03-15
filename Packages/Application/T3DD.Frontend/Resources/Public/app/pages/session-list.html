@@ -58,6 +58,14 @@
 				cursor: pointer;
 				transition: background-color .2s ease-in;
 			}
+			.session .title {
+				margin-bottom: 4px;
+			}
+			@media (min-width: 640px) {
+				.session .title {
+					margin-bottom: 0;
+				}
+			}
 			.session:hover, .session:focus  {
 				background: #f2f2f2;
 			}
@@ -92,21 +100,36 @@
 				content: ']';
 			}
 
+			.session site-vote {
+				margin: -8px 0 -8px 0;
+			}
+
+			@media (max-width:640px) {
+				.session site-vote {
+					margin: -8px -4px -8px 4px;
+				}
+			}
+
 			.request-session p {
 				margin: 0;
 			}
 			.request-session paper-button {
 				background: #fff;
 			}
-			dl {
+			dl[site-font=caption] {
 				margin: 0;
+			}
+			@media (min-width: 768px) {
+				dl[site-font=caption] {
+					white-space: nowrap;
+				}
 			}
 			dt,dd {
 				display: inline;
 			}
 			dt {
-				font-weight: 700;
 				margin-left: .5em;
+				font-weight: 700;
 			}
 			dt:first-child {
 				margin-left: 0;
@@ -154,28 +177,26 @@
 					<h2 site-font="title">Session Proposals</h2>
 					<site-list id="list" data="{{sessions}}" scrollTarget="{{globals.scrollTarget}}" on-core-activate="{{selectSession}}" selectionEnabled="true">
 						<template>
-							<div class="session__container">
-								<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>
-									<div flex horizontal layout center>
-										<core-image class="profileImage" src="{{model.creator.profileImage}}" sizing="cover" preload fade></core-image>
-										<div layout vertical>
-											<h3 site-font="title">{{model.title}}</h3>
-											<dl class="caption" site-font="caption">
-												<dt>Author:</dt>
-												<dd>{{model.creator.displayName}}</dd>
-												<template if="{{model.themes.length}}">
-													<dt>Theme: </dt>
-													<dd>{{model.themes | joinThemes}}</dd>
-												</template>
-												<dt>Type:</dt>
-												<dd>{{model.type}}</dd>
-												<dt>Expertise Level:</dt>
-												<dd>{{model.expertiseLevel}}</dd>
-											</dl>
-										</div>
+							<div class="session {{ { 'selected':selected } | tokenList }}" layout horizontal>
+								<div flex horizontal layout center>
+									<core-image class="profileImage" src="{{model.creator.profileImage}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
+									<div layout vertical>
+										<h3 class="title" site-font="{{globals.isSmallPhoneSize ? 'subhead' : 'title'}}">{{model.title}}</h3>
+										<dl class="caption" site-font="caption">
+											<dt>Author:</dt>
+											<dd>{{model.creator.displayName}}</dd>
+											<template if="{{model.themes.length}}">
+												<dt>Theme: </dt>
+												<dd>{{model.themes | joinThemes}}</dd>
+											</template>
+											<dt>Type:</dt>
+											<dd>{{model.type}}</dd>
+											<dt>Knowledge:</dt>
+											<dd>{{model.expertiseLevel}}</dd>
+										</dl>
 									</div>
-									<site-vote sessionResource="{{model.resource}}" voteUri="{{model.voteUri}}"></site-vote>
 								</div>
+								<site-vote sessionResource="{{model.resource}}" voteUri="{{model.voteUri}}"></site-vote>
 							</div>
 						</template>
 					</site-list>

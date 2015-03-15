@@ -9,6 +9,7 @@
 				:host .title {
 					margin-bottom: 0;
 				}
+
 				#spinner {
 					position: absolute;
 					left: 50%;
@@ -16,51 +17,101 @@
 					top: 50%;
 					margin-top: -14px;
 				}
+
 				.card {
 					min-height: 30vh;
-				}
-				dt {
-					float: left;
-					width: 160px;
-					overflow: hidden;
-					clear: left;
-					text-align: right;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					font-weight: bold;
+					margin: 0;
 				}
 
-				dd {
-					margin-left: 180px;
+				.card__content {
+					border-bottom:1px solid #eee
 				}
 
 				@media (min-width: 768px) {
-					.card .card__content {
+					.card {
+						margin: 16px;
+					}
+					.card__content {
 						padding: 16px 32px;
 					}
+				}
+
+				#header {
+					min-height: 48px;
+				}
+
+				[core-overlay-toggle] {
+					position: absolute;
+					right: 16px;
+					top: 12px;
+				}
+
+				site-vote {
+					margin: -4px 8px 0 -8px;
+				}
+
+				@media (min-width: 640px) {
+					site-vote {
+						float: left;
+						margin: -4px 8px 0 -4px;
+					}
+				}
+
+				dl {
+					display: block;
+					margin: 0 8px 0 0;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+				@media (min-width: 640px) {
+					dl {
+						display: inline-block;
+					}
+					dl[site-font=caption] {
+						line-height: 1;
+					}
+				}
+
+				dt, dd {
+					display: inline-block;
+					margin: 0;
+				}
+
+				dt {
+					font-weight: 700;
 				}
 			</style>
 			<div class="card__container container">
 				<div class="card">
 					<paper-spinner id="spinner" active?="{{!session}}" hidden?="{{session}}"></paper-spinner>
-					<div class="card__content" horizontal center layout>
-						<h1 class="title" flex site-font="headline">{{session.title}}</h1>
+					<div id="header" class="card__content" relative>
 						<core-icon-button icon="clear" core-overlay-toggle></core-icon-button>
-					</div>
-					<div class="card__content">
-						<div layout horizontal>
-							<div flex>
-								<marked-element text="{{session.description}}"></marked-element>
-							</div>
-							<dl>
-								<dt>Themes:</dt>
-								<dd class="theme">{{session.themes | joinThemes}}</dd>
+						<div hidden?="{{!session}}">
+							<site-vote sessionResource="{{session.resource}}" voteUri="{{session.voteUri}}" hidden?="{{!session}}" horizontal?="{{globals.isSmallPhoneSize}}"></site-vote>
+							<h1 class="title" site-font="headline">{{session.title}}</h1>
+							<dl site-font="caption">
+								<dt>Author:</dt>
+								<dd>{{session.creator.displayName}}</dd>
+							</dl>
+							<dl site-font="caption">
 								<dt>Type:</dt>
 								<dd>{{session.type}}</dd>
-								<dt>Expertise level:</dt>
+							</dl>
+							<template if="{{session.themes.length}}">
+							<dl site-font="caption">
+								<dt>Theme: </dt>
+								<dd>{{session.themes | joinThemes}}</dd>
+							</dl>
+							</template>
+							<dl site-font="caption">
+								<dt>Knowledge:</dt>
 								<dd>{{session.expertiseLevel}}</dd>
 							</dl>
 						</div>
+					</div>
+					<div class="card__content" hidden?="{{!session}}" vertical layout>
+						<marked-element text="{{session.description}}"></marked-element>
 					</div>
 					<div class="card__content">
 						<template if="{{$.overlay.opened}}">
