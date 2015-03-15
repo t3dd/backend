@@ -1,87 +1,87 @@
 <polymer-element name="session-show" attributes="sessionId router">
 	<template>
 		<pvc-globals values="{{globals}}"></pvc-globals>
-		<core-style ref="main"></core-style>
+		<core-style id="session-show">
+			:host .title {
+				margin-bottom: 0;
+			}
+
+			#spinner {
+				position: absolute;
+				left: 50%;
+				margin-left: -14px;
+				top: 50%;
+				margin-top: -14px;
+			}
+
+			.card {
+				min-height: 30vh;
+				margin: 0;
+			}
+
+			.card__content {
+				border-bottom:1px solid #eee
+			}
+
+			@media (min-width: 768px) {
+				.card {
+					margin: 16px;
+				}
+				.card__content {
+					padding: 16px 32px;
+				}
+			}
+
+			#header {
+				min-height: 48px;
+			}
+
+			[core-overlay-toggle] {
+				position: absolute;
+				right: 16px;
+				top: 12px;
+			}
+
+			site-vote {
+				margin: -4px 8px 0 -8px;
+			}
+
+			@media (min-width: 640px) {
+				site-vote {
+					float: left;
+					margin: -4px 8px 0 -4px;
+				}
+			}
+
+			dl {
+				display: block;
+				margin: 0 8px 0 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			@media (min-width: 640px) {
+				dl {
+					display: inline-block;
+				}
+				dl[site-font=caption] {
+					line-height: 1;
+				}
+			}
+
+			dt, dd {
+				display: inline-block;
+				margin: 0;
+			}
+
+			dt {
+				font-weight: 700;
+			}
+		</core-style>
 		<site-ajax url="/sessions/{{sessionId}}" on-core-response="{{handleSession}}"></site-ajax>
 		<site-overlay id="overlay" backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
 			<core-style ref="main"></core-style>
-			<style>
-				:host .title {
-					margin-bottom: 0;
-				}
-
-				#spinner {
-					position: absolute;
-					left: 50%;
-					margin-left: -14px;
-					top: 50%;
-					margin-top: -14px;
-				}
-
-				.card {
-					min-height: 30vh;
-					margin: 0;
-				}
-
-				.card__content {
-					border-bottom:1px solid #eee
-				}
-
-				@media (min-width: 768px) {
-					.card {
-						margin: 16px;
-					}
-					.card__content {
-						padding: 16px 32px;
-					}
-				}
-
-				#header {
-					min-height: 48px;
-				}
-
-				[core-overlay-toggle] {
-					position: absolute;
-					right: 16px;
-					top: 12px;
-				}
-
-				site-vote {
-					margin: -4px 8px 0 -8px;
-				}
-
-				@media (min-width: 640px) {
-					site-vote {
-						float: left;
-						margin: -4px 8px 0 -4px;
-					}
-				}
-
-				dl {
-					display: block;
-					margin: 0 8px 0 0;
-					overflow: hidden;
-					text-overflow: ellipsis;
-				}
-
-				@media (min-width: 640px) {
-					dl {
-						display: inline-block;
-					}
-					dl[site-font=caption] {
-						line-height: 1;
-					}
-				}
-
-				dt, dd {
-					display: inline-block;
-					margin: 0;
-				}
-
-				dt {
-					font-weight: 700;
-				}
-			</style>
+			<core-style ref="session-show"></core-style>
 			<div class="card__container container">
 				<div class="card">
 					<paper-spinner id="spinner" active?="{{!session}}" hidden?="{{session}}"></paper-spinner>

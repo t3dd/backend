@@ -1,33 +1,26 @@
 <polymer-element name="session-format" attributes="sessionId router">
 	<template>
 		<pvc-globals values="{{globals}}"></pvc-globals>
-		<core-style ref="main"></core-style>
+		<core-style id="session-format">
+			#close {
+				position: absolute;
+				right: 8px;
+				top: 8px;
+				background: #fff;
+			}
+			#title {
+				min-height: 32px;
+				margin-right: 54px;
+				margin-bottom: 0;
+			}
+			.card {
+				min-height: 30vh;
+			}
+
+		</core-style>
 		<site-overlay id="overlay" backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
 			<core-style ref="main"></core-style>
-			<style>
-				#close {
-					position: absolute;
-					right: 8px;
-					top: 8px;
-					background: #fff;
-				}
-				#title {
-					min-height: 32px;
-					margin-right: 54px;
-					margin-bottom: 0;
-				}
-				#spinner {
-					position: absolute;
-					left: 50%;
-					margin-left: -14px;
-					top: 50%;
-					margin-top: -14px;
-				}
-				.card {
-					min-height: 30vh;
-				}
-
-			</style>
+			<core-style ref="session-format"></core-style>
 			<div class="card__container container">
 				<div class="card">
 					<div class="card__content" horizontal center layout>
