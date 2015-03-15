@@ -43,7 +43,8 @@
 				sessionResource: null,
 
 				observe: {
-					'globals.user': 'updateMyVotesUponLogout'
+					'globals.user': 'updateMyVotesUponLogout',
+					'sessionResource' : 'votesChanged'
 				},
 
 				updateMyVotesUponLogout: function(oldValue, newValue) {
@@ -56,6 +57,7 @@
 				},
 
 				votesChanged: function () {
+					if (!this.votes) return;
 					this.vote = this.votes.filter(function (vote) {
 						return vote.session === this.sessionResource;
 					}.bind(this))[0] || {numberOfVotes: 0, session: this.sessionResource};

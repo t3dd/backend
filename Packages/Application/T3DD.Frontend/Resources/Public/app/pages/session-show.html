@@ -87,7 +87,7 @@
 					<paper-spinner id="spinner" active?="{{!session}}" hidden?="{{session}}"></paper-spinner>
 					<div id="header" class="card__content" relative>
 						<core-icon-button icon="clear" core-overlay-toggle></core-icon-button>
-						<div hidden?="{{!session}}">
+						<template if="{{session}}">
 							<site-vote sessionResource="{{session.resource}}" voteUri="{{session.voteUri}}" hidden?="{{!session}}" horizontal?="{{globals.isSmallPhoneSize}}"></site-vote>
 							<h1 class="title" site-font="headline">{{session.title}}</h1>
 							<dl site-font="caption">
@@ -108,7 +108,7 @@
 								<dt>Knowledge:</dt>
 								<dd>{{session.expertiseLevel}}</dd>
 							</dl>
-						</div>
+						</template>
 					</div>
 					<div class="card__content" hidden?="{{!session}}" vertical layout>
 						<marked-element text="{{session.description}}"></marked-element>
