@@ -84,13 +84,16 @@
 	template.addEventListener('template-bound', function() {
 		this.globals.assetRootPath = this.hasAttribute('assetrootpath') ? this.getAttribute('assetrootpath').replace('/.', '') : '';
 		this.globals.scrollTarget = this.$.scrollHeader.shadowRoot.getElementById('mainContainer');
+		this.$.router.addEventListener('activate-route-start', (function(event) {
+			this.$.drawerPanel.closeDrawer();
+		}).bind(this));
 		this.$.router.addEventListener('activate-route-end', (function(event) {
 			_paq.push(['trackPageView', event.detail.path]);
 			if (firstRequest) {
 				this.interceptRouting(event);
 			}
 			template.globals.currentPath = template.currentPath = event.detail.path;
-			document.getElementById('scrollHeader').shadowRoot.getElementById('mainContainer').scrollTop = 0;
+			this.$.scrollHeader.shadowRoot.getElementById('mainContainer').scrollTop = 0;
 			firstRequest = false;
 		}).bind(this));
 		this.$.router.addEventListener('activate-route-start', this.interceptRouting.bind(this));

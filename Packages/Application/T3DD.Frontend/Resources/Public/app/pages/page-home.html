@@ -146,10 +146,10 @@
 			<section>
 				<div class="container sponsors">
 					<p site-font="subhead">We thank our sponsors for supporting us!</p>
-					<div horizontal layout>
+					<div horizontal?="{{!globals.isSmallPhoneSize}}" layout>
 						<div flex three>
 							<h3 site-font="title">Premium Sponsors</h3>
-							<div horizontal around-justified layout>
+							<div horizontal?="{{!globals.isSmallPhoneSize}}" vertical?="{{globals.isSmallPhoneSize}}" around-justified layout>
 								<a href="https://jweiland.net/" title="jweiland.net - TYPO3 Hosting Experts" target="_blank">
 									<img src="../images/jweiland-net-logo.png" alt="Logo jweiland.net TYPO3 Hosting" width="200" responsive>
 								</a>
