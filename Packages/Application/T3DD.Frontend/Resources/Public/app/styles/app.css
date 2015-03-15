@@ -124,12 +124,17 @@ body {
 #footer {
 	box-sizing: border-box;
 	height: 192px;
-	padding: 24px 32px;
+	padding: 24px 32px 4px;
 	background-color: #fff;
 }
 
 #footer a {
 	border-bottom: none;
+}
+
+.vat-exclusive-notice {
+	display: inline-block;
+	max-width: 40vw;
 }
 
 .builders__builtwith {
@@ -144,10 +149,7 @@ body {
 	display: block;
 }
 
-#footer paper-tabs {
-	min-width: 192px;
-}
-
-#footer paper-tabs::shadow #selectionBar {
-	background-color: #000;
+.legal-notice {
+	display: inline-block;
+	margin-bottom: 16px;
 }
