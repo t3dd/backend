@@ -230,7 +230,7 @@ abbr {
 .card {
 	position: relative;
 	display: block;
-	margin: 16px;
+	margin: 16px 0;
 	overflow: hidden;
 	background: #fff;
 	color: #212121;
@@ -239,6 +239,19 @@ abbr {
 .card__container {
 	width: 100vw;
 	max-width: 100%;
+}
+
+.card__container[horizontal] > .card {
+	margin-right: 16px;
+	margin-left: 16px;
+}
+
+.card__container[horizontal] > .card:first-child {
+	margin-left: 0;
+}
+
+.card__container[horizontal] > .card:last-child {
+	margin-right: 0;
 }
 
 .container, .card {
@@ -251,11 +264,10 @@ abbr {
 }
 
 .card__buttons.card__content {
-	padding-right: 2px;
-	padding-left: 2px;
+	padding: 8px 4px;
 }
 
-@media (min-width:745px) {
+@media (min-width:768px) {
 	.card__buttons.card__content {
 		padding: 12px 18px;
 	}
