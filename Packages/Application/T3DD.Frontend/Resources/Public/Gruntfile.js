@@ -236,7 +236,11 @@ module.exports = function (grunt) {
 						],
 						[
 							/<polymer-element[^\>]+assetpath=['"]([^"']+)["']/gm,
-							'Update the polymer-elments with  asset paths'
+							'Update the polymer-elments with the new asset path'
+						],
+						[
+							/<google-map-marker[^\>]+icon=['"]([^"']+)["']/gm,
+							'Update the google-map-marker with the new icon path'
 						]
 					]
 				}
