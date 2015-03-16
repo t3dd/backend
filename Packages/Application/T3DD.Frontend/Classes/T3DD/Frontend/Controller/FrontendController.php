@@ -61,10 +61,12 @@ class FrontendController extends \TYPO3\Flow\Mvc\Controller\ActionController {
 	/**
 	 * @param string $title
 	 * @param string $uri
+	 * @param string $identifier
 	 */
-	public function disqusAction($title, $uri) {
+	public function disqusAction($title, $uri, $identifier) {
 		$this->view->assign('title', $title);
-		$this->view->assign('url', $uri);
+		$this->view->assign('uri', $uri);
+		$this->view->assign('identifier', $identifier);
 		if ($account = $this->securityContext->getAccount()) {
 			$this->view->assign('remoteAuth', $this->disqusRemoteAuthService->generateDisqusRemoteAuth($account));
 		}

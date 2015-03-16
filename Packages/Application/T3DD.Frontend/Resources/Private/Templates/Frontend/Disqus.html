@@ -33,12 +33,14 @@
 		}
 
 		window.disqus_config = function() {
-			this.page.api_key = apiKey;
-			if(remoteAuth) this.page.remote_auth_s3 = remoteAuth;
-
 			var hostUrl = window.location.protocol + '//' + window.location.host,
 				ssoUrl = hostUrl + '/sso/',
 				returnTo = window.location.pathname+window.location.search;
+
+			this.page.api_key = apiKey;
+			if(remoteAuth) this.page.remote_auth_s3 = remoteAuth;
+			this.page.identifier = "{identifier}";
+			this.page.url = "{uri}";
 
 			this.sso = {
 				name: 'Login with typo3.org',

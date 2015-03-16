@@ -1,7 +1,7 @@
 <link rel="import" href="../../bower_components/pvc-globals/pvc-globals.html">
 <script src="../../scripts/iframeResizer.js"></script>
 
-<polymer-element name="site-comments" attributes="pageTitle">
+<polymer-element name="site-comments" attributes="pageTitle pageUri identifier">
 	<template>
 		<pvc-globals id="globals" values="{{globals}}"></pvc-globals>
 		<style>
@@ -12,7 +12,7 @@
 				border: none;
 			}
 		</style>
-		<iframe id="disqusFrame" src="/disqus?title={{pageTitle|encodeURIComponent}}&uri={{globals.currentPath|encodeURIComponent}}" width="100%" scrolling="no"></iframe>
+		<iframe id="disqusFrame" src="/disqus?title={{pageTitle|encodeURIComponent}}&uri={{pageUri|encodeURIComponent}}&identifier={{identifier|encodeURIComponent}}" width="100%" scrolling="no"></iframe>
 	</template>
 	<script>
 		Polymer({
@@ -21,6 +21,11 @@
 			observe: {
 				'globals.userStatusKnown': 'reloadOnAuthenticatedUser',
 				'globals.user': 'reloadOnAuthenticatedUser'
+			},
+			ready: function() {
+				if (!this.pageUri) {
+					this.pageUri = this.globals.currentPath;
+				}
 			},
 			domReady: function() {
 				if (this.globals.userStatusKnown) {

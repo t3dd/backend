@@ -33,7 +33,7 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'creator', 'title', 'description', 'themes', 'type', 'expertiseLevel', 'speakers', 'date', 'voteUri');
+		return array('resource', 'creator', 'title', 'description', 'themes', 'type', 'expertiseLevel', 'speakers', 'date', 'voteUri', 'identifier');
 	}
 
 	/**
@@ -114,6 +114,13 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 */
 	public function getSpeakers() {
 		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getPayload()->getSpeakers());
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public function getIdentifier() {
+		return $this->Persistence_Object_Identifier;
 	}
 
 	/**
