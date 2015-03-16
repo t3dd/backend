@@ -63,6 +63,10 @@
 				detached: function() {
 				},
 
+				checkStatus: function() {
+					this.$.status.go();
+				},
+
 				login: function() {
 					var requestID = generateRequestID();
 					this._loginQueue[requestID] = this._openPopup(requestID);
@@ -80,6 +84,9 @@
 				handleStatusKnown: function(ajaxEvent) {
 					var xhr = ajaxEvent.detail.xhr;
 					this.statusKnown = xhr.status < 400 || xhr.status === 401;
+					if (xhr.status === 401) {
+						this.user = null;
+					}
 				},
 
 				_openPopup: function(requestID) {

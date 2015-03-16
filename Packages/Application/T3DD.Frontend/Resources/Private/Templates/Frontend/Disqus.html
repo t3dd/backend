@@ -14,6 +14,14 @@
 		var disqus_shortname = 't3dd15';
 		var apiKey = 'znwrc1OQ5pQ4sWwjE5ebu0RlHpM66R03lCBEsaJ3Q2CglW5YdVNbSRt86vi3BAzw';
 		var remoteAuth = '{remoteAuth}';
+		var generateRequestID = function generateRequestID() {
+			var text = "";
+			var possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+			for(var i = 0; i < 5; i++)
+				text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+			return text;
+		};
 
 		if(top !== self) { // Check we are in an iFrame
 			var timer = setInterval(function() {
@@ -27,13 +35,15 @@
 		window.disqus_config = function() {
 			this.page.api_key = apiKey;
 			if(remoteAuth) this.page.remote_auth_s3 = remoteAuth;
+
 			var hostUrl = window.location.protocol + '//' + window.location.host,
 				ssoUrl = hostUrl + '/sso/',
-				returnTo = window.location.pathname;
+				returnTo = window.location.pathname+window.location.search;
+
 			this.sso = {
 				name: 'Login with typo3.org',
-				button: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/favicons/favicon-32.png',
-				icon: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/favicons/favicon-16.png',
+				button: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/images/favicons/favicon-32.png',
+				icon: hostUrl + '/_Resources/Static/Packages/T3DD.Frontend/app/images/favicons/favicon-16.png',
 				url: ssoUrl + 'login/?returnTo=' + generateRequestID(),
 				logout: ssoUrl + 'logout/?returnTo=' + encodeURIComponent(returnTo),
 				width: '985',

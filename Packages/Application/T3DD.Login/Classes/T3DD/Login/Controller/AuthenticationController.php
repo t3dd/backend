@@ -148,8 +148,8 @@ class AuthenticationController extends \TYPO3\Flow\Security\Authentication\Contr
 	 * @return mixed
 	 */
 	protected function sanitizeReturnTo($requestID) {
-		$requestID = parse_url($requestID, PHP_URL_PATH);
-		return preg_replace('/[^abcdefghijklmnopqrstuvwxyz0123456789\/-_]/i', '', $requestID);
+		$requestUrl = parse_url($requestID);
+		return preg_replace('/[^abcdefghijklmnopqrstuvwxyz0123456789\/-_]/i', '', $requestUrl['path']) . (isset($requestUrl['query']) ? '?' . $requestUrl['query'] : '');
 	}
 
 	/**

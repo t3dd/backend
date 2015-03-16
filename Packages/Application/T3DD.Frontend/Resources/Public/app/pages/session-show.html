@@ -114,8 +114,8 @@
 						<marked-element text="{{session.description}}"></marked-element>
 					</div>
 					<div class="card__content">
-						<template if="{{$.overlay.opened}}">
-							<site-comments></site-comments>
+						<template if="{{$.overlay.opened && session}}">
+							<site-comments pageTitle="{{session.title}}"></site-comments>
 						</template>
 					</div>
 				</div>

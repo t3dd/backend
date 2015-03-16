@@ -20,9 +20,7 @@
 			userAuthenticated: null,
 			observe: {
 				'globals.userStatusKnown': 'reloadOnAuthenticatedUser',
-				'globals.user': 'reloadOnAuthenticatedUser',
-				'iframeAuthtenticated': 'considerReload',
-				'userAuthenticated': 'considerReload'
+				'globals.user': 'reloadOnAuthenticatedUser'
 			},
 			domReady: function() {
 				if (this.globals.userStatusKnown) {
@@ -33,12 +31,23 @@
 					messageCallback: this.onIframeMessage.bind(this)
 				}, this.$.disqusFrame);
 			},
-			considerReload: function() {
+			iframeAuthtenticatedChanged: function(oldValue, newValue) {
+				this.considerReload.call(this, 'iframeAuthtenticated', oldValue, newValue);
+			},
+			userAuthenticatedChanged: function(oldValue, newValue) {
+				this.considerReload.call(this, 'userAuthenticated', oldValue, newValue);
+			},
+			considerReload: function(propertyName, oldValue, newValue) {
 				if (this.userAuthenticated === null || this.iframeAuthtenticated === null)
 					return;
 
 				if (this.userAuthenticated !== this.iframeAuthtenticated) {
-					this.$.disqusFrame.contentWindow.document.location.reload();
+					if (propertyName === 'iframeAuthtenticated' && typeof oldValue === 'boolean' && typeof newValue === 'boolean') {
+						document.getElementById('baseLogin').checkStatus();
+					}
+					if (propertyName === 'userAuthenticated' && typeof oldValue === 'boolean' && typeof newValue === 'boolean') {
+						this.$.disqusFrame.contentWindow.document.location.reload();
+					}
 				}
 			},
 			onIframeMessage: function(message) {
