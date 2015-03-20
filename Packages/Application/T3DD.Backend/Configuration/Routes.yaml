@@ -3,21 +3,21 @@
 #                                                                        #
 
 -
-  name: 'Single Participant'
-  uriPattern: 'api/participants/{participant}'
+  name: 'Single Registration'
+  uriPattern: 'registration/{registration}'
   defaults:
     '@package':    'T3DD.Backend'
-    '@controller': 'Participant'
+    '@controller': 'Registration'
     '@action':     'index'
   appendExceedingArguments: TRUE
   httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
 
 -
-  name: 'Participant list'
-  uriPattern: 'api/participants'
+  name: 'Registration list'
+  uriPattern: 'registration'
   defaults:
     '@package':    'T3DD.Backend'
-    '@controller': 'Participant'
+    '@controller': 'Registration'
     '@action':     'index'
   appendExceedingArguments: TRUE
   httpMethods: ['HEAD', 'GET', 'POST']

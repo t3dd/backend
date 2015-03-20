@@ -10,15 +10,10 @@ use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 use Netlogix\Crud\Domain\Model\DataTransfer\UriPointer as UriPointer;
 
-/**
- * @Flow\Scope("prototype")
- * @Flow\Entity
- */
 class Value extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransferObject {
 
 	/**
 	 * @var \T3DD\Backend\Domain\Model\Value
-	 * @ORM\OneToOne
 	 */
 	protected $payload;
 
@@ -27,6 +22,13 @@ class Value extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransfe
 	 * @Flow\Inject
 	 */
 	protected $persistenceManager;
+
+	/**
+	 * @param \T3DD\Backend\Domain\Model\Value $payload
+	 */
+	public function __construct($payload) {
+		parent::__construct($payload);
+	}
 
 	/**
 	 * @return array<string>

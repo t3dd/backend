@@ -9,10 +9,6 @@ namespace T3DD\Backend\Domain\Model\DataTransfer;
 use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @Flow\Scope("prototype")
- * @Flow\Entity
- */
 class Account extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransferObject {
 
 	/**
@@ -23,9 +19,15 @@ class Account extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 
 	/**
 	 * @var \TYPO3\Flow\Security\Account
-	 * @ORM\OneToOne
 	 */
 	protected $payload;
+
+	/**
+	 * @param \TYPO3\Flow\Security\Account
+	 */
+	public function __construct($payload) {
+		parent::__construct($payload);
+	}
 
 	/**
 	 * @return array<string>

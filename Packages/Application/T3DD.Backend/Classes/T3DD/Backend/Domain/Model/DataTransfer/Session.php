@@ -11,15 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Netlogix\Crud\Domain\Model\DataTransfer\UriPointer as UriPointer;
 
-/**
- * @Flow\Scope("prototype")
- * @Flow\Entity
- */
 class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransferObject {
 
 	/**
 	 * @var \T3DD\Backend\Domain\Model\Session
-	 * @ORM\OneToOne
 	 */
 	protected $payload;
 
@@ -30,10 +25,17 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	protected $dataTransferObjectFactory;
 
 	/**
+	 * @param \T3DD\Backend\Domain\Model\Session $payload
+	 */
+	public function __construct($payload) {
+		parent::__construct($payload);
+	}
+
+	/**
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'creator', 'title', 'description', 'themes', 'type', 'expertiseLevel', 'speakers', 'date', 'voteUri', 'identifier');
+		return array('resource', 'creator', 'title', 'description', 'themes', 'type', 'expertiseLevel', 'date', 'voteUri', 'identifier');
 	}
 
 	/**
@@ -107,13 +109,6 @@ class Session extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 */
 	public function getExpertiseLevel() {
 		return $this->payload->getExpertiseLevel()->getTitle();
-	}
-
-	/**
-	 * @return Speaker[]
-	 */
-	public function getSpeakers() {
-		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getPayload()->getSpeakers());
 	}
 
 	/**

@@ -43,12 +43,6 @@ class Session {
 	protected $description;
 
 	/**
-	 * @var Collection<\T3DD\Backend\Domain\Model\Participant>
-	 * @ORM\ManyToMany
-	 */
-	protected $speakers;
-
-	/**
 	 * @var Collection<\T3DD\Backend\Domain\Model\Value>
 	 * @ORM\ManyToMany
 	 */
@@ -70,7 +64,6 @@ class Session {
 
 	public function __construct() {
 		$this->date = new \DateTime();
-		$this->speakers = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->themes = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -114,27 +107,6 @@ class Session {
 	 */
 	public function setDescription($description) {
 		$this->description = $description;
-	}
-
-	/**
-	 * @return Collection<\T3DD\Backend\Domain\Model\Participant>
-	 */
-	public function getSpeakers() {
-		return $this->speakers;
-	}
-
-	/**
-	 * @param Collection $speakers
-	 */
-	public function setSpeakers(Collection $speakers) {
-		$this->speakers = $speakers;
-	}
-
-	/**
-	 * @param Participant $speaker
-	 */
-	public function addSpeaker(Participant $speaker) {
-		$this->speakers->add($speaker);
 	}
 
 	/**

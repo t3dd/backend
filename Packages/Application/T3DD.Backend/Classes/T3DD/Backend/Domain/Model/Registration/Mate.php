@@ -1,5 +1,5 @@
 <?php
-namespace T3DD\Backend\Domain\Model;
+namespace T3DD\Backend\Domain\Model\Registration;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "T3DD.Backend".          *
@@ -15,9 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
 class Mate {
 
 	/**
-	 * @var string
+	 * @var \TYPO3\Flow\Security\Account
+	 * @ORM\ManyToOne
 	 */
-	protected $username = '';
+	protected $account = NULL;
 
 	/**
 	 * @var string
@@ -25,13 +26,7 @@ class Mate {
 	protected $name = '';
 
 	/**
-	 * @var string
-	 * @Flow\Validate(type="EmailAddress")
-	 */
-	protected $email = '';
-
-	/**
-	 * @var \Doctrine\Common\Collections\Collection<\T3DD\Backend\Domain\Model\Participant>
+	 * @var \Doctrine\Common\Collections\Collection<\T3DD\Backend\Domain\Model\Registration\Participant>
 	 * @ORM\ManyToMany(mappedBy="roomMates")
 	 */
 	protected $participants;
@@ -41,17 +36,17 @@ class Mate {
 	}
 
 	/**
-	 * @return string
+	 * @return \TYPO3\Flow\Security\Account
 	 */
-	public function getUsername() {
-		return $this->username;
+	public function getAccount() {
+		return $this->account;
 	}
 
 	/**
-	 * @param string $username
+	 * @param \TYPO3\Flow\Security\Account $account
 	 */
-	public function setUsername($username) {
-		$this->username = $username;
+	public function setAccount($account) {
+		$this->account = $account;
 	}
 
 	/**
@@ -69,17 +64,17 @@ class Mate {
 	}
 
 	/**
-	 * @return string
+	 * @return \Doctrine\Common\Collections\Collection
 	 */
-	public function getEmail() {
-		return $this->email;
+	public function getParticipants() {
+		return $this->participants;
 	}
 
 	/**
-	 * @param string $email
+	 * @param \Doctrine\Common\Collections\Collection $participants
 	 */
-	public function setEmail($email) {
-		$this->email = $email;
+	public function setParticipants($participants) {
+		$this->participants = $participants;
 	}
 
 }
