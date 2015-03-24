@@ -1,0 +1,180 @@
+<polymer-element name="registration-edit" attributes="registrationId">
+	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+				height: 100%;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 16px;
+				max-width:100%;
+			}
+			@media (min-width: 768px) {
+				.container {
+					padding: 24px 32px;
+				}
+			}
+
+			header h1, header p {
+				margin: 0;
+			}
+
+			main {
+				padding: 16px;
+			}
+
+			@media (min-width: 768px) {
+				main {
+					padding: 32px;
+				}
+			}
+
+			.card__content {
+				padding-top: 16px;
+				padding-bottom: 16px;
+				margin-bottom: 0;
+			}
+
+			form {
+				padding: 0;
+			}
+
+			.title-icon {
+				margin-right: 8px;
+			}
+
+			paper-autogrow-textarea {
+				width: 100%;
+				margin-bottom: 30px;
+			}
+
+			site-checkbox {
+				padding: 12px;
+			}
+
+			.field-container [flex] {
+				margin: 0 16px;
+			}
+			.field-container [flex]:first-child {
+				margin-left: 0;
+			}
+			.field-container [flex]:last-child {
+				margin-right: 0;
+			}
+		</style>
+		<!--<site-ajax url="/registration/{{registrationId}}" on-core-response="{{handleRegistration}}"></site-ajax>-->
+		<header class="bg-dark-grey">
+			<div class="container">
+				<h1 site-font="display1">Complete your registration</h1>
+			</div>
+		</header>
+		<main>
+			<div class="session card__container" horizontal?="{{globals.isDesktopSize}}" layout>
+				<form is="site-form" id="form" class="card" action="{{registration.resource}}" method="put" enctype="application/json" flex>
+					<div class="card__content">
+						<div horizontal layout>
+							<core-icon class="title-icon" icon="account-balance"></core-icon>
+							<div flex>
+								<h2 site-font="title">Billing Address</h2>
+
+								<paper-input-decorator label="Your Name" floatingLabel>
+									<input value="{{registration.billingAddress.name}}" is="core-input" readonly required>
+								</paper-input-decorator>
+								<paper-input-decorator label="Company Name" floatingLabel error="Enter a company name!">
+									<input value="{{registration.billingAddress.company}}" is="core-input">
+								</paper-input-decorator>
+								<paper-input-decorator label="Street & Street No." floatingLabel error="Enter a Street!">
+									<paper-autogrow-textarea rows="1">
+										<textarea value="{{registration.billingAddress.street}}" required></textarea>
+									</paper-autogrow-textarea>
+								</paper-input-decorator>
+								<div horizontal start layout class="field-container">
+									<paper-input-decorator label="Zip" floatingLabel error="Enter a zip!" flex>
+										<input value="{{registration.billingAddress.zip}}" is="core-input" required>
+									</paper-input-decorator>
+									<paper-input-decorator label="City" floatingLabel error="Enter a City!" flex two>
+										<input value="{{registration.billingAddress.city}}" is="core-input" required>
+									</paper-input-decorator>
+								</div>
+								<paper-input-decorator label="Billing E-Mail Address" floatingLabel error="Enter a valid e-mail address!">
+									<input value="{{registration.billingAddress.email}}" is="core-input" type="email" required>
+								</paper-input-decorator>
+							</div>
+						</div>
+					</div>
+					<div class="card__content">
+						<paper-button on-click="{{submit}}">
+							<core-icon icon="check"></core-icon>
+							Propose session
+						</paper-button>
+						<site-overlay-spinner active="{{$.form.isSubmitting}}"></site-overlay-spinner>
+					</div>
+				</form>
+				<div class="card" flex>
+					<div class="card__content">
+						<h2 site-font="title">Participants</h2>
+						<p site-font="subhead">Bladiblubb, make some whooop, whoop!</p>
+					</div>
+					<template repeat="{{participant,i in registration.participants}}">
+						<div class="card__content">
+							<div horizontal layout>
+								<core-icon class="title-icon" icon="assignment-ind"></core-icon>
+								<div flex>
+									<template if="{{registration.participants.length > 1}}">
+										<h4 site-font="title">Participant {{i + 1}}</h4>
+									</template>
+									<site-participant-fields participant="{{participant}}" details?="{{registration.participants.length == 1}}"></site-participant-fields>
+								</div>
+							</div>
+						</div>
+					</template>
+				</div>
+			</div>
+		</main>
+	</template>
+	<script>
+		(function () {
+			'use strict';
+			Polymer({
+				registration: {
+					billingAddress: {
+						name: 'John Doe',
+						company: 'John Doe\'s Company',
+						street: 'Main St 15',
+						zip: '12345',
+						city: 'Anytown',
+						email: 'billing@example.com'
+					},
+					participants: [
+						{
+							name: 'Marissa Forster',
+							email: 'marissa@forster.com'
+						},
+						{
+													name: 'Marissa Forster',
+													email: 'marissa@forster.com'
+												}
+					]
+				},
+				handleRegistration: function (event) {
+					this.registration = event.detail.response;
+					Array.prototype.forEach.call(this.shadowRoot.querySelectorAll('paper-input-decorator'), (function (element) {
+						element.focused = true;
+						this.async(function() { element.focused = false; });
+					}).bind(this));
+				},
+				ready: function () {
+					this.$.form.addEventListener('submitted', this.$.form.changePageToResource);
+				},
+				submit: function () {
+					this.$.form.submit();
+				}
+			});
+
+		})();
+	</script>
+</polymer-element>

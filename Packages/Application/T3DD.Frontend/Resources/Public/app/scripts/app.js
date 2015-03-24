@@ -82,6 +82,7 @@
 	};
 
 	template.addEventListener('template-bound', function() {
+		CoreStyle.g.paperInput.focusedColor = '#FF8700';
 		this.globals.assetRootPath = this.hasAttribute('assetrootpath') ? this.getAttribute('assetrootpath').replace('/.', '') : '';
 		this.globals.scrollTarget = this.$.scrollHeader.shadowRoot.getElementById('mainContainer');
 		this.$.router.addEventListener('activate-route-start', (function(event) {
