@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 abstract class AbstractBookable {
 
 	const BOOKING_STATE_PENDING = 'pending';
-	const BOOKING_STATE_WAITING = 'pending';
+	const BOOKING_STATE_WAITING = 'waiting';
 	const BOOKING_STATE_BOOKED = 'booked';
 
 	/**
@@ -27,7 +27,7 @@ abstract class AbstractBookable {
 	protected $participant;
 
 	/**
-	 * @var float
+	 * @var int
 	 */
 	protected $fraction;
 
@@ -56,19 +56,19 @@ abstract class AbstractBookable {
 	/**
 	 * @param Participant $participant
 	 */
-	public function setParticipant($participant) {
+	public function setParticipant(Participant $participant) {
 		$this->participant = $participant;
 	}
 
 	/**
-	 * @return float
+	 * @return int
 	 */
 	public function getFraction() {
 		return $this->fraction;
 	}
 
 	/**
-	 * @param float $fraction
+	 * @param int $fraction
 	 */
 	public function setFraction($fraction) {
 		$this->fraction = $fraction;

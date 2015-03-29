@@ -1,0 +1,10 @@
+TYPO3:
+  Flow:
+    security:
+      authentication:
+        providers:
+          HttpBasic:
+            provider: 'TYPO3\Flow\Security\Authentication\Provider\PersistedUsernamePasswordProvider'
+            token: 'TYPO3\Flow\Security\Authentication\Token\UsernamePasswordHttpBasic'
+            entryPointOptions: ~
+            providerOptions: ~

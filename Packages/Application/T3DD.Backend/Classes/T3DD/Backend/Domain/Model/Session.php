@@ -132,7 +132,6 @@ class Session {
 
 	/**
 	 * @param Collection $themes
-	 * @internal param Collection $theme
 	 */
 	public function setThemes(Collection $themes) {
 		$this->themes = $themes;

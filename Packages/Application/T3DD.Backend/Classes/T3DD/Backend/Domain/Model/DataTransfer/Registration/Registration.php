@@ -6,10 +6,17 @@ namespace T3DD\Backend\Domain\Model\DataTransfer\Registration;
  *                                                                        *
  *                                                                        */
 
+use Doctrine\Common\Collections\Collection;
 use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
 class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransferObject {
+
+	/**
+	 * @var \Netlogix\Crud\Domain\Service\DataTransferObjectFactory
+	 * @Flow\Inject
+	 */
+	protected $dataTransferObjectFactory;
 
 	/**
 	 * @var \T3DD\Backend\Domain\Model\Registration\Registration
@@ -19,7 +26,7 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	/**
 	 * @param \T3DD\Backend\Domain\Model\Registration\Registration $payload
 	 */
-	public function __construct($payload) {
+	public function __construct(\T3DD\Backend\Domain\Model\Registration\Registration $payload) {
 		parent::__construct($payload);
 	}
 
@@ -27,7 +34,7 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('participantCount');
+		return array('participantCount', 'participants');
 	}
 
 	/**
@@ -42,6 +49,20 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	 */
 	public function setParticipantCount($participantCount) {
 		$this->payload->setParticipantCount($participantCount);
+	}
+
+	/**
+	 * @param Collection<\T3DD\Backend\Domain\Model\Registration\Participant> $participants
+	 */
+	public function setParticipants(Collection $participants) {
+		$this->payload->setParticipants($participants);
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getParticipants() {
+		return $this->dataTransferObjectFactory->getDataTransferObjects($this->payload->getParticipants());
 	}
 
 }

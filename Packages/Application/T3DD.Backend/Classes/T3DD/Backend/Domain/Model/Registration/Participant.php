@@ -28,13 +28,11 @@ class Participant {
 
 	/**
 	 * @var string
-	 * @Flow\Validate(type="NotEmpty")
 	 */
 	protected $name = '';
 
 	/**
 	 * @var string
-	 * @Flow\Validate(type="NotEmpty")
 	 */
 	protected $email = '';
 
@@ -50,7 +48,7 @@ class Participant {
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string", columnDefinition="ENUM('noassoc', 'assoc', 'css', 'helper', 'sponsornonassoc', 'sponsornassoc', 'voucher')")
+	 * @ORM\Column(type="string", columnDefinition="ENUM('noassoc', 'assoc', 'student', 'speaker', 'core', 'helper', 'sponsornonassoc', 'sponsornassoc', 'voucher')")
 	 */
 	protected $rate;
 
@@ -69,7 +67,7 @@ class Participant {
 	/**
 	 * @var string
 	 */
-	protected $roomGroup;
+	protected $roomGroup = '';
 
 	/**
 	 * @var string
@@ -80,21 +78,18 @@ class Participant {
 	/**
 	 * @var string
 	 * @ORM\Column(type="text")
-	 * @Flow\Validate(type="Raw")
 	 */
 	protected $foodWishes = '';
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", columnDefinition="ENUM('xs', 's', 'm', 'l', 'xl', 'xxl', '3xl', '4xl')")
-	 * @Flow\Validate(type="NotEmpty")
 	 */
 	protected $tshirtSize;
 
 	/**
 	 * @var string
 	 * @ORM\Column(type="string", columnDefinition="ENUM('default', 'girlie')")
-	 * @Flow\Validate(type="NotEmpty")
 	 */
 	protected $tshirtType = 'default';
 
@@ -375,6 +370,45 @@ class Participant {
 	 */
 	public function setRoom($room) {
 		$this->room = $room;
+	}
+
+	/**
+	 * @return array|null
+	 */
+	public function getRoomRequest() {
+		if (!$this->roomSize) {
+			return NULL;
+		}
+		$roomRequest = [
+			'participant' => $this,
+			'divisor' => $this->roomSize,
+			'quotaApplies' => TRUE
+		];
+		switch ($this->rate) {
+			case 'core':
+			case 'helper':
+				$roomRequest['quotaApplies'] = FALSE;
+				break;
+		}
+		return $roomRequest;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getTicketRequest() {
+		$ticketRequest = [
+			'participant' => $this,
+			'divisor' => 1,
+			'quotaApplies' => TRUE
+		];
+		switch ($this->rate) {
+			case 'core':
+			case 'helper':
+				$ticketRequest['quotaApplies'] = FALSE;
+				break;
+		}
+		return $ticketRequest;
 	}
 
 }
