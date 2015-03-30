@@ -39,7 +39,7 @@ class Participant {
 	/**
 	 * @var string
 	 */
-	protected $company = '';
+	protected $companyName = '';
 
 	/**
 	 * @var string
@@ -177,17 +177,17 @@ class Participant {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
-	public function getCompany() {
-		return $this->company;
+	public function getCompanyName() {
+		return $this->companyName;
 	}
 
 	/**
-	 * @param mixed $company
+	 * @param string $companyName
 	 */
-	public function setCompany($company) {
-		$this->company = $company;
+	public function setCompanyName($companyName) {
+		$this->companyName = $companyName;
 	}
 
 	/**
@@ -205,14 +205,14 @@ class Participant {
 	}
 
 	/**
-	 * @return mixed
+	 * @return int
 	 */
 	public function getRate() {
 		return $this->rate;
 	}
 
 	/**
-	 * @param mixed $rate
+	 * @param int $rate
 	 */
 	public function setRate($rate) {
 		$this->rate = $rate;
@@ -247,42 +247,42 @@ class Participant {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getRoomGroup() {
 		return $this->roomGroup;
 	}
 
 	/**
-	 * @param mixed $roomGroup
+	 * @param string $roomGroup
 	 */
 	public function setRoomGroup($roomGroup) {
 		$this->roomGroup = $roomGroup;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getFoodType() {
 		return $this->foodType;
 	}
 
 	/**
-	 * @param mixed $foodType
+	 * @param string $foodType
 	 */
 	public function setFoodType($foodType) {
 		$this->foodType = $foodType;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getFoodWishes() {
 		return $this->foodWishes;
 	}
 
 	/**
-	 * @param mixed $foodWishes
+	 * @param string $foodWishes
 	 */
 	public function setFoodWishes($foodWishes) {
 		$this->foodWishes = $foodWishes;
@@ -317,14 +317,14 @@ class Participant {
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getNewcomer() {
 		return $this->newcomer;
 	}
 
 	/**
-	 * @param mixed $newcomer
+	 * @param string $newcomer
 	 */
 	public function setNewcomer($newcomer) {
 		$this->newcomer = $newcomer;
@@ -345,30 +345,30 @@ class Participant {
 	}
 
 	/**
-	 * @return mixed
+	 * @return Ticket
 	 */
 	public function getTicket() {
 		return $this->ticket;
 	}
 
 	/**
-	 * @param mixed $ticket
+	 * @param Ticket $ticket
 	 */
-	public function setTicket($ticket) {
+	public function setTicket(Ticket $ticket) {
 		$this->ticket = $ticket;
 	}
 
 	/**
-	 * @return mixed
+	 * @return Room
 	 */
 	public function getRoom() {
 		return $this->room;
 	}
 
 	/**
-	 * @param mixed $room
+	 * @param Room $room
 	 */
-	public function setRoom($room) {
+	public function setRoom(Room $room) {
 		$this->room = $room;
 	}
 
