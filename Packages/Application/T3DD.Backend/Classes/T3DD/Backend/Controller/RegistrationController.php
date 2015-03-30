@@ -39,6 +39,7 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		if ($registration !== NULL) {
 			$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObject($registration));
 		} else {
+			$this->response->setStatus(404);
 			$this->view->assign('value', NULL);
 		}
 	}
