@@ -8,6 +8,7 @@ namespace T3DD\Backend\Domain\Repository\Registration;
 
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Persistence\Repository;
+use TYPO3\Flow\Security\Account;
 
 /**
  * @Flow\Scope("singleton")
@@ -25,6 +26,20 @@ class RegistrationRepository extends Repository {
 
 		$query->matching($query->logicalAnd($queryConstraints));
 		return $query->execute();
+	}
+
+	/**
+	 * @param Account $account
+	 * @return \TYPO3\Flow\Persistence\QueryResultInterface
+	 */
+	public function findOneByAccountAndNotCompleted(Account $account) {
+		$query =$this->createQuery();
+		$queryConstraints = array();
+		$queryConstraints[] = $query->equals('completed', FALSE);
+		$queryConstraints[] = $query->equals('account', $account);
+
+		$query->matching($query->logicalAnd($queryConstraints));
+		return $query->execute()->getFirst();
 	}
 
 }

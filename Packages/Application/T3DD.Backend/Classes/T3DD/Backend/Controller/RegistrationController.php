@@ -35,7 +35,7 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 	protected $securityContext;
 
 	public function pendingAction() {
-		$registration = $this->registrationRepository->findOneByAccount($this->securityContext->getAccount());
+		$registration = $this->registrationRepository->findOneByAccountAndNotCompleted($this->securityContext->getAccount());
 		if ($registration !== NULL) {
 			$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObject($registration));
 		} else {
@@ -73,6 +73,11 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 	 * @param Registration $registration
 	 */
 	public function createAction(Registration $registration) {
+		$pendingRegistration = $this->registrationRepository->findOneByAccountAndNotCompleted($this->securityContext->getAccount());
+		if ($pendingRegistration !== NULL) {
+			$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObject($pendingRegistration));
+			return;
+		}
 		$registrationLock = new \TYPO3\Flow\Utility\Lock\Lock('T3DD-Registration');
 
 		$registrationEntity = $registration->getPayload();
