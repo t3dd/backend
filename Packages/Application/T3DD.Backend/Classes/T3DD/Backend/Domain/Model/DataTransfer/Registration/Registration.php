@@ -7,8 +7,8 @@ namespace T3DD\Backend\Domain\Model\DataTransfer\Registration;
  *                                                                        */
 
 use Doctrine\Common\Collections\Collection;
+use Netlogix\Crud\Domain\Model\DataTransfer\UriPointer;
 use TYPO3\Flow\Annotations as Flow;
-use Doctrine\ORM\Mapping as ORM;
 
 class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransferObject {
 
@@ -34,7 +34,7 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('participantCount', 'participants');
+		return array('resource', 'participantCount', 'participants');
 	}
 
 	/**
@@ -42,6 +42,18 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	 */
 	public function getPayload() {
 		return $this->payload;
+	}
+
+	/**
+	 * @return UriPointer
+	 */
+	public function getResource() {
+		return new UriPointer(array(
+			'packageKey' => 'T3DD.Backend',
+			'controllerName' => 'Registration',
+			'actionName' => 'index',
+			'arguments' => array('registration' => $this->payload),
+		));
 	}
 
 	/**

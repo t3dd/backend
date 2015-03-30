@@ -3,6 +3,16 @@
 #                                                                        #
 
 -
+  name: 'Registration pending'
+  uriPattern: 'registration/pending'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Registration'
+    '@action':     'pending'
+  appendExceedingArguments: TRUE
+  httpMethods: ['HEAD', 'GET']
+
+-
   name: 'Single Registration'
   uriPattern: 'registration/{registration}'
   defaults:

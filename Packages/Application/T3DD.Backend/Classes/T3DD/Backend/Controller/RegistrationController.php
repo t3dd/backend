@@ -34,6 +34,26 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 	 */
 	protected $securityContext;
 
+	public function pendingAction() {
+		$registration = $this->registrationRepository->findOneByAccount($this->securityContext->getAccount());
+		if ($registration !== NULL) {
+			$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObject($registration));
+		} else {
+			$this->view->assign('value', NULL);
+		}
+	}
+
+	/**
+	 * @param \T3DD\Backend\Domain\Model\Registration\Registration $registration
+	 */
+	public function showAction(\T3DD\Backend\Domain\Model\Registration\Registration $registration) {
+		if ($registration->getAccount() !== $this->securityContext->getAccount() && !$this->securityContext->hasRole('T3DD.Backend:Administrator')) {
+			$this->response->setStatus(403);
+			return;
+		}
+		$this->view->assign('value', $this->dataTransferObjectFactory->getDataTransferObject($registration));
+	}
+
 	/**
 	 *
 	 */

@@ -6,7 +6,7 @@ privilegeTargets:
     T3DD_Backend_PublicFrontendAccess:
       matcher: 'method(T3DD\Backend\Controller\SessionController->(list|show)Action()) || method(T3DD\Backend\Controller\VoteController->listAction()) || method(T3DD\Backend\Controller\ValueController->listAction()) || method(Netlogix\Crud\Controller\RestController->errorAction())'
     T3DD_Backend_Registration:
-      matcher: method(T3DD\Backend\Controller\RegistrationController->(show|create|update|error)Action())
+      matcher: method(T3DD\Backend\Controller\RegistrationController->(pending|show|create|update|error)Action())
     T3DD_Backend_Session:
       matcher: method(T3DD\Backend\Controller\SessionController->(edit|create|update|delete|error)Action())
     T3DD_Backend_Vote:

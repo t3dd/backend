@@ -1,9 +1,13 @@
 <?php
 namespace T3DD\Backend\Domain\Model\DataTransfer\Registration;
 
-/**
- * Enter descriptions here
- */
+/*                                                                        *
+ * This script belongs to the TYPO3 Flow package "T3DD.Backend".          *
+ *                                                                        *
+ *                                                                        */
+
+use TYPO3\Flow\Annotations as Flow;
+
 class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransferObject {
 
 	/**
