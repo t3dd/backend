@@ -57,84 +57,98 @@ class BillingAddress {
 	protected $country;
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getCompanyName() {
 		return $this->companyName;
 	}
 
 	/**
-	 * @param mixed $companyName
+	 * @param string $companyName
 	 */
 	public function setCompanyName($companyName) {
 		$this->companyName = $companyName;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getName() {
 		return $this->name;
 	}
 
 	/**
-	 * @param mixed $name
+	 * @param string $name
 	 */
 	public function setName($name) {
 		$this->name = $name;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
+	 */
+	public function getEmail() {
+		return $this->email;
+	}
+
+	/**
+	 * @param string $email
+	 */
+	public function setEmail($email) {
+		$this->email = $email;
+	}
+
+	/**
+	 * @return string
 	 */
 	public function getStreet() {
 		return $this->street;
 	}
 
 	/**
-	 * @param mixed $street
+	 * @param string $street
 	 */
 	public function setStreet($street) {
 		$this->street = $street;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getZip() {
 		return $this->zip;
 	}
 
 	/**
-	 * @param mixed $zip
+	 * @param string $zip
 	 */
 	public function setZip($zip) {
 		$this->zip = $zip;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getCity() {
 		return $this->city;
 	}
 
 	/**
-	 * @param mixed $city
+	 * @param string $city
 	 */
 	public function setCity($city) {
 		$this->city = $city;
 	}
 
 	/**
-	 * @return mixed
+	 * @return string
 	 */
 	public function getCountry() {
 		return $this->country;
 	}
 
 	/**
-	 * @param mixed $country
+	 * @param string $country
 	 */
 	public function setCountry($country) {
 		$this->country = $country;

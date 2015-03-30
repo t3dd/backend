@@ -34,7 +34,7 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'participantCount', 'participants');
+		return array('resource', 'participantCount', 'participants', 'billingAddress');
 	}
 
 	/**
@@ -57,6 +57,13 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	}
 
 	/**
+	 * @param string $resource
+	 */
+	public function setResource($resource) {
+
+	}
+
+	/**
 	 * @param integer $participantCount
 	 */
 	public function setParticipantCount($participantCount) {
@@ -75,6 +82,23 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	 */
 	public function getParticipants() {
 		return $this->dataTransferObjectFactory->getDataTransferObjects($this->payload->getParticipants());
+	}
+
+	/**
+	 * @param \T3DD\Backend\Domain\Model\Registration\BillingAddress $billingAddress
+	 */
+	public function setBillingAddress(\T3DD\Backend\Domain\Model\Registration\BillingAddress $billingAddress) {
+		$this->payload->setBillingAddress($billingAddress);
+	}
+
+	/**
+	 * @return \T3DD\Backend\Domain\Model\DataTransfer\Registration\BillingAddress
+	 */
+	public function getBillingAddress() {
+		$billingAddress = $this->payload->getBillingAddress();
+		if ($billingAddress !== NULL) {
+			return $this->dataTransferObjectFactory->getDataTransferObject($billingAddress);
+		}
 	}
 
 }

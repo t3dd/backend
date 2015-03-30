@@ -107,10 +107,32 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 	}
 
 	/**
+	 *
+	 */
+	public function initializeUpdateAction() {
+		parent::initializeUpdateAction();
+
+		/** @var \TYPO3\Flow\Mvc\Controller\Argument $argument */
+		$argument = $this->arguments[$this->resourceArgumentName];
+		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('participants.*');
+		$configuration->allowAllProperties();
+		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter',
+			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED,
+			TRUE);
+		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('billingAddress');
+		$configuration->allowAllProperties();
+		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter',
+			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+			TRUE);
+	}
+
+	/**
 	 * @param Registration $registration
 	 */
 	public function updateAction(Registration $registration) {
 		$this->registrationRepository->update($registration->getPayload());
+
+		$this->view->assign('value', $registration);
 	}
 
 }

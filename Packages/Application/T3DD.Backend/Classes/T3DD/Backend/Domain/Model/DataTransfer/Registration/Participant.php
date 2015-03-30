@@ -16,6 +16,12 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	protected $payload;
 
 	/**
+	 * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
+	 * @Flow\Inject
+	 */
+	protected $persistenceManager;
+
+	/**
 	 * @param \T3DD\Backend\Domain\Model\Registration\Participant $payload
 	 */
 	public function __construct(\T3DD\Backend\Domain\Model\Registration\Participant $payload) {
@@ -26,7 +32,7 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('rate', 'roomSize');
+		return array('__identity', 'rate', 'roomSize');
 	}
 
 	/**

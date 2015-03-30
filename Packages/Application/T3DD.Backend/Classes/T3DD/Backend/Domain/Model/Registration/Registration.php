@@ -95,9 +95,9 @@ class Registration {
 	}
 
 	/**
-	 * @param string $billingAddress
+	 * @param BillingAddress $billingAddress
 	 */
-	public function setBillingAddress($billingAddress) {
+	public function setBillingAddress(BillingAddress $billingAddress) {
 		$this->billingAddress = $billingAddress;
 	}
 
