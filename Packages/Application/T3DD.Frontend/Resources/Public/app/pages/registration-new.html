@@ -1,0 +1,111 @@
+<polymer-element name="registration-new">
+	<template>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+			}
+			form {
+				padding: 0;
+			}
+			label, paper-radio-group {
+				display: block;
+			}
+			label {
+				color: #757575;
+			}
+			.participantCount {
+				min-width: 112px;
+				padding-top: 0;
+				text-align: right;
+			}
+		</style>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<form is="site-form" id="form" action="/registration" method="post" enctype="application/json" on-submitting="{{submitting}}" flex>
+			<div class="card__content" horizontal layout>
+				<core-icon class="title-icon" icon="maps:local-attraction"></core-icon>
+				<div flex>
+					<h2 site-font="title">How many participants do you want to register?</h2>
+					<div horizontal center layout>
+						<paper-slider min="1" max="15" snaps value="{{participantCount}}" immediateValue="{{participantCountImmediate}}" flex></paper-slider>
+						<label class="participantCount">
+							{{participantCountImmediate > 1 ? participantCountImmediate: 'only myself/one'}}
+							{{participantCountImmediate > 1 ? 'participants' : ''}}
+						</label>
+					</div>
+				</div>
+			</div>
+			<template repeat="{{participant,i in participants}}">
+				<div class="card__content" horizontal layout>
+					<core-icon class="title-icon" icon="assignment-ind"></core-icon>
+					<div flex>
+						<h4 site-font="title">
+							{{i + 1 | enumerateWithWords | capitalizeFirstLetter}} Participant …
+						</h4>
+						<label site-font="caption">… is a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}</label>
+						<paper-radio-group selected="{{participant.rate}}">
+							<paper-radio-button name="assoc" label="Association Member"></paper-radio-button>
+							<paper-radio-button name="nonassoc" label="Non Association Member"></paper-radio-button>
+							<paper-radio-button name="student" label="Student"></paper-radio-button>
+							<paper-radio-button name="core" label="Active Contributor"></paper-radio-button>
+						</paper-radio-group>
+						<label site-font="caption">… {{participant.roomSize == 0 ? 'doesn\'t need a room' : 'would like to share a room with'}}</label>
+						<paper-radio-group selected="{{participant.roomSize}}">
+							<paper-radio-button name="2" label="another participant"></paper-radio-button>
+							<paper-radio-button name="3" label="two other participants"></paper-radio-button>
+							<paper-radio-button name="4" label="three other participants"></paper-radio-button>
+							<paper-radio-button name="0" label="No room, please!"></paper-radio-button>
+						</paper-radio-group>
+					</div>
+				</div>
+			</template>
+			<div class="card__content card__buttons">
+				<paper-button on-click="{{submit}}">
+					<core-icon icon="arrow-forward"></core-icon>
+					Continue registration
+				</paper-button>
+			</div>
+		</form>
+	</template>
+	<script>
+		(function() {
+			'use strict';
+
+			Polymer({
+				participantCount: 1,
+				participants: [],
+				participantTemplate: function() {
+					return {
+						rate: 'assoc',
+						roomSize: 2
+					}
+				},
+				created: function() {
+					this.participantCountChanged(0, this.participantCount);
+				},
+				ready: function () {
+					this.$.form.addEventListener('submitted', this.$.form.changePageToResource);
+				},
+				submitting: function(event) {
+					event.detail.formData['participantCount'] = this.participantCount;
+					event.detail.formData['participants'] = this.participants;
+					return event;
+				},
+				submit: function () {
+					this.$.form.submit();
+				},
+				participantCountChanged: function(oldValue, newValue) {
+					if (this.participants.length > newValue) {
+						this.participants = this.participants.slice(0, newValue);
+					} else if (this.participants.length < newValue) {
+						var participantsToAdd = newValue - this.participants.length;
+						for (var i = 0; i < participantsToAdd; i++) {
+							this.participants.push(this.participantTemplate());
+						}
+					}
+				}
+			});
+
+		})();
+	</script>
+</polymer-element>

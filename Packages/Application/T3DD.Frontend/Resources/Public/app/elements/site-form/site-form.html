@@ -276,8 +276,8 @@
 
 			sendFormData = function(ajaxForm) {
 				var enctype = getEnctype(ajaxForm),
-						formData = parseForm(ajaxForm, enctype === 'multipart/form-data'),
-						submittingEvent = ajaxForm.fire('submitting', {formData: formData});
+					formData = parseForm(ajaxForm, enctype === 'multipart/form-data'),
+					submittingEvent = ajaxForm.fire('submitting', {formData: formData});
 
 				formData = submittingEvent.detail.formData;
 
@@ -426,7 +426,12 @@
 							records.forEach(function(record) {
 								if(record.addedNodes.length) {
 									arrayOf(record.addedNodes).forEach(function(addedNode) {
-										addedNode.willValidate && listenForInvalidEvent(addedNode);
+										if (typeof addedNode.querySelectorAll !== 'undefined') {
+											var invalidFields = arrayOf(addedNode.querySelectorAll('* /deep/ :invalid, * /deep/ :valid'));
+											invalidFields.forEach(function(input) {
+												input.willValidate && listenForInvalidEvent(input);
+											});
+										}
 									});
 								}
 							});
@@ -559,6 +564,16 @@
 						document.querySelector('app-router').go(path);
 					}
 				}
+			},
+
+			updateLabelVisibilities: function() {
+				this.async(function() {
+					var decorators = arrayOf(this.querySelectorAll('paper-input-decorator'));
+					decorators.forEach(function(decorator) {
+						var input = decorator.querySelector('input');
+						input && decorator.updateLabelVisibility(input.value);
+					});
+				});
 			}
 		});
 	</script>

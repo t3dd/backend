@@ -1,3 +1,4 @@
+<link rel="import" href="registration-new.html">
 <polymer-element name="page-register" noscript>
 	<template>
 		<core-style ref="main"></core-style>
@@ -157,24 +158,7 @@
 			<div id="headCard" class="container">
 				<div class="card__container">
 					<div class="card">
-						<h2 class="card__content" site-font="title">
-							Registration will begin <strong>April 1 at 10:00AM CET</strong>
-						</h2>
-						<div class="card__content" site-font="subhead">
-							<h3>Tips to get ready</h3>
-							<p>
-								Make sure you have a typo3.org account. You'll need one to begin the registration process. If
-								you don't have one yet, use the button below to get to the sign up form.
-							</p>
-						</div>
-						<div class="card__content card__buttons" horizontal layout>
-							<a href="http://typo3.org/my-account/sign-up/" target="_blank">
-								<paper-button>
-									<core-icon icon="add-circle"></core-icon>
-									Create typo3.org account
-								</paper-button>
-							</a>
-						</div>
+						<registration-new></registration-new>
 					</div>
 				</div>
 			</div>
