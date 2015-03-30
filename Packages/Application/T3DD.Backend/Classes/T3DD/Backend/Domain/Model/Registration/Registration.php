@@ -33,7 +33,7 @@ class Registration {
 
 	/**
 	 * @var BillingAddress
-	 * @ORM\OneToMany(mappedBy="registration")
+	 * @ORM\OneToOne(cascade={"all"})
 	 */
 	protected $billingAddress;
 

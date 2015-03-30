@@ -15,12 +15,6 @@ use Doctrine\ORM\Mapping as ORM;
 class BillingAddress {
 
 	/**
-	 * @var Registration
-	 * @ORM\ManyToOne
-	 */
-	protected $registration;
-
-	/**
 	 * @var string
 	 * @Flow\Validate(type="NotEmpty")
 	 */
