@@ -1,5 +1,5 @@
 <?php
-namespace T3DD\Backend\Domain\Repository;
+namespace T3DD\Backend\Domain\Repository\Registration;
 
 /*                                                                        *
  * This script belongs to the TYPO3 Flow package "T3DD.Backend".          *

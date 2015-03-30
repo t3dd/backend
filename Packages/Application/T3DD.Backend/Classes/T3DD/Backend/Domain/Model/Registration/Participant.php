@@ -16,7 +16,7 @@ class Participant {
 
 	/**
 	 * @var Registration
-	 * @ORM\ManyToOne
+	 * @ORM\ManyToOne(inversedBy="participants", cascade={"all"})
 	 */
 	protected $registration = NULL;
 
@@ -105,13 +105,13 @@ class Participant {
 
 	/**
 	 * @var Ticket
-	 * @ORM\OneToMany(mappedBy="participant")
+	 * @ORM\OneToMany(mappedBy="participant", cascade={"all"})
 	 */
 	protected $ticket;
 
 	/**
 	 * @var Room
-	 * @ORM\OneToMany(mappedBy="participant")
+	 * @ORM\OneToMany(mappedBy="participant", cascade={"all"})
 	 */
 	protected $room;
 

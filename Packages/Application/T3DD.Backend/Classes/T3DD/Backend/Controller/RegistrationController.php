@@ -63,6 +63,7 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		/** @var \T3DD\Backend\Domain\Model\Registration\Participant $participant */
 		foreach ($registrationEntity->getParticipants() as $participant) {
 			$ticketRequest[] = $participant->getTicketRequest();
+			$participant->setRegistration($registrationEntity);
 			$roomRequest = $participant->getRoomRequest();
 			if ($roomRequest !== NULL) {
 				$roomRequests[] = $roomRequest;

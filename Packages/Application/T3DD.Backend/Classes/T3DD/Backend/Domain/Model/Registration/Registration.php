@@ -39,7 +39,7 @@ class Registration {
 
 	/**
 	 * @var \Doctrine\Common\Collections\ArrayCollection<Participant>
-	 * @ORM\OneToMany(mappedBy="registration")
+	 * @ORM\OneToMany(mappedBy="registration", cascade={"all"})
 	 */
 	protected $participants;
 
@@ -99,20 +99,6 @@ class Registration {
 	 */
 	public function setBillingAddress($billingAddress) {
 		$this->billingAddress = $billingAddress;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getBillingEmail() {
-		return $this->billingEmail;
-	}
-
-	/**
-	 * @param string $billingEmail
-	 */
-	public function setBillingEmail($billingEmail) {
-		$this->billingEmail = $billingEmail;
 	}
 
 	/**
