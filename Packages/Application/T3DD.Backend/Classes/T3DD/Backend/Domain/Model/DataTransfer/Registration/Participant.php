@@ -32,7 +32,7 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('__identity', 'rate', 'roomSize', 'companyName', 'name', 'email');
+		return array('__identity', 'rate', 'roomSize', 'companyName', 'name', 'email', 'foodType', 'foodWishes', 'tshirtType', 'tshirtSize', 'newcomer', 'yearExpertise');
 	}
 
 	/**

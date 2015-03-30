@@ -317,14 +317,14 @@ class Participant {
 	}
 
 	/**
-	 * @return string
+	 * @return boolean
 	 */
 	public function getNewcomer() {
 		return $this->newcomer;
 	}
 
 	/**
-	 * @param string $newcomer
+	 * @param boolean $newcomer
 	 */
 	public function setNewcomer($newcomer) {
 		$this->newcomer = $newcomer;
