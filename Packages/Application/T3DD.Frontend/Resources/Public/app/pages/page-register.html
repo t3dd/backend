@@ -144,6 +144,14 @@
 					margin: -160px auto 0;
 				}
 			}
+
+			.card__title {
+				margin-bottom: 0;
+			}
+
+			del {
+				color: #8C8C8C;
+			}
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
 		<header class="bg-dark-grey">
@@ -157,9 +165,12 @@
 			<div id="headCard" class="container">
 				<div class="card__container">
 					<div class="card">
-						<h2 class="card__content" site-font="title">
-							Registration will begin <strong>April 1 at 10:00AM CET</strong>
-						</h2>
+						<div class="card__content">
+							<h2 class="card__title" site-font="title">
+								Registration will begin <strong>April 8th at 10:00AM CET*</strong> <del>April 1st at 10:00AM CET</del>
+							</h2>
+							<p site-font="caption">* We're sorry, but the initially announced date had to be shifted because of a cold wave in the team.</p>
+						</div>
 						<div class="card__content" site-font="subhead">
 							<h3>Tips to get ready</h3>
 							<p>
