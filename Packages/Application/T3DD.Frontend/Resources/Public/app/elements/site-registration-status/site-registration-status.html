@@ -1,0 +1,30 @@
+<polymer-element name="site-registration-status">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+		<site-ajax id="registrationStatus" url="/registration/status" response="{{status}}"></site-ajax>
+
+		<div layout vertical>
+			<span>Tickets: {{status.tickets}}</span>
+			<span>Rooms: {{status.rooms}}</span>
+		</div>
+	</template>
+	<script>
+		(function () {
+			'use strict';
+
+			Polymer({
+				status: null,
+				ready: function () {
+					setInterval((function () {
+						this.$.registrationStatus.go();
+					}).bind(this), 30000);
+				}
+			});
+
+		})();
+	</script>
+</polymer-element>
