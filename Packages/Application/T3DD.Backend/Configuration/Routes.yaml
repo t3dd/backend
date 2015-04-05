@@ -4,6 +4,16 @@
 
 -
   name: 'Registration pending'
+  uriPattern: 'registration/status'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Registration'
+    '@action':     'status'
+  appendExceedingArguments: TRUE
+  httpMethods: ['HEAD', 'GET']
+
+-
+  name: 'Registration pending'
   uriPattern: 'registration/pending'
   defaults:
     '@package':    'T3DD.Backend'

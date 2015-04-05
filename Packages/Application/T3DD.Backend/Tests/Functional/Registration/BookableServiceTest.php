@@ -133,4 +133,28 @@ class BookableServiceTest extends \TYPO3\Flow\Tests\FunctionalTestCase  {
 		$this->assertEquals(10, $this->roomRepository->getSpentQuota() / 12);
 	}
 
+	/**
+	 * @test
+	 */
+	public function ticketsAndRoomShouldBeAvailable() {
+		$this->inject($this->bookableService, 'configuration', [BookableService::TYPE_ROOM => ['fractionBase' => 12, 'availableQuota' => 10], BookableService::TYPE_TICKET => ['availableQuota' => 10]]);
+		$this->assertEquals(10, $this->bookableService->getTicketsStatus());
+		$this->assertEquals(10, $this->bookableService->getRoomStatus());
+	}
+
+	/**
+	 * @test
+	 */
+	public function ticketsAndRoomShouldBeUnavailable() {
+		$this->inject($this->bookableService, 'configuration', [BookableService::TYPE_ROOM => ['fractionBase' => 12, 'availableQuota' => 10], BookableService::TYPE_TICKET => ['availableQuota' => 10]]);
+
+		$bookables = $this->buildBookableRequest(10);
+		$this->bookableService->requestRooms($bookables);
+		$this->bookableService->requestTickets($bookables);
+		$this->persistenceManager->persistAll();
+
+		$this->assertEquals(0, $this->bookableService->getTicketsStatus());
+		$this->assertEquals(0, $this->bookableService->getRoomStatus());
+	}
+
 }

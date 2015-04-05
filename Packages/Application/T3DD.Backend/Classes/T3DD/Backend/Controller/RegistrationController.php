@@ -50,6 +50,10 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		}
 	}
 
+	public function statusAction() {
+		$this->view->assign('value', array('tickets' => $this->bookableService->getTicketsStatus(), 'rooms' => $this->bookableService->getRoomStatus()));
+	}
+
 	/**
 	 * @param \T3DD\Backend\Domain\Model\Registration\Registration $registration
 	 */
@@ -129,7 +133,7 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		/** @var \TYPO3\Flow\Mvc\Controller\Argument $argument */
 		$argument = $this->arguments[$this->resourceArgumentName];
 		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('participants.*');
-		$configuration->allowAllProperties();
+		$configuration->skipUnknownProperties();
 		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter',
 			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED,
 			TRUE);

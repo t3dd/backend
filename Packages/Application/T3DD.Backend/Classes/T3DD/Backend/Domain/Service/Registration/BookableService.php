@@ -33,6 +33,20 @@ class BookableService {
 	protected $ticketRepository;
 
 	/**
+	 * @return integer
+	 */
+	public function getTicketsStatus() {
+		return $this->getBookableLeftCount(static::TYPE_TICKET);
+	}
+
+	/**
+	 * @return integer
+	 */
+	public function getRoomStatus() {
+		return $this->getBookableLeftCount(static::TYPE_ROOM);
+	}
+
+	/**
 	 * @param array $roomRequests
 	 * @return Registration\Room[]
 	 */
@@ -88,6 +102,19 @@ class BookableService {
 		}
 
 		return $requestedBookables;
+	}
+
+	/**
+	 * @param string $type
+	 * @return int
+	 */
+	protected function getBookableLeftCount($type) {
+		/** @var \T3DD\Backend\Domain\Repository\Registration\AbstractBookableRepository $repository */
+		$fractionBase = (int) isset($this->configuration[$type]['fractionBase']) ? $this->configuration[$type]['fractionBase'] : static::DEFAULT_FRACTION_BASE;
+		$availableQuota = (int) isset($this->configuration[$type]['availableQuota']) ? $this->configuration[$type]['availableQuota'] * $fractionBase : 0;
+		$repository = $this->{strtolower($type) . 'Repository'};
+		$spentQuota = $repository->getSpentQuota();
+		return (int) (($availableQuota - $spentQuota) / $fractionBase);
 	}
 
 }

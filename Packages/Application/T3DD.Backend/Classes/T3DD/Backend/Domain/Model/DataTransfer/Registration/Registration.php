@@ -102,13 +102,20 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	}
 
 	/**
-	 *
+	 * @return integer
 	 */
 	public function getSecondsToExpiration() {
 		$now = new \DateTime();
 		$expirationDate = clone $this->payload->getDate();
 		$expirationDate->add(new \DateInterval('PT30M'));
 		return max($expirationDate->getTimestamp() - $now->getTimestamp(), 0);
+	}
+
+	/**
+	 * @param integer $secondsToExpiration
+	 */
+	public function setSecondsToExpiration($secondsToExpiration) {
+
 	}
 
 }
