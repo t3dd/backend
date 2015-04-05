@@ -40,6 +40,7 @@ class Registration {
 	/**
 	 * @var \Doctrine\Common\Collections\ArrayCollection<Participant>
 	 * @ORM\OneToMany(mappedBy="registration", cascade={"all"})
+	 * @ORM\OrderBy({"positionInRegistration" = "ASC"})
 	 */
 	protected $participants;
 

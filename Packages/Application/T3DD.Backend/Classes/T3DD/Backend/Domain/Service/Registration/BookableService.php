@@ -85,6 +85,8 @@ class BookableService {
 			$requestedBookable->setFraction($requestFraction);
 			$requestedBookable->setQuotaApplies($quotaApplies);
 
+			\TYPO3\Flow\Reflection\ObjectAccess::setProperty($bookableRequest['participant'],$type, $requestedBookable);
+
 			if (!$quotaApplies) {
 				$requestedBookable->setBookingState(Registration\AbstractBookable::BOOKING_STATE_PENDING);
 			} else {

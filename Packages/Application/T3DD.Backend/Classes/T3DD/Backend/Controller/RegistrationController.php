@@ -98,8 +98,10 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 
 		$ticketRequest = [];
 		$roomRequests = [];
+		$participantPosition = 0;
 		/** @var \T3DD\Backend\Domain\Model\Registration\Participant $participant */
 		foreach ($registrationEntity->getParticipants() as $participant) {
+			$participant->setPositionInRegistration($participantPosition++);
 			$participant->setRegistration($registrationEntity);
 			if ($participant->isRegistrant()) {
 				$person = $this->partyService->getAssignedPartyOfAccount($account);
@@ -111,7 +113,7 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 			$roomRequest = $participant->getRoomRequest();
 			if ($roomRequest !== NULL) {
 				$roomRequests[] = $roomRequest;
-			}
+			};
 		}
 		$this->bookableService->requestTickets($ticketRequest);
 		$this->bookableService->requestRooms($roomRequests);

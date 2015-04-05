@@ -21,6 +21,11 @@ class Participant {
 	protected $registration = NULL;
 
 	/**
+	 * @var int
+	 */
+	protected $positionInRegistration;
+
+	/**
 	 * @var \TYPO3\Flow\Security\Account
 	 * @ORM\ManyToOne
 	 */
@@ -142,6 +147,20 @@ class Participant {
 	 */
 	public function setRegistration($registration) {
 		$this->registration = $registration;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getPositionInRegistration() {
+		return $this->positionInRegistration;
+	}
+
+	/**
+	 * @param int $positionInRegistration
+	 */
+	public function setPositionInRegistration($positionInRegistration) {
+		$this->positionInRegistration = (int) $positionInRegistration;
 	}
 
 	/**
