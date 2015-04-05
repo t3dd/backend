@@ -21,12 +21,6 @@ abstract class AbstractBookable {
 	protected $date;
 
 	/**
-	 * @var Participant
-	 * @ORM\ManyToOne
-	 */
-	protected $participant;
-
-	/**
 	 * @var int
 	 */
 	protected $fraction;
@@ -44,20 +38,6 @@ abstract class AbstractBookable {
 
 	public function __construct() {
 		$this->date = new \DateTime();
-	}
-
-	/**
-	 * @return Participant
-	 */
-	public function getParticipant() {
-		return $this->participant;
-	}
-
-	/**
-	 * @param Participant $participant
-	 */
-	public function setParticipant(Participant $participant) {
-		$this->participant = $participant;
 	}
 
 	/**

@@ -68,7 +68,6 @@ class BookableService {
 			$className = 'T3DD\\Backend\\Domain\\Model\\Registration\\' . $type;
 
 			$requestedBookable = new $className();
-			$requestedBookable->setParticipant($bookableRequest['participant']);
 			$requestedBookable->setFraction($requestFraction);
 			$requestedBookable->setQuotaApplies($quotaApplies);
 

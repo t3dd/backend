@@ -76,11 +76,21 @@
 			.participant__rate-room {
 				margin-bottom: 0;
 			}
+
+			.yearsExperience {
+				padding-top: 0;
+				min-width: 64px;
+				text-align: right;
+			}
 		</style>
 		<site-ajax url="/registration/{{registrationId}}" on-core-response="{{handleRegistration}}"></site-ajax>
 		<header class="bg-dark-grey">
 			<div class="container">
 				<h1 site-font="display1">Complete your registration</h1>
+				<h4 site-font="title">
+					<template if="{{timeleft.length}}">within the next {{timeleft}}</template>
+					<template if="{{timeleft == false}}">your registration expired</template>
+				</h4>
 			</div>
 		</header>
 		<main>
@@ -93,11 +103,11 @@
 								<div flex>
 									<h2 class="registration__title" site-font="title">Billing Address</h2>
 
-									<paper-input-decorator label="Your Name" floatingLabel>
-										<input id="billingAddressName" value="{{registration.billingAddress.name}}" is="core-input" required on-change="{{removeDefault}}" default>
-									</paper-input-decorator>
 									<paper-input-decorator label="Company Name" floatingLabel error="Enter a company name!">
 										<input value="{{registration.billingAddress.company}}" is="core-input">
+									</paper-input-decorator>
+									<paper-input-decorator label="Your Name" floatingLabel>
+										<input id="billingAddressName" value="{{registration.billingAddress.name}}" is="core-input" required on-change="{{removeDefault}}" default>
 									</paper-input-decorator>
 									<paper-input-decorator label="Street & Street No." floatingLabel error="Enter a Street!">
 										<paper-autogrow-textarea rows="1">
@@ -130,50 +140,52 @@
 								<div horizontal layout>
 									<core-icon class="title-icon" icon="assignment-ind"></core-icon>
 									<div flex>
-										<template if="{{registration.participants.length > 1}}">
-											<h4 site-font="title">
-												{{i + 1 | enumerateWithWords | capitalizeFirstLetter}} Participant …
-											</h4>
-										</template>
+										<h4 site-font="title">
+											{{participant.isRegistrant ? 'I' : ''}}
+											{{!participant.isRegistrant ? i + 1 : '' | enumerateWithWords | capitalizeFirstLetter}}
+											{{!participant.isRegistrant ? 'Participant' : ''}}
+											…
+										</h4>
 										<p class="participant__rate-room" site-font="caption">
-											… is a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}
+											… {{participant.isRegistrant ? 'am' : 'is'}} a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}
 											{{participant.rate | rateText}}
-											and {{participant.roomSize == 0 ? 'doesn\'t need a room' : 'would like to share a room with'}}
+											and
+											{{!participant.isRegistrant && participant.roomSize == 0 ? 'does' : ''}}{{participant.isRegistrant && participant.roomSize == 0 ? 'do' : ''}}{{participant.roomSize == 0 ? 'n\'t need a room' : 'would like to share a room with'}}
 											{{participant.roomSize | roomSizeText}}
 										</p>
-										<paper-input-decorator label="… is called (full name)" floatingLabel error="Enter a Name!">
+										<paper-input-decorator label="… {{participant.isRegistrant ? 'am' : 'is'}} called (full name)" floatingLabel error="Enter a Name!">
 											<input value="{{participant.name}}" is="core-input" required>
 										</paper-input-decorator>
-										<paper-input-decorator label="… works at (company name)" floatingLabel>
+										<paper-input-decorator label="… {{participant.isRegistrant ? 'work' : 'works'}} at (company name)" floatingLabel>
 											<input id="participantCompanyName{{i}}" value="{{participant.companyName}}" is="core-input" on-change="{{removeDefault}}" default>
 										</paper-input-decorator>
-										<paper-input-decorator label="… recieves e-mails at (individual e-mail address)" floatingLabel error="Enter a valid e-mail address!">
+										<paper-input-decorator label="… {{participant.isRegistrant ? 'recieve' : 'recieves'}} e-mails via (individual e-mail address)" floatingLabel error="Enter a valid e-mail address!">
 											<input value="{{participant.email}}" is="core-input" type="email" required>
 										</paper-input-decorator>
-										<template if="{{registration.participants.length == 1}}">
-											<label site-font="caption">… eat</label>
+										<template if="{{participant.isRegistrant}}">
+											<label site-font="caption">… am eating</label>
 											<paper-radio-group selected="{{participant.foodType}}">
-												<paper-radio-button name="default" label="Regular"></paper-radio-button>
-												<paper-radio-button name="vegetarian" label="Vegetarian"></paper-radio-button>
-												<paper-radio-button name="vegan" label="Vegan"></paper-radio-button>
-												<paper-radio-button name="other" label="Other"></paper-radio-button>
+												<paper-radio-button name="default" label="regular"></paper-radio-button>
+												<paper-radio-button name="vegetarian" label="vegetarian"></paper-radio-button>
+												<paper-radio-button name="vegan" label="vegan"></paper-radio-button>
+												<paper-radio-button name="other" label="other"></paper-radio-button>
 											</paper-radio-group>
 
 											<template if="{{participant.foodType == 'other'}}">
-												<paper-input-decorator label="Tell us your special food demands" floatingLabel error="Enter a valid e-mail address!">
+												<paper-input-decorator label="Tell us your special food demands" floatingLabel error="Enter what your Demands!">
 													<paper-autogrow-textarea>
 														<textarea value="{{participant.foodSpecialNeeds}}" required></textarea>
 													</paper-autogrow-textarea>
 												</paper-input-decorator>
 											</template>
 
-											<label site-font="caption">What's your T-Shirt style?</label>
+											<label site-font="caption">… would like to have a T-Shirt with the style</label>
 											<paper-radio-group selected="{{participant.tshirtType}}">
-												<paper-radio-button name="default" label="Regular"></paper-radio-button>
-												<paper-radio-button name="girlie" label="Girlie"></paper-radio-button>
+												<paper-radio-button name="default" label="regular"></paper-radio-button>
+												<paper-radio-button name="girlie" label="girlie"></paper-radio-button>
 											</paper-radio-group>
 
-											<label site-font="caption">What's your T-Shirt size?</label>
+											<label site-font="caption">… wear T-Shirts in size</label>
 											<paper-radio-group selected="{{participant.tshirtSize}}">
 												<paper-radio-button name="S" label="S"></paper-radio-button>
 												<paper-radio-button name="M" label="M"></paper-radio-button>
@@ -184,16 +196,16 @@
 												<paper-radio-button name="XXXXL" label="4XL"></paper-radio-button>
 											</paper-radio-group>
 
-											<label site-font="caption">Are these your first developer days?</label>
+											<label site-font="caption">… am attending the Developer Days for the first time</label>
 											<paper-radio-group selected="{{participant.newcomer}}">
 												<paper-radio-button name="1" label="yes"></paper-radio-button>
 												<paper-radio-button name="0" label="no"></paper-radio-button>
 											</paper-radio-group>
 
-											<label site-font="caption">How many years is your experience with TYPO3 products (CMS, Neos or Flow)?</label>
+											<label site-font="caption">… am having experience in TYPO3 products (CMS, Neos or Flow) for</label>
 											<div horizontal center layout>
 												<paper-slider min="0" max="15" snaps value="{{participant.yearExpertise}}" immediateValue="{{yearsExperience}}" flex></paper-slider>
-												<label class="yearsExperience">{{yearsExperience}} years</label>
+												<label class="yearsExperience">{{yearsExperience == 0 ? 'none yet' : yearsExperience}} {{yearsExperience > 0 ? 'year' : ''}}{{yearsExperience > 1 ? 's' : ''}}</label>
 											</div>
 										</template>
 									</div>
@@ -218,9 +230,11 @@
 		(function(undefined) {
 			'use strict';
 			Polymer({
+				timeleft: null,
 				observe: {
 					'$.globals.values.user.displayName': 'displayNameChanged',
-					'registration.billingAddress.company': 'billingCompanyChanged'
+					'registration.billingAddress.company': 'billingCompanyChanged',
+					'registration.secondsToExpiration': 'secondsToExpirationChanged'
 				},
 				handleRegistration: function(event) {
 					this.registration = event.detail.response;
@@ -246,6 +260,32 @@
 						}
 					}).bind(this));
 					this.$.form.updateLabelVisibilities();
+				},
+				secondsToExpirationChanged: function(oldValue, newValue) {
+					if (!newValue) {
+						this.timeleft = null;
+						return;
+					}
+					var timeleft = newValue;
+					var currentepoch = Math.floor(new Date().getTime()/1000);
+					var targetepoch = currentepoch + timeleft;
+					var timeout;
+					var updateTimeleft = function() {
+						var currentepoch = Math.floor(new Date().getTime() / 1000);
+						timeleft = targetepoch - currentepoch;
+						var s = timeleft % 60;
+						var m = (timeleft - s) / 60 % 60;
+
+						if (m > 0) {
+							this.timeleft =  '' + m + ' minute' + (m === 1 ? '' : 's');
+						} else if (s > 0) {
+							this.timeleft =  '' + s + ' seconds';
+						} else {
+							this.timeleft = false;
+						}
+						timeout = window.setTimeout(updateTimeleft, 1000);
+					}.bind(this);
+					timeout = window.setTimeout(updateTimeleft, 1000);
 				},
 				removeDefault: function(event, index, input) {
 					input.removeAttribute('default');

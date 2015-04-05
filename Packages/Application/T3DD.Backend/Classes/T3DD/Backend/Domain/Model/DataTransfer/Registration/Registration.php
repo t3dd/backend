@@ -34,7 +34,7 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'participantCount', 'participants', 'billingAddress');
+		return array('resource', 'participantCount', 'participants', 'billingAddress', 'secondsToExpiration');
 	}
 
 	/**
@@ -99,6 +99,16 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 		if ($billingAddress !== NULL) {
 			return $this->dataTransferObjectFactory->getDataTransferObject($billingAddress);
 		}
+	}
+
+	/**
+	 *
+	 */
+	public function getSecondsToExpiration() {
+		$now = new \DateTime();
+		$expirationDate = clone $this->payload->getDate();
+		$expirationDate->add(new \DateInterval('PT30M'));
+		return max($expirationDate->getTimestamp() - $now->getTimestamp(), 0);
 	}
 
 }

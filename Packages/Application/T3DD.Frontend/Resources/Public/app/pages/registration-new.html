@@ -19,6 +19,12 @@
 				padding-top: 0;
 				text-align: right;
 			}
+			.participantIsRegistrant {
+
+			}
+			.participantIsRegistrant label {
+				padding: 0 0 0 10px;
+			}
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
 		<form is="site-form" id="form" action="/registration" method="post" enctype="application/json" on-submitting="{{submitting}}" flex>
@@ -39,10 +45,21 @@
 				<div class="card__content" horizontal layout>
 					<core-icon class="title-icon" icon="assignment-ind"></core-icon>
 					<div flex>
-						<h4 site-font="title">
-							{{i + 1 | enumerateWithWords | capitalizeFirstLetter}} Participant …
-						</h4>
-						<label site-font="caption">… is a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}</label>
+						<div horizontal center layout>
+							<h4 site-font="title" flex>
+								{{participant.isRegistrant ? 'I' : ''}}
+								{{!participant.isRegistrant ? i + 1 : '' | enumerateWithWords | capitalizeFirstLetter}}
+								{{!participant.isRegistrant ? 'Participant' : ''}}
+								…
+							</h4>
+							<template if="{{i == 0}}">
+								<div class="participantIsRegistrant" horizontal center layout>
+									<site-checkbox checked="{{participant.isRegistrant}}"></site-checkbox>
+									<label site-font="subheader">this is myself</label>
+								</div>
+							</template>
+						</div>
+						<label site-font="caption">… {{participant.isRegistrant ? 'am' : 'is'}} a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}</label>
 						<paper-radio-group selected="{{participant.rate}}">
 							<paper-radio-button name="assoc" label="Association Member"></paper-radio-button>
 							<paper-radio-button name="nonassoc" label="Non Association Member"></paper-radio-button>
@@ -76,6 +93,7 @@
 				participants: [],
 				participantTemplate: function() {
 					return {
+						isRegistrant: false,
 						rate: 'assoc',
 						roomSize: 2
 					}
@@ -92,7 +110,14 @@
 					return event;
 				},
 				submit: function () {
-					this.$.form.submit();
+					if (!this.globals.user) {
+						var t = document.getElementById('t');
+						t.requireLogin((function() {
+							this.$.form.submit();
+						}).bind(this));
+					} else {
+						this.$.form.submit();
+					}
 				},
 				participantCountChanged: function(oldValue, newValue) {
 					if (this.participants.length > newValue) {
@@ -100,7 +125,11 @@
 					} else if (this.participants.length < newValue) {
 						var participantsToAdd = newValue - this.participants.length;
 						for (var i = 0; i < participantsToAdd; i++) {
-							this.participants.push(this.participantTemplate());
+							var participant = this.participantTemplate();
+							if (i == 0 && this.participants.length === 0) {
+								participant.isRegistrant = true;
+							}
+							this.participants.push(participant);
 						}
 					}
 				}

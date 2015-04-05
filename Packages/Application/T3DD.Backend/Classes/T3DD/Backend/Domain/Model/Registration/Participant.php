@@ -27,6 +27,11 @@ class Participant {
 	protected $account = NULL;
 
 	/**
+	 * @var bool
+	 */
+	protected $isRegistrant = false;
+
+	/**
 	 * @var string
 	 */
 	protected $name = '';
@@ -105,13 +110,13 @@ class Participant {
 
 	/**
 	 * @var Ticket
-	 * @ORM\OneToMany(mappedBy="participant", cascade={"all"})
+	 * @ORM\OneToOne(cascade={"all"})
 	 */
 	protected $ticket;
 
 	/**
 	 * @var Room
-	 * @ORM\OneToMany(mappedBy="participant", cascade={"all"})
+	 * @ORM\OneToOne(cascade={"all"})
 	 */
 	protected $room;
 
@@ -144,8 +149,37 @@ class Participant {
 	/**
 	 * @param \TYPO3\Flow\Security\Account $account
 	 */
-	public function setAccount($account) {
+	public function setAccount(\TYPO3\Flow\Security\Account $account) {
 		$this->account = $account;
+	}
+
+	/**
+	 * @param \TYPO3\Party\Domain\Model\Person $person
+	 */
+	public function setPerson(\TYPO3\Party\Domain\Model\Person $person) {
+		$this->name = (string) $person->getName();
+		$this->email = $person->getPrimaryElectronicAddress()->getIdentifier();
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isRegistrant() {
+		return $this->isRegistrant;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getIsRegistrant() {
+		return $this->isRegistrant;
+	}
+
+	/**
+	 * @param boolean $isRegistrant
+	 */
+	public function setIsRegistrant($isRegistrant) {
+		$this->isRegistrant = (bool) $isRegistrant;
 	}
 
 	/**

@@ -23,6 +23,12 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 	protected $bookableService;
 
 	/**
+	 * @var \TYPO3\Party\Domain\Service\PartyService
+	 * @Flow\Inject
+	 */
+	protected $partyService;
+
+	/**
 	 * @var \T3DD\Backend\Domain\Repository\Registration\RegistrationRepository
 	 * @Flow\Inject
 	 */
@@ -64,7 +70,7 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		/** @var \TYPO3\Flow\Mvc\Controller\Argument $argument */
 		$argument = $this->arguments[$this->resourceArgumentName];
 		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('participants.*');
-		$configuration->allowProperties('rate', 'roomSize');
+		$configuration->allowProperties('isRegistrant', 'rate', 'roomSize');
 		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter',
 			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
 			TRUE);
@@ -81,15 +87,23 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		}
 		$registrationLock = new \TYPO3\Flow\Utility\Lock\Lock('T3DD-Registration');
 
+		$account = $this->securityContext->getAccount();
+
 		$registrationEntity = $registration->getPayload();
-		$registrationEntity->setAccount($this->securityContext->getAccount());
+		$registrationEntity->setAccount($account);
 
 		$ticketRequest = [];
 		$roomRequests = [];
 		/** @var \T3DD\Backend\Domain\Model\Registration\Participant $participant */
 		foreach ($registrationEntity->getParticipants() as $participant) {
-			$ticketRequest[] = $participant->getTicketRequest();
 			$participant->setRegistration($registrationEntity);
+			if ($participant->isRegistrant()) {
+				$person = $this->partyService->getAssignedPartyOfAccount($account);
+				$participant->setAccount($account);
+				$participant->setPerson($person);
+			}
+
+			$ticketRequest[] = $participant->getTicketRequest();
 			$roomRequest = $participant->getRoomRequest();
 			if ($roomRequest !== NULL) {
 				$roomRequests[] = $roomRequest;

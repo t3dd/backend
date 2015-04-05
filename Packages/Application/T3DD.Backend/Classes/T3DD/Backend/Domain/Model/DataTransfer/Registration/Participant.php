@@ -32,7 +32,7 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('__identity', 'rate', 'roomSize', 'companyName', 'name', 'email', 'foodType', 'foodWishes', 'tshirtType', 'tshirtSize', 'newcomer', 'yearExpertise');
+		return array('__identity', 'isRegistrant', 'rate', 'roomSize', 'companyName', 'name', 'email', 'foodType', 'foodWishes', 'tshirtType', 'tshirtSize', 'newcomer', 'yearExpertise', 'ticketBookingState', 'roomBookingState');
 	}
 
 	/**
@@ -40,6 +40,24 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	 */
 	public function getPayload() {
 		return $this->payload;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getTicketBookingState() {
+		if ($this->payload->getTicket()) {
+			return $this->payload->getTicket()->getBookingState();
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getRoomBookingState() {
+		if ($this->payload->getRoom()) {
+			return $this->payload->getRoom()->getBookingState();
+		}
 	}
 
 }

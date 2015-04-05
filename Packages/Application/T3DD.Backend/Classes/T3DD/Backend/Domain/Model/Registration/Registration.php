@@ -60,6 +60,13 @@ class Registration {
 	}
 
 	/**
+	 * @return \DateTime
+	 */
+	public function getDate() {
+		return $this->date;
+	}
+
+	/**
 	 * @return \TYPO3\Flow\Security\Account
 	 */
 	public function getAccount() {
