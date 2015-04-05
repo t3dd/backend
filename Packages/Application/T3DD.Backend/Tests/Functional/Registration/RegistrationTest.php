@@ -43,7 +43,7 @@ class RegistrationTest extends \TYPO3\Flow\Tests\FunctionalTestCase {
 	/**
 	 * @test
 	 */
-	public function registrationPassesForAuthtenticatedUser() {
+	public function registrationPassesForAuthenticatedUser() {
 		$payload = $this->buildRegistrationCreationPayload();
 		$request = $this->createRegistrationRequest($payload);
 		$request->setHeader('Authorization', 'Basic ' . base64_encode('functional_test_account:a_very_secure_long_password'));

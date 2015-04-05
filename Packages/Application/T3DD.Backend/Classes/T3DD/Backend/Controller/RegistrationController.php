@@ -130,6 +130,10 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 	 * @param Registration $registration
 	 */
 	public function updateAction(Registration $registration) {
+		if (!$registration->getPayload()->isCompleted()) {
+			$registration->getPayload()->setCompleted(TRUE);
+			$this->objectManager->get(\T3DD\Backend\Domain\Service\MailService::class)->sendRegistrationCompletedMail($registration->getPayload()->getBillingAddress());
+		}
 		$this->registrationRepository->update($registration->getPayload());
 
 		$this->view->assign('value', $registration);

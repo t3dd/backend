@@ -13,7 +13,9 @@
         "typo3/fluid": "@beta",
         "typo3/eel": "@beta",
         "doctrine/migrations": "@dev",
-        "netlogix/crud": "dev-master"
+        "netlogix/crud": "dev-master",
+        "typo3/swiftmailer": "5.3.1",
+        "fzaninotto/faker": "1.4.0"
     },
     "require-dev": {
         "typo3/kickstart": "3.0.0-beta1",
