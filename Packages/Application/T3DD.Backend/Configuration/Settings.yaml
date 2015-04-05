@@ -14,3 +14,4 @@ T3DD:
         Subjects:
           default: 'TYPO3 Developer Days 2015 Message'
           registrationCompleted: 'Registration for TYPO3 Developer Days 2015'
+          participantCompleteRegistration: 'Update your registration for TYPO3 Developer Days 2015'

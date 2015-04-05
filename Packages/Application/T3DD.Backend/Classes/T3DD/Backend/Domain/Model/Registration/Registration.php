@@ -96,7 +96,7 @@ class Registration {
 	}
 
 	/**
-	 * @return string
+	 * @return BillingAddress
 	 */
 	public function getBillingAddress() {
 		return $this->billingAddress;

@@ -14,4 +14,14 @@ use TYPO3\Flow\Persistence\Repository;
  */
 class ParticipantRepository extends Repository {
 
+	public function findUncompletedParticipants() {
+		$query = $this->createQuery();
+		$queryConstraints = array();
+		$queryConstraints[] = $query->equals('completed', FALSE);
+		$queryConstraints[] = $query->lessThanOrEqual('lastEmailSent', new \DateTime('now - 7 Days'));
+
+		$query->matching($query->logicalAnd($queryConstraints));
+		return $query->execute();
+	}
+
 }

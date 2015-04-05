@@ -130,6 +130,11 @@ class Participant {
 	 */
 	protected $completed = false;
 
+	/**
+	 * @var \DateTime
+	 */
+	protected $lastEmailSent;
+
 	public function __construct() {
 		$this->date = new \DateTime();
 		$this->roomMates = new \Doctrine\Common\Collections\ArrayCollection();
@@ -442,6 +447,13 @@ class Participant {
 	 */
 	public function setCompleted($completed) {
 		$this->completed = $completed;
+	}
+
+	/**
+	 * @param \DateTime $lastEmailSent
+	 */
+	public function setLastEmailSent($lastEmailSent) {
+		$this->lastEmailSent = $lastEmailSent;
 	}
 
 	/**

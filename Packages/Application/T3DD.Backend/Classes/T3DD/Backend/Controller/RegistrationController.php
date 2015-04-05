@@ -151,14 +151,20 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 	 */
 	public function updateAction(Registration $registration) {
 		$registrationEntity = $registration->getPayload();
+		/** @var \T3DD\Backend\Domain\Service\MailService $mailService */
+		$mailService = $this->objectManager->get(\T3DD\Backend\Domain\Service\MailService::class);
 		if (!$registrationEntity->isCompleted()) {
 			$registrationEntity->setCompleted(TRUE);
-			$this->objectManager->get(\T3DD\Backend\Domain\Service\MailService::class)->sendRegistrationCompletedMail($registrationEntity->getBillingAddress());
+			$mailService->sendRegistrationCompletedMail($registrationEntity->getBillingAddress());
 		}
 		/** @var \T3DD\Backend\Domain\Model\Registration\Participant $participant */
 		foreach ($registrationEntity->getParticipants() as $participant) {
 			if ($participant->isRegistrant()) {
 				$participant->setCompleted(TRUE);
+			} else {
+				// TODO: Send mails if we have a ui for the participant form
+//				$mailService->sendParticipantCompleteRegistrationMail($participant);
+//				$participant->setLastEmailSent(new \DateTime());
 			}
 		}
 		$this->registrationRepository->update($registrationEntity);
