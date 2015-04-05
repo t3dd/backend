@@ -7,6 +7,8 @@ privilegeTargets:
       matcher: 'method(T3DD\Backend\Controller\SessionController->(list|show)Action()) || method(T3DD\Backend\Controller\VoteController->listAction()) || method(T3DD\Backend\Controller\ValueController->listAction()) || method(Netlogix\Crud\Controller\RestController->errorAction())'
     T3DD_Backend_Registration:
       matcher: method(T3DD\Backend\Controller\RegistrationController->(pending|status|show|create|update|error)Action())
+    T3DD_Backend_Participant:
+      matcher: method(T3DD\Backend\Controller\ParticipantController->(show|update|error)Action())
     T3DD_Backend_Session:
       matcher: method(T3DD\Backend\Controller\SessionController->(edit|create|update|delete|error)Action())
     T3DD_Backend_Vote:
@@ -18,6 +20,9 @@ roles:
     privileges:
       -
         privilegeTarget: T3DD_Backend_Registration
+        permission: GRANT
+      -
+        privilegeTarget: T3DD_Backend_Participant
         permission: GRANT
       -
         privilegeTarget: T3DD_Backend_Session

@@ -120,6 +120,11 @@ class Participant {
 	 */
 	protected $room;
 
+	/**
+	 * @var bool
+	 */
+	protected $completed = false;
+
 	public function __construct() {
 		$this->date = new \DateTime();
 		$this->roomMates = new \Doctrine\Common\Collections\ArrayCollection();
@@ -404,6 +409,20 @@ class Participant {
 	 */
 	public function setRoom(Room $room) {
 		$this->room = $room;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function isCompleted() {
+		return $this->completed;
+	}
+
+	/**
+	 * @param boolean $completed
+	 */
+	public function setCompleted($completed) {
+		$this->completed = $completed;
 	}
 
 	/**

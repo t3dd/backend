@@ -43,6 +43,16 @@
   httpMethods: ['HEAD', 'GET', 'POST']
 
 -
+  name: 'Single Participant'
+  uriPattern: 'participant/{participant}'
+  defaults:
+    '@package':    'T3DD.Backend'
+    '@controller': 'Participant'
+    '@action':     'index'
+  appendExceedingArguments: TRUE
+  httpMethods: ['GET', 'PUT']
+
+-
   name: 'Single Session'
   uriPattern: 'sessions/{session}'
   defaults:

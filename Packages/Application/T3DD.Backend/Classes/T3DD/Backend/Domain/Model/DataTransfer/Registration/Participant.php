@@ -6,6 +6,7 @@ namespace T3DD\Backend\Domain\Model\DataTransfer\Registration;
  *                                                                        *
  *                                                                        */
 
+use Netlogix\Crud\Domain\Model\DataTransfer\UriPointer;
 use TYPO3\Flow\Annotations as Flow;
 
 class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransferObject {
@@ -32,7 +33,7 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('__identity', 'isRegistrant', 'rate', 'roomSize', 'companyName', 'name', 'email', 'foodType', 'foodWishes', 'tshirtType', 'tshirtSize', 'newcomer', 'yearExpertise', 'ticketBookingState', 'roomBookingState');
+		return array('__identity', 'resource', 'isRegistrant', 'rate', 'roomSize', 'companyName', 'name', 'email', 'foodType', 'foodWishes', 'tshirtType', 'tshirtSize', 'newcomer', 'yearExpertise', 'ticketBookingState', 'roomBookingState');
 	}
 
 	/**
@@ -40,6 +41,123 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	 */
 	public function getPayload() {
 		return $this->payload;
+	}
+
+	/**
+	 * @return UriPointer
+	 */
+	public function getResource() {
+		return new UriPointer(array(
+			'packageKey' => 'T3DD.Backend',
+			'controllerName' => 'Participant',
+			'actionName' => 'index',
+			'arguments' => array('participant' => $this->payload),
+		));
+	}
+
+	/**
+	 * @param string $resource
+	 */
+	public function setResource($resource) {
+
+	}
+
+	/**
+	 * @param boolean $isRegistrant
+	 */
+	public function setIsRegistrant($isRegistrant) {
+
+	}
+
+	/**
+	 * @param string $name
+	 */
+	public function setName($name) {
+
+	}
+
+	/**
+	 * @param string $email
+	 */
+	public function setEmail($email) {
+
+	}
+
+	/**
+	 * @param string $companyName
+	 */
+	public function setCompanyName($companyName) {
+		$this->getPayload()->setCompanyName($companyName);
+	}
+
+	/**
+	 * @param string $rate
+	 */
+	public function setRate($rate) {
+
+	}
+
+	/**
+	 * @param int $roomSize
+	 */
+	public function setRoomSize($roomSize) {
+
+	}
+
+	/**
+	 * @param \Doctrine\Common\Collections\Collection $roomMates
+	 */
+	public function setRoomMates($roomMates) {
+		$this->getPayload()->setRoomMates($roomMates);
+	}
+
+	/**
+	 * @param string $roomGroup
+	 */
+	public function setRoomGroup($roomGroup) {
+		$this->getPayload()->setRoomGroup($roomGroup);
+	}
+
+	/**
+	 * @param string $foodType
+	 */
+	public function setFoodType($foodType) {
+		$this->getPayload()->setFoodType($foodType);
+	}
+
+	/**
+	 * @param string $foodWishes
+	 */
+	public function setFoodWishes($foodWishes) {
+		$this->getPayload()->setFoodWishes($foodWishes);
+	}
+
+	/**
+	 * @param string $tshirtSize
+	 */
+	public function setTshirtSize($tshirtSize) {
+		$this->getPayload()->setTshirtSize($tshirtSize);
+	}
+
+	/**
+	 * @param string $tshirtType
+	 */
+	public function setTshirtType($tshirtType) {
+		$this->getPayload()->setTshirtType($tshirtType);
+	}
+
+	/**
+	 * @param boolean $newcomer
+	 */
+	public function setNewcomer($newcomer) {
+		$this->getPayload()->setNewcomer($newcomer);
+	}
+
+	/**
+	 * @param int $yearExpertise
+	 */
+	public function setYearExpertise($yearExpertise) {
+		$this->getPayload()->setYearExpertise($yearExpertise);
 	}
 
 	/**
@@ -52,12 +170,26 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	}
 
 	/**
+	 * @param string $ticketBookingState
+	 */
+	public function setTicketBookingState($ticketBookingState) {
+
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getRoomBookingState() {
 		if ($this->payload->getRoom()) {
 			return $this->payload->getRoom()->getBookingState();
 		}
+	}
+
+	/**
+	 * @param string $roomBookingState
+	 */
+	public function setRoomBookingState($roomBookingState) {
+
 	}
 
 }

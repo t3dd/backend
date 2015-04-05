@@ -36,7 +36,7 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 
 	/**
 	 * @var \TYPO3\Flow\Security\Context
-	 * @Flow\Inject∂
+	 * @Flow\Inject
 	 */
 	protected $securityContext;
 
@@ -148,11 +148,18 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 	 * @param Registration $registration
 	 */
 	public function updateAction(Registration $registration) {
-		if (!$registration->getPayload()->isCompleted()) {
-			$registration->getPayload()->setCompleted(TRUE);
-			$this->objectManager->get(\T3DD\Backend\Domain\Service\MailService::class)->sendRegistrationCompletedMail($registration->getPayload()->getBillingAddress());
+		$registrationEntity = $registration->getPayload();
+		if (!$registrationEntity->isCompleted()) {
+			$registrationEntity->setCompleted(TRUE);
+			$this->objectManager->get(\T3DD\Backend\Domain\Service\MailService::class)->sendRegistrationCompletedMail($registrationEntity->getBillingAddress());
 		}
-		$this->registrationRepository->update($registration->getPayload());
+		/** @var \T3DD\Backend\Domain\Model\Registration\Participant $participant */
+		foreach ($registrationEntity->getParticipants() as $participant) {
+			if ($participant->isRegistrant()) {
+				$participant->setCompleted(TRUE);
+			}
+		}
+		$this->registrationRepository->update($registrationEntity);
 
 		$this->view->assign('value', $registration);
 	}
