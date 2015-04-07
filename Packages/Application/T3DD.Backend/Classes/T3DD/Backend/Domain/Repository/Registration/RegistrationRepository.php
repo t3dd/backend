@@ -30,7 +30,7 @@ class RegistrationRepository extends Repository {
 
 	/**
 	 * @param Account $account
-	 * @return \TYPO3\Flow\Persistence\QueryResultInterface
+	 * @return \T3DD\Backend\Domain\Model\Registration\Registration
 	 */
 	public function findOneByAccountAndNotCompleted(Account $account) {
 		$query =$this->createQuery();

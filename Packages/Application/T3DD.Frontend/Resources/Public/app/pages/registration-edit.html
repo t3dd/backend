@@ -83,7 +83,7 @@
 				margin: -14px 0 0 -14px;
 			}
 		</style>
-		<site-ajax url="/registration/{{registrationId}}" loading="{{loading}}" on-core-response="{{handleRegistration}}"></site-ajax>
+		<site-ajax url="/registration/{{registrationId}}" loading="{{loading}}" on-core-response="{{handleRegistration}}" on-core-error="{{handleRegistrationError}}"></site-ajax>
 		<header class="bg-dark-grey">
 			<div class="container">
 				<h1 site-font="display1">Complete your registration</h1>
@@ -292,7 +292,14 @@
 					'registration.billingAddress.country': 'billingCountryChanged',
 					'registration.secondsToExpiration': 'secondsToExpirationChanged'
 				},
-
+				handleRegistrationError: function(event) {
+					var eventDummy = {};
+					eventDummy.detail = {
+						status: event.detail.xhr.status,
+						statusText: event.detail.xhr.statusText
+					};
+					this.$.form.onSubmitted(eventDummy);
+				},
 				handleRegistration: function(event) {
 					this.registration = event.detail.response;
 					if(this.registration.billingAddress === null) {
@@ -312,7 +319,7 @@
 				billingCompanyChanged: function(oldValue, companyName) {
 					this.registration.participants.forEach((function(participant, i) {
 						var companyNameField = this.shadowRoot.querySelector('#participantCompanyName' + i);
-						if(typeof companyNameField !== 'undefefined' && companyNameField.hasAttribute('default')) {
+						if(companyNameField && companyNameField.hasAttribute('default')) {
 							participant.companyName = companyName;
 						}
 					}).bind(this));
@@ -321,7 +328,7 @@
 				billingCountryChanged: function(oldValue, country) {
 					this.registration.participants.forEach((function(participant, i) {
 						var countryNameField = this.shadowRoot.querySelector('#participantCountry' + i);
-						if(typeof countryNameField !== 'undefefined' && countryNameField.hasAttribute('default')) {
+						if(countryNameField && countryNameField.hasAttribute('default')) {
 							participant.country = country;
 						}
 					}).bind(this));

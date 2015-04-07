@@ -1,4 +1,4 @@
-<polymer-element name="registration-new">
+<polymer-element name="registration-new" attributes="registrationResource">
 	<template>
 		<core-style ref="main"></core-style>
 		<style>
@@ -25,64 +25,90 @@
 			.participantIsRegistrant label {
 				padding: 0 0 0 10px;
 			}
+
+			#existingRegistrationNotice [site-font="subhead"] {
+				margin-bottom: 0;
+			}
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
-		<form is="site-form" id="form" action="/registration" method="post" enctype="application/json" on-submitting="{{submitting}}" flex>
-			<div class="card__content" horizontal layout>
-				<core-icon class="title-icon" icon="maps:local-attraction"></core-icon>
-				<div flex>
-					<h2 site-font="title">How many participants do you want to register?</h2>
-					<div horizontal center layout>
-						<paper-slider min="1" max="15" snaps value="{{participantCount}}" immediateValue="{{participantCountImmediate}}" flex></paper-slider>
-						<label class="participantCount">
-							{{participantCountImmediate > 1 ? participantCountImmediate: 'only myself/one'}}
-							{{participantCountImmediate > 1 ? 'participants' : ''}}
-						</label>
+		<site-ajax id="deleteResource" auto="false" url="{{registrationResource}}" method="DELETE" on-core-response="{{handleDeletion}}"></site-ajax>
+		<template if="{{!registrationResource}}">
+			<form is="site-form" id="form" action="/registration" method="post" enctype="application/json" on-submitting="{{submitting}}" flex>
+				<div class="card__content" horizontal layout>
+					<core-icon class="title-icon" icon="maps:local-attraction"></core-icon>
+					<div flex>
+						<h2 site-font="title">How many participants do you want to register?</h2>
+						<div horizontal center layout>
+							<paper-slider min="1" max="15" snaps value="{{participantCount}}" immediateValue="{{participantCountImmediate}}" flex></paper-slider>
+							<label class="participantCount">
+								{{participantCountImmediate > 1 ? participantCountImmediate: 'only myself/one'}}
+								{{participantCountImmediate > 1 ? 'participants' : ''}}
+							</label>
+						</div>
 					</div>
+				</div>
+				<template repeat="{{participant,i in participants}}">
+					<div class="card__content" horizontal layout>
+						<core-icon class="title-icon" icon="assignment-ind"></core-icon>
+						<div flex>
+							<div horizontal center layout>
+								<h4 site-font="title" flex>
+									{{participant.isRegistrant ? 'I' : ''}}
+									{{!participant.isRegistrant ? i + 1 : '' | enumerateWithWords | capitalizeFirstLetter}}
+									{{!participant.isRegistrant ? 'Participant' : ''}}
+									…
+								</h4>
+								<template if="{{i == 0}}">
+									<div class="participantIsRegistrant" horizontal center layout>
+										<site-checkbox checked="{{participant.isRegistrant}}"></site-checkbox>
+										<label site-font="subheader">this is myself</label>
+									</div>
+								</template>
+							</div>
+							<label site-font="caption">… {{participant.isRegistrant ? 'am' : 'is'}} a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}</label>
+							<paper-radio-group selected="{{participant.rate}}">
+								<paper-radio-button name="assoc" label="Association Member"></paper-radio-button>
+								<paper-radio-button name="nonassoc" label="Non Association Member"></paper-radio-button>
+								<paper-radio-button name="student" label="Student"></paper-radio-button>
+								<paper-radio-button name="core" label="Active Contributor"></paper-radio-button>
+							</paper-radio-group>
+							<label site-font="caption">… {{participant.roomSize == 0 ? 'doesn\'t need a room' : 'would like to share a room with'}}</label>
+							<paper-radio-group selected="{{participant.roomSize}}">
+								<paper-radio-button name="2" label="another participant"></paper-radio-button>
+								<paper-radio-button name="3" label="two other participants"></paper-radio-button>
+								<paper-radio-button name="4" label="three other participants"></paper-radio-button>
+								<paper-radio-button name="0" label="No room, please!"></paper-radio-button>
+							</paper-radio-group>
+						</div>
+					</div>
+				</template>
+				<div class="card__content card__buttons">
+					<paper-button on-click="{{submit}}">
+						<core-icon icon="arrow-forward"></core-icon>
+						Continue registration
+					</paper-button>
+				</div>
+			</form>
+		</template>
+		<template if="{{registrationResource}}">
+			<div id="existingRegistrationNotice" class="card__content" horizontal layout>
+				<core-icon class="title-icon" icon="assignment-ind"></core-icon>
+				<div flex>
+					<h2 site-font="title">You have already started a registration</h2>
+					<p site-font="subhead">What would you like to do?</p>
 				</div>
 			</div>
-			<template repeat="{{participant,i in participants}}">
-				<div class="card__content" horizontal layout>
-					<core-icon class="title-icon" icon="assignment-ind"></core-icon>
-					<div flex>
-						<div horizontal center layout>
-							<h4 site-font="title" flex>
-								{{participant.isRegistrant ? 'I' : ''}}
-								{{!participant.isRegistrant ? i + 1 : '' | enumerateWithWords | capitalizeFirstLetter}}
-								{{!participant.isRegistrant ? 'Participant' : ''}}
-								…
-							</h4>
-							<template if="{{i == 0}}">
-								<div class="participantIsRegistrant" horizontal center layout>
-									<site-checkbox checked="{{participant.isRegistrant}}"></site-checkbox>
-									<label site-font="subheader">this is myself</label>
-								</div>
-							</template>
-						</div>
-						<label site-font="caption">… {{participant.isRegistrant ? 'am' : 'is'}} a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}</label>
-						<paper-radio-group selected="{{participant.rate}}">
-							<paper-radio-button name="assoc" label="Association Member"></paper-radio-button>
-							<paper-radio-button name="nonassoc" label="Non Association Member"></paper-radio-button>
-							<paper-radio-button name="student" label="Student"></paper-radio-button>
-							<paper-radio-button name="core" label="Active Contributor"></paper-radio-button>
-						</paper-radio-group>
-						<label site-font="caption">… {{participant.roomSize == 0 ? 'doesn\'t need a room' : 'would like to share a room with'}}</label>
-						<paper-radio-group selected="{{participant.roomSize}}">
-							<paper-radio-button name="2" label="another participant"></paper-radio-button>
-							<paper-radio-button name="3" label="two other participants"></paper-radio-button>
-							<paper-radio-button name="4" label="three other participants"></paper-radio-button>
-							<paper-radio-button name="0" label="No room, please!"></paper-radio-button>
-						</paper-radio-group>
-					</div>
-				</div>
-			</template>
-			<div class="card__content card__buttons">
-				<paper-button on-click="{{submit}}">
+			<div class="card__content card__buttons" horizontal justified layout>
+				<paper-button on-click="{{complete}}">
 					<core-icon icon="arrow-forward"></core-icon>
-					Continue registration
+					Complete registration
+				</paper-button>
+				<paper-button on-click="{{delete}}">
+					<core-icon icon="delete"></core-icon>
+					Discard
 				</paper-button>
 			</div>
-		</form>
+		</template>
 	</template>
 	<script>
 		(function() {
@@ -91,6 +117,7 @@
 			Polymer({
 				participantCount: 1,
 				participants: [],
+				registrationResource: null,
 				participantTemplate: function() {
 					return {
 						isRegistrant: false,
@@ -132,6 +159,16 @@
 							this.participants.push(participant);
 						}
 					}
+				},
+				complete: function() {
+					var path = this.registrationResource.replace(/^https?:\/\/[^\/]+/, '');
+					document.querySelector('app-router').go(path);
+				},
+				delete: function() {
+					this.$.deleteResource.go();
+				},
+				handleDeletion: function() {
+					this.registrationResource = null;
 				}
 			});
 

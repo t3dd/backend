@@ -50,15 +50,30 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		}
 	}
 
+	/**
+	 *
+	 */
 	public function statusAction() {
-		$this->view->assign('value', array('tickets' => $this->bookableService->getTicketsStatus(), 'rooms' => $this->bookableService->getRoomStatus()));
+		$registrationResource = NULL;
+		if (NULL !== $account = $this->securityContext->getAccount()) {
+			$registration = $this->registrationRepository->findOneByAccountAndNotCompleted($account);
+			if ($registration !== NULL) {
+				$registrationResource =  $this->dataTransferObjectFactory->getDataTransferObject($registration)->getResource();
+			}
+		}
+
+		$this->view->assign('value', array(
+			'tickets' => $this->bookableService->getTicketsStatus(),
+			'rooms' => $this->bookableService->getRoomStatus(),
+			'registrationResource' => $registrationResource
+		));
 	}
 
 	/**
 	 * @param \T3DD\Backend\Domain\Model\Registration\Registration $registration
 	 */
 	public function showAction(\T3DD\Backend\Domain\Model\Registration\Registration $registration) {
-		if ($registration->getAccount() !== $this->securityContext->getAccount() && !$this->securityContext->hasRole('T3DD.Backend:Administrator')) {
+		if (!$this->securityContext->hasRole('T3DD.Backend:Administrator') && (!$registration->getSecondsToExpiration() || $registration->getAccount() !== $this->securityContext->getAccount())) {
 			$this->response->setStatus(403);
 			return;
 		}
@@ -135,6 +150,7 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		/** @var \TYPO3\Flow\Mvc\Controller\Argument $argument */
 		$argument = $this->arguments[$this->resourceArgumentName];
 		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('participants.*');
+		$configuration->allowProperties('name', 'companyName', 'country', 'email', 'foodType', 'foodSpecialNeeds', 'tshirtType', 'tshirtSize', 'newcomer', 'yearsExperience');
 		$configuration->skipUnknownProperties();
 		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter',
 			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED,
@@ -151,6 +167,10 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 	 */
 	public function updateAction(Registration $registration) {
 		$registrationEntity = $registration->getPayload();
+		if (!$this->securityContext->hasRole('T3DD.Backend:Administrator') && (!$registrationEntity->getSecondsToExpiration() || $registrationEntity->getAccount() !== $this->securityContext->getAccount())) {
+			$this->response->setStatus(403);
+			return;
+		}
 		/** @var \T3DD\Backend\Domain\Service\MailService $mailService */
 		$mailService = $this->objectManager->get(\T3DD\Backend\Domain\Service\MailService::class);
 		if (!$registrationEntity->isCompleted()) {
@@ -170,6 +190,18 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		$this->registrationRepository->update($registrationEntity);
 
 		$this->view->assign('value', $registration);
+	}
+
+	/**
+	 * @param \T3DD\Backend\Domain\Model\Registration\Registration $registration
+	 */
+	public function deleteAction(\T3DD\Backend\Domain\Model\Registration\Registration $registration) {
+		if (!$this->securityContext->hasRole('T3DD.Backend:Administrator') && (!$registration->getSecondsToExpiration() || $registration->getAccount() !== $this->securityContext->getAccount())) {
+			$this->response->setStatus(403);
+			return;
+		}
+		$this->registrationRepository->remove($registration);
+		$this->view->assign('value', NULL);
 	}
 
 }

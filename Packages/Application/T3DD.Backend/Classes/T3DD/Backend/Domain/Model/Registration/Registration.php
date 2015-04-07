@@ -165,4 +165,17 @@ class Registration {
 		$this->completed = $completed;
 	}
 
+	/**
+	 * @return mixed|null
+	 */
+	public function getSecondsToExpiration() {
+		if ($this->isCompleted()) {
+			return null;
+		}
+		$now = new \DateTime();
+		$expirationDate = clone $this->getDate();
+		$expirationDate->add(new \DateInterval('PT30M'));
+		return max($expirationDate->getTimestamp() - $now->getTimestamp(), 0);
+	}
+
 }

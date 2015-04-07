@@ -606,9 +606,7 @@
 								this.errors.push(renderError);
 							}).bind(this));
 						}
-					} catch (exception) {
-						console.log(exception);
-					}
+					} catch (exception) {}
 					this.async(function() {
 						this.hasError = true;
 					});
