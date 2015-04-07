@@ -53,7 +53,11 @@ class MailService {
 			->setFrom($this->getSender())
 			->setTo($this->getRecipient($object))
 			->setBody($this->renderContent($purpose, array('value' => $object)), 'text/html');
-		xdebug_break();
+
+		if ($purpose !== 'participantCompleteRegistration' && is_array($this->configuration['Bcc'])) {
+			$message->setBcc([$this->configuration['Bcc']['email'] => $this->configuration['Bcc']['name']]);
+		}
+
 		return $message->send();
 	}
 
