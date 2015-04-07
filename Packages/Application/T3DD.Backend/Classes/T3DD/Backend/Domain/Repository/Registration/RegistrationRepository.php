@@ -37,6 +37,7 @@ class RegistrationRepository extends Repository {
 		$queryConstraints = array();
 		$queryConstraints[] = $query->equals('completed', FALSE);
 		$queryConstraints[] = $query->equals('account', $account);
+		$queryConstraints[] = $query->greaterThanOrEqual('date', new \DateTime('now - 30 Minutes'));
 
 		$query->matching($query->logicalAnd($queryConstraints));
 		return $query->execute()->getFirst();
