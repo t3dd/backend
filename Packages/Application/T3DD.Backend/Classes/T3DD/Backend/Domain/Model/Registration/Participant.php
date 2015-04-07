@@ -137,6 +137,7 @@ class Participant {
 
 	public function __construct() {
 		$this->date = new \DateTime();
+		$this->lastEmailSent = new \DateTime();
 		$this->roomMates = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 

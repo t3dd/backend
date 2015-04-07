@@ -6,8 +6,11 @@ namespace T3DD\Backend\Command;
  *                                                                        *
  *                                                                        */
 
+use T3DD\Backend\Domain\Model\Registration\AbstractBookable;
 use T3DD\Backend\Domain\Model\Registration\Participant;
 use T3DD\Backend\Domain\Model\Registration\Registration;
+use T3DD\Backend\Domain\Model\Registration\Room;
+use T3DD\Backend\Domain\Model\Registration\Ticket;
 use T3DD\Backend\Domain\Repository\Registration\RegistrationRepository;
 use T3DD\Backend\Domain\Repository\Registration\ParticipantRepository;
 use T3DD\Backend\Domain\Service\MailService;
@@ -35,7 +38,31 @@ class RegistrationCommandController extends CommandController {
 	protected $mailService;
 
 	/**
-	 * Remove uncompleted registrations
+	 * @var \T3DD\Backend\Domain\Service\Registration\BookableService
+	 * @Flow\Inject
+	 */
+	protected $bookableService;
+
+	/**
+	 * @var \T3DD\Backend\Domain\Repository\Registration\RoomRepository
+	 * @Flow\Inject
+	 */
+	protected $roomRepository;
+
+	/**
+	 * @var \T3DD\Backend\Domain\Repository\Registration\TicketRepository
+	 * @Flow\Inject
+	 */
+	protected $ticketRepository;
+
+	/**
+	 * @var \TYPO3\Flow\Persistence\PersistenceManagerInterface
+	 * @Flow\Inject
+	 */
+	protected $persistenceManager;
+
+	/**
+	 * Remove uncompleted registrations and update waiting list
 	 */
 	public function removeUncompletedRegistrationsCommand() {
 		$registrations = $this->registrationRepository->findUncompletedRegistrationsToRemove();
@@ -43,6 +70,59 @@ class RegistrationCommandController extends CommandController {
 		foreach ($registrations as $registration) {
 			$this->registrationRepository->remove($registration);
 		}
+		$this->persistenceManager->persistAll();
+		$this->updateWaitingListCommand();
+	}
+
+	/**
+	 * Move tickets and rooms from the waiting list
+	 * to pending if there are free quota
+	 */
+	public function updateWaitingListCommand() {
+		$registrationsToNotify = [];
+
+		$numberOfTickets = $this->bookableService->getTicketsStatus();
+		if ($numberOfTickets > 0) {
+			$waitingTickets = $this->ticketRepository->findWaitingByCount($numberOfTickets);
+			/** @var Ticket $ticket */
+			foreach ($waitingTickets as $ticket) {
+				$ticket->setBookingState(AbstractBookable::BOOKING_STATE_PENDING);
+				$this->ticketRepository->update($ticket);
+				/** @var Participant $participant */
+				$participant = $this->participantRepository->findOneByTicket($ticket);
+				/** @var Registration $registration */
+				$registration = $participant->getRegistration();
+				$registrationIdentifier = $this->persistenceManager->getIdentifierByObject($registration);
+				if (!array_key_exists($registrationIdentifier, $registrationsToNotify)) {
+					$registrationsToNotify[$registrationIdentifier] = $registration;
+				}
+			}
+		}
+
+		$numberOfRooms = $this->bookableService->getTicketsStatus();
+		if ($numberOfRooms > 0) {
+			$waitingRooms = $this->roomRepository->findWaitingByCount($numberOfRooms);
+			/** @var Room $room */
+			foreach ($waitingRooms as $room) {
+				$room->setBookingState(AbstractBookable::BOOKING_STATE_PENDING);
+				$this->roomRepository->update($room);
+				/** @var Participant $participant */
+				$participant = $this->participantRepository->findOneByRoom($room);
+				/** @var Registration $registration */
+				$registration = $participant->getRegistration();
+				$registrationIdentifier = $this->persistenceManager->getIdentifierByObject($registration);
+				if (!array_key_exists($registrationIdentifier, $registrationsToNotify)) {
+					$registrationsToNotify[$registrationIdentifier] = $registration;
+				}
+			}
+		}
+		$this->persistenceManager->persistAll();
+
+		/** @var Registration $registration */
+		foreach ($registrationsToNotify as $registration) {
+			$this->mailService->sendMoveToWaitingListMail($registration);
+		}
+
 	}
 
 	/**

@@ -3,6 +3,7 @@ namespace T3DD\Backend\Domain\Service;
 
 use T3DD\Backend\Domain\Model\Registration\BillingAddress;
 use T3DD\Backend\Domain\Model\Registration\Participant;
+use T3DD\Backend\Domain\Model\Registration\Registration;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Fluid\View\StandaloneView;
 
@@ -31,6 +32,14 @@ class MailService {
 	 */
 	public function sendParticipantCompleteRegistrationMail(Participant $participant) {
 		return $this->send('participantCompleteRegistration', $participant);
+	}
+
+	/**
+	 * @param Registration $registration
+	 * @return int
+	 */
+	public function sendMoveToWaitingListMail(Registration $registration) {
+		return $this->send('moveToWaitingList', $registration);
 	}
 
 	/**
@@ -74,6 +83,8 @@ class MailService {
 		$recipient = [];
 		if ($object instanceof BillingAddress || $object instanceof Participant) {
 			$recipient = [$object->getEmail() => $object->getName()];
+		} elseif ($object instanceof Registration) {
+			$recipient = $this->getRecipient($object->getBillingAddress());
 		}
 		return $recipient;
 	}
