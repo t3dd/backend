@@ -61,6 +61,10 @@ class RegistrationCommandController extends CommandController {
 	 */
 	protected $persistenceManager;
 
+	public function initializeObject() {
+		putenv('FLOW_REWRITEURLS=1');
+	}
+
 	/**
 	 * Remove uncompleted registrations and update waiting list
 	 */
@@ -129,9 +133,6 @@ class RegistrationCommandController extends CommandController {
 	 * Send email to participants to complete there registration
 	 */
 	public function sendParticipantCompleteRegistrationMailCommand() {
-		return;
-
-		// TODO: Find out how to create absolute urls in cli context!
 		$participants = $this->participantRepository->findUncompletedParticipants();
 		/** @var Participant $participant */
 		foreach ($participants as $participant) {

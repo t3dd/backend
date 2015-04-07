@@ -53,6 +53,7 @@ class MailService {
 			->setFrom($this->getSender())
 			->setTo($this->getRecipient($object))
 			->setBody($this->renderContent($purpose, array('value' => $object)), 'text/html');
+		xdebug_break();
 		return $message->send();
 	}
 
@@ -96,6 +97,8 @@ class MailService {
 	 */
 	protected function renderContent($templateName, $viewVariables) {
 		$view = new StandaloneView();
+
+		$view->getRequest()->getHttpRequest()->setBaseUri($this->configuration['BaseUrl']);
 		$view->setLayoutRootPath('resource://T3DD.Backend/Private/Layouts/');
 		$view->setTemplatePathAndFilename('resource://T3DD.Backend/Private/Templates/Mail/' . ucfirst($templateName) . '.html');
 		$view->setFormat('html');
