@@ -82,6 +82,10 @@
 				left: 50vw;
 				margin: -14px 0 0 -14px;
 			}
+
+			#coc {
+				font-weight: bold;
+			}
 		</style>
 		<site-ajax url="/registration/{{registrationId}}" loading="{{loading}}" on-core-response="{{handleRegistration}}" on-core-error="{{handleRegistrationError}}"></site-ajax>
 		<header class="bg-dark-grey">
@@ -255,6 +259,8 @@
 													<paper-slider min="0" max="15" snaps value="{{participant.yearExpertise}}" immediateValue="{{yearsExperience}}" flex></paper-slider>
 													<label class="yearsExperience">{{yearsExperience == 0 ? 'none yet' : yearsExperience}} {{yearsExperience > 0 ? 'year' : ''}}{{yearsExperience > 1 ? 's' : ''}}</label>
 												</div>
+
+												<label id="coc" site-font="subhead">… accept the <a href="http://confcodeofconduct.com/" target="_blank">Code of Conduct</a> with my registration.</label>
 											</template>
 										</div>
 									</div>
