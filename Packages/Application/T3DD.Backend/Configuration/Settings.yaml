@@ -10,7 +10,7 @@ T3DD:
       Mail:
         Sender:
           name: 'TYPO3 Developer Days 2015'
-          email: 't3dd15@typo3.org'
+          email: 't3dd@typo3.org'
         Subjects:
           default: 'TYPO3 Developer Days 2015 Message'
           registrationCompleted: 'Registration for TYPO3 Developer Days 2015'
