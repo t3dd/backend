@@ -4,7 +4,7 @@ T3DD:
       Bookable:
         Room:
           fractionBase: 12
-          availableQuota: 62
+          availableQuota: 55
         Ticket:
           availableQuota: 180
       Mail:
