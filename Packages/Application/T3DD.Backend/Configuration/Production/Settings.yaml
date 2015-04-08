@@ -1,0 +1,7 @@
+T3DD:
+  Backend:
+    Registration:
+      Mail:
+        Bcc:
+          name: 'Thomas Maroschik'
+          email: 'tmaroschik@dfau.de'

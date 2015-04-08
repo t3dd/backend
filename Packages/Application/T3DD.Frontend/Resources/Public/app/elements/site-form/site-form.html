@@ -16,10 +16,46 @@
 		</style>
 		<content></content>
 		<paper-action-dialog id="errorMessage" backdrop autoCloseDisabled layered="true" opened="{{hasError}}">
-			<paper-button affirmative autofocus>
-				<core-icon icon="check"></core-icon>
-				OK
-			</paper-button>
+			<core-style ref="main"></core-style>
+			<style>
+				#errorMessageContent {
+					max-width: 1024px;
+				}
+				#errorMessageTitle {
+					margin-top: 12px;
+					font-weight: bold;
+				}
+				#errorMessages {
+					font-family: "Andale Mono", monospace;
+					word-wrap:break-word;
+					font-size: 87.5%;
+				}
+				#errorMessages em {
+					display: block;
+					color: #515151;
+					font-family: Share, sans-serif;
+				}
+			</style>
+			<div id="errorMessageContent">
+				<h5 site-font="subhead"><core-icon icon="error"></core-icon> An error occured while submitting the form</h5>
+				<h1 id="errorMessageTitle" site-font="title">{{errorHeading}}</h1>
+				<template if="{{errorText}}">
+					<p>{{errorText}}</p>
+				</template>
+				<template if="{{errors}}">
+					<ul id="errorMessages">
+					<template repeat="{{error in errors}}">
+						<li>
+							{{error.message}}
+							<template if="{{error.source}}">
+								<em>{{error.source}}</em>
+							</template>
+						</li>
+					</template>
+					</ul>
+				</template>
+			</div>
+			<paper-button dismissive autofocus>Close</paper-button>
 		</paper-action-dialog>
 	</template>
 
@@ -276,8 +312,8 @@
 
 			sendFormData = function(ajaxForm) {
 				var enctype = getEnctype(ajaxForm),
-						formData = parseForm(ajaxForm, enctype === 'multipart/form-data'),
-						submittingEvent = ajaxForm.fire('submitting', {formData: formData});
+					formData = parseForm(ajaxForm, enctype === 'multipart/form-data'),
+					submittingEvent = ajaxForm.fire('submitting', {formData: formData});
 
 				formData = submittingEvent.detail.formData;
 
@@ -426,7 +462,12 @@
 							records.forEach(function(record) {
 								if(record.addedNodes.length) {
 									arrayOf(record.addedNodes).forEach(function(addedNode) {
-										addedNode.willValidate && listenForInvalidEvent(addedNode);
+										if (typeof addedNode.querySelectorAll !== 'undefined') {
+											var invalidFields = arrayOf(addedNode.querySelectorAll('* /deep/ :invalid, * /deep/ :valid'));
+											invalidFields.forEach(function(input) {
+												input.willValidate && listenForInvalidEvent(input);
+											});
+										}
 									});
 								}
 							});
@@ -461,13 +502,30 @@
 			hasError: false,
 
 			/**
-			 * Contains the error message if there is one
+			 * Contains the error heading if there is one
+			 *
+			 * @attribute errorHeading
+			 * @type string
+			 * @default ''
+			 */
+			errorHeading: '',
+
+			/**
+			 * Contains the error text if there is one
 			 *
 			 * @attribute errorText
 			 * @type string
 			 * @default ''
 			 */
 			errorText: '',
+
+			/**
+			 * Contains the errors if there are any
+			 *
+			 * @type array
+			 * @default []
+			 */
+			errors: [],
 
 			/**
 			 * Tells you if the form is currently submitting data
@@ -529,16 +587,29 @@
 			},
 
 			onSubmitted: function(event) {
-				this.isSubmitting = false;
 				if (event.detail.status > 399) {
-					this.hasError = true;
-					var response = JSON.parse(event.detail.response);
-					if (typeof response.errors !== 'undefined') {
-						var errors = response.errors;
-						this.$.errorMessage.heading = errors[Object.keys(errors)[0]][0]['message'] || event.detail.statusText
-					} else {
-						this.$.errorMessage.heading = event.detail.statusText;
-					}
+					this.errorHeading = '' + event.detail.status + ' ' + event.detail.statusText;
+					this.errors = [];
+					try {
+						var response = JSON.parse(event.detail.response);
+						if (typeof response.message !== 'undefined') {
+							this.errorText = response.message;
+						}
+						if (typeof response.errors === 'object' && typeof response.errors.system !== 'undefined') {
+							response.errors.system.forEach((function(error) {
+								var renderError = {
+									message: error.message
+								};
+								if (typeof error.source !== 'undefined') {
+									renderError.source = error.source;
+								}
+								this.errors.push(renderError);
+							}).bind(this));
+						}
+					} catch (exception) {}
+					this.async(function() {
+						this.hasError = true;
+					});
 				}
 			},
 
@@ -559,6 +630,16 @@
 						document.querySelector('app-router').go(path);
 					}
 				}
+			},
+
+			updateLabelVisibilities: function() {
+				this.async(function() {
+					var decorators = arrayOf(this.querySelectorAll('paper-input-decorator'));
+					decorators.forEach(function(decorator) {
+						var input = decorator.querySelector('input');
+						input && decorator.updateLabelVisibility(input.value);
+					});
+				});
 			}
 		});
 	</script>

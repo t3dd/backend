@@ -1,0 +1,12 @@
+<f:layout name="Email" />
+
+<f:section name="content">
+	<h3>Dear {value.name},</h3>
+
+	<p>please complete your registration</p>
+
+	<a href="{f:uri.action(action: 'index', controller: 'Participant', package: 'T3DD.Backend', arguments: {participant: value}, absolute: 1)}">
+		{f:uri.action(action: 'index', controller: 'Participant', package: 'T3DD.Backend', arguments: {participant: value}, absolute: 1)}
+	</a>
+
+</f:section>

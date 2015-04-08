@@ -1,0 +1,435 @@
+<polymer-element name="registration-edit" attributes="registrationId">
+	<template>
+		<pvc-globals id="globals" values="{{globals}}"></pvc-globals>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+				height: 100%;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 16px;
+			}
+
+			@media (min-width: 768px) {
+				.container {
+					padding: 24px 32px;
+				}
+			}
+
+			header h1, header p {
+				margin: 0;
+			}
+
+			.card__content {
+				padding-top: 16px;
+				padding-bottom: 16px;
+				margin-bottom: 0;
+			}
+
+			form {
+				padding: 0;
+			}
+
+			label, paper-radio-group {
+				display: block;
+			}
+
+			.registration__title, .registration__subtitle {
+				margin-bottom: 0;
+			}
+
+			paper-autogrow-textarea {
+				width: 100%;
+				margin-bottom: 30px;
+			}
+
+			site-checkbox {
+				padding: 12px;
+			}
+
+			.field-container [flex] {
+				margin: 0 16px;
+			}
+
+			.field-container [flex]:first-child {
+				margin-left: 0;
+			}
+
+			.field-container [flex]:last-child {
+				margin-right: 0;
+			}
+
+			.participant__rate-room {
+				margin-bottom: 0;
+			}
+
+			.yearsExperience {
+				padding-top: 0;
+				min-width: 64px;
+				text-align: right;
+			}
+
+			#spinner {
+				z-index: 1;
+			}
+
+			#spinner::shadow #spinner {
+				position: absolute;
+				top: 25vh;
+				left: 50vw;
+				margin: -14px 0 0 -14px;
+			}
+
+			#coc {
+				font-weight: bold;
+			}
+		</style>
+		<site-ajax url="/registration/{{registrationId}}" loading="{{loading}}" on-core-response="{{handleRegistration}}" on-core-error="{{handleRegistrationError}}"></site-ajax>
+		<header class="bg-dark-grey">
+			<div class="container">
+				<h1 site-font="display1">Complete your registration</h1>
+				<h4 site-font="title">
+					<template if="{{loading}}">
+						… loading
+					</template>
+					<template if="{{timeleft.length}}">
+						<core-icon icon="alarm"></core-icon>
+						within the next {{timeleft}}
+					</template>
+					<template if="{{timeleft == false}}">
+						<core-icon icon="alarm-off"></core-icon>
+						your registration expired
+					</template>
+				</h4>
+			</div>
+		</header>
+		<main>
+			<form is="site-form" id="form" action="{{registration.resource}}" method="put" enctype="application/json" class="registration" on-submitting="{{submitting}}">
+				<div class="container">
+					<template if="{{registration}}">
+					<div class="card__container">
+						<div class="card">
+							<div class="card__content" site-font="subhead">
+								Tell us where we should send the invoice to.
+							</div>
+						</div>
+						<div class="card">
+							<div class="card__content">
+								<div horizontal layout>
+									<core-icon class="title-icon" icon="payment"></core-icon>
+									<div flex>
+										<h2 class="registration__title" site-font="title">Billing Address</h2>
+										<paper-input-decorator label="Company Name" floatingLabel error="Enter a company name!">
+											<input value="{{registration.billingAddress.companyName}}" is="core-input">
+										</paper-input-decorator>
+										<paper-input-decorator label="Your Name" floatingLabel>
+											<input id="billingAddressName" value="{{registration.billingAddress.name}}" is="core-input" required on-change="{{removeDefault}}" default>
+										</paper-input-decorator>
+										<paper-input-decorator label="Street & Street No." floatingLabel error="Enter a Street!">
+											<paper-autogrow-textarea rows="1">
+												<textarea value="{{registration.billingAddress.street}}" required></textarea>
+											</paper-autogrow-textarea>
+										</paper-input-decorator>
+										<div horizontal start layout class="field-container">
+											<paper-input-decorator label="Zip" floatingLabel error="Enter a zip!" flex>
+												<input value="{{registration.billingAddress.zip}}" is="core-input" required>
+											</paper-input-decorator>
+											<paper-input-decorator label="City" floatingLabel error="Enter a City!" flex two>
+												<input value="{{registration.billingAddress.city}}" is="core-input" required>
+											</paper-input-decorator>
+											<paper-input-decorator label="Country" floatingLabel error="Enter a Country!" flex two>
+												<input value="{{registration.billingAddress.country}}" is="core-input" required>
+											</paper-input-decorator>
+										</div>
+										<paper-input-decorator label="Billing E-Mail Address" floatingLabel error="Enter a valid e-mail address!">
+											<input value="{{registration.billingAddress.email}}" is="core-input" type="email" required>
+										</paper-input-decorator>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="card__content" site-font="subhead">
+								Tell us more about the participant{{registration.participants.length > 1 ? 's' : ''}}.
+								If it's not yourself we will contact those invididually by mail and ask them to complete their
+								individual details like room mates, food preferences, t-shirt size.
+							</div>
+						</div>
+						<template repeat="{{participant,i in registration.participants}}">
+							<div class="card">
+								<div class="card__content">
+									<div horizontal layout>
+										<core-icon class="title-icon" icon="assignment-ind"></core-icon>
+										<div flex>
+											<h4 site-font="title">
+												{{participant.isRegistrant ? 'I' : ''}}
+												{{!participant.isRegistrant ? i + 1 : '' | enumerateWithWords | capitalizeFirstLetter}}
+												{{!participant.isRegistrant ? 'Participant' : ''}}
+												…
+											</h4>
+											<p class="participant__rate-room" site-font="caption">
+												… {{participant.isRegistrant ? 'am' : 'is'}} a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}
+												{{participant.rate | rateText}}
+												and
+												{{!participant.isRegistrant && participant.roomSize == 0 ? 'does' : ''}}{{participant.isRegistrant && participant.roomSize == 0 ? 'do' : ''}}{{participant.roomSize == 0 ? 'n\'t need a room' : 'would like to share a room with'}}
+												{{participant.roomSize | roomSizeText}}.
+											</p>
+											<p class="participant__rate-room" site-font="caption">
+												… <strong>
+													<template if="{{participant.ticketBookingState == 'waiting' && participant.roomSize > 0 && participant.roomBookingState == 'waiting'}}">
+														{{participant.isRegistrant ? 'am' : 'is'}} on the waiting list for a ticket and a room share.
+													</template>
+													<template if="{{participant.ticketBookingState == 'waiting' && participant.roomSize == 0}}">
+														{{participant.isRegistrant ? 'am' : 'is'}} on the waiting list for a ticket.
+													</template>
+													<template if="{{participant.ticketBookingState == 'waiting' && participant.roomSize == 0">
+														{{participant.isRegistrant ? 'have' : 'has'}} a ticket reserved until the completion of the registration.
+													</template>
+													<template if="{{participant.ticketBookingState != 'waiting' && participant.roomSize >= 0 && participant.roomBookingState != 'waiting'}}">
+														{{participant.isRegistrant ? 'have' : 'has'}} a ticket and a room share reserved until the completion of the registration.
+													</template>
+													<template if="{{participant.ticketBookingState == 'waiting' && participant.roomSize >= 0 && participant.roomBookingState != 'waiting'}}">
+														{{participant.isRegistrant ? 'am' : 'is'}} on the waiting list for a ticket but {{participant.isRegistrant ? 'have' : 'has'}} a room share reserved until the completion of the registration.
+													</template>
+													<template if="{{participant.ticketBookingState != 'waiting' && participant.roomSize >= 0 && participant.roomBookingState == 'waiting'}}">
+														{{participant.isRegistrant ? 'have' : 'has'}} a ticket reserved until the completion of the registration but {{participant.isRegistrant ? 'I am' : 'is'}} on the waiting list for a room share.
+													</template>
+												</strong>
+											</p>
+											<paper-input-decorator label="… {{participant.isRegistrant ? 'am' : 'is'}} called (full name, cannot be changed afterwards)" floatingLabel error="Enter a Name!">
+												<input value="{{participant.name}}" is="core-input" required>
+											</paper-input-decorator>
+											<div horizontal start layout class="field-container">
+												<paper-input-decorator label="… {{participant.isRegistrant ? 'work' : 'works'}} at (company name)" floatingLabel flex>
+													<input id="participantCompanyName{{i}}" value="{{participant.companyName}}" is="core-input" on-change="{{removeDefault}}" default>
+												</paper-input-decorator>
+												<paper-input-decorator label="… {{participant.isRegistrant ? 'work' : 'works'}} in (country)" floatingLabel flex>
+													<input id="participantCountry{{i}}" value="{{participant.country}}" is="core-input" on-change="{{removeDefault}}" default>
+												</paper-input-decorator>
+											</div>
+											<paper-input-decorator label="… {{participant.isRegistrant ? 'recieve' : 'recieves'}} e-mails via (individual e-mail address, cannot be changed afterwards)" floatingLabel error="Enter a valid e-mail address!">
+												<input value="{{participant.email}}" is="core-input" type="email" required>
+											</paper-input-decorator>
+											<template if="{{participant.isRegistrant}}">
+												<template if="{{participant.roomMates}}">
+													<template repeat="{{roomMate,j in participant.roomMates}}">
+														<paper-input-decorator label="… would like to share my room with {{j + 1 | enumerateWithWords}} room mate (name/email/typo3.org username, leave empty for random mate)" floatingLabel flex>
+															<input value="{{roomMate.name}}" is="core-input">
+														</paper-input-decorator>
+													</template>
+												</template>
+
+												<label site-font="caption">… am eating</label>
+												<paper-radio-group selected="{{participant.foodType}}">
+													<paper-radio-button name="default" label="regular"></paper-radio-button>
+													<paper-radio-button name="vegetarian" label="vegetarian"></paper-radio-button>
+													<paper-radio-button name="vegan" label="vegan"></paper-radio-button>
+													<paper-radio-button name="other" label="other"></paper-radio-button>
+												</paper-radio-group>
+
+												<template if="{{participant.foodType == 'other'}}">
+													<paper-input-decorator label="Tell us your special food demands" floatingLabel error="Enter what your Demands!">
+														<paper-autogrow-textarea>
+															<textarea value="{{participant.foodSpecialNeeds}}" required></textarea>
+														</paper-autogrow-textarea>
+													</paper-input-decorator>
+												</template>
+
+												<label site-font="caption">… would like to have a T-Shirt with the style</label>
+												<paper-radio-group selected="{{participant.tshirtType}}">
+													<paper-radio-button name="default" label="regular"></paper-radio-button>
+													<paper-radio-button name="girlie" label="girlie"></paper-radio-button>
+												</paper-radio-group>
+
+												<label site-font="caption">… wear T-Shirts in size</label>
+												<paper-radio-group selected="{{participant.tshirtSize}}">
+													<paper-radio-button name="s" label="S"></paper-radio-button>
+													<paper-radio-button name="m" label="M"></paper-radio-button>
+													<paper-radio-button name="l" label="L"></paper-radio-button>
+													<paper-radio-button name="xl" label="XL"></paper-radio-button>
+													<paper-radio-button name="xxl" label="2XL"></paper-radio-button>
+													<paper-radio-button name="xxxl" label="3XL"></paper-radio-button>
+													<paper-radio-button name="xxxxl" label="4XL"></paper-radio-button>
+												</paper-radio-group>
+
+												<label site-font="caption">… am attending the Developer Days for the first time</label>
+												<paper-radio-group selected="{{participant.newcomer}}">
+													<paper-radio-button name="1" label="yes"></paper-radio-button>
+													<paper-radio-button name="0" label="no"></paper-radio-button>
+												</paper-radio-group>
+
+												<label site-font="caption">… am having experience in TYPO3 products (CMS, Neos or Flow) for</label>
+
+												<div horizontal center layout>
+													<paper-slider min="0" max="15" snaps value="{{participant.yearExpertise}}" immediateValue="{{yearsExperience}}" flex></paper-slider>
+													<label class="yearsExperience">{{yearsExperience == 0 ? 'none yet' : yearsExperience}} {{yearsExperience > 0 ? 'year' : ''}}{{yearsExperience > 1 ? 's' : ''}}</label>
+												</div>
+
+												<label id="coc" site-font="subhead">… accept the <a href="http://confcodeofconduct.com/" target="_blank">Code of Conduct</a> with my registration.</label>
+											</template>
+										</div>
+									</div>
+								</div>
+							</div>
+						</template>
+					</div>
+					<div class="card">
+						<div class="card__content">
+							<div horizontal layout>
+								<core-icon class="title-icon" icon="subject"></core-icon>
+								<div flex>
+									<h4 site-font="title">Comments</h4>
+									<paper-input-decorator label="Room for comments (e.g. Sponsor reductions, Membership vouchers, Early Arrival etc.)" floatingLabel>
+										<paper-autogrow-textarea rows="4">
+											<textarea placeholder="Room for comments (e.g. Sponsor reductions, Membership vouchers, etc.)" value="{{registration.notes}}"></textarea>
+										</paper-autogrow-textarea>
+									</paper-input-decorator>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card">
+						<div class="card__content card__buttons">
+							<template if="{{timeleft != null || timeleft != false}}">
+								<paper-button on-click="{{submit}}">
+									<core-icon icon="check"></core-icon>
+									Complete registration
+								</paper-button>
+							</template>
+							<template if="{{!timeleft}}">
+								<p site-font="title"><strong>We're sorry, but your registration expired.</strong></p>
+							</template>
+						</div>
+					</div>
+					</template>
+					<site-overlay-spinner id="spinner" active?="{{loading || $.form.isSubmitting}}" hidden?="{{!loading && !$.form.isSubmitting}}" fit></site-overlay-spinner>
+				</div>
+			</form>
+		</main>
+	</template>
+	<script>
+		(function(undefined) {
+			'use strict';
+			Polymer({
+				timeleft: null,
+				observe: {
+					'$.globals.values.user.displayName': 'displayNameChanged',
+					'registration.billingAddress.companyName': 'billingCompanyChanged',
+					'registration.billingAddress.country': 'billingCountryChanged',
+					'registration.secondsToExpiration': 'secondsToExpirationChanged'
+				},
+				handleRegistrationError: function(event) {
+					var eventDummy = {};
+					eventDummy.detail = {
+						status: event.detail.xhr.status,
+						statusText: event.detail.xhr.statusText
+					};
+					this.$.form.onSubmitted(eventDummy);
+				},
+				handleRegistration: function(event) {
+					this.registration = event.detail.response;
+					if(this.registration.billingAddress === null) {
+						this.registration.billingAddress = {};
+						if(this.$.globals.values.user.displayName !== undefined) {
+							this.registration.billingAddress.name = this.$.globals.values.user.displayName;
+						}
+					}
+					this.$.form.updateLabelVisibilities();
+				},
+				displayNameChanged: function(oldValue, displayName) {
+					if(displayName && this.registration !== undefined && this.$.billingAddressName.hasAttribute('default')) {
+						this.registration.billingAddress.name = displayName;
+						this.$.form.updateLabelVisibilities();
+					}
+				},
+				billingCompanyChanged: function(oldValue, companyName) {
+					this.registration.participants.forEach((function(participant, i) {
+						var companyNameField = this.shadowRoot.querySelector('#participantCompanyName' + i);
+						if(companyNameField && companyNameField.hasAttribute('default')) {
+							participant.companyName = companyName;
+						}
+					}).bind(this));
+					this.$.form.updateLabelVisibilities();
+				},
+				billingCountryChanged: function(oldValue, country) {
+					this.registration.participants.forEach((function(participant, i) {
+						var countryNameField = this.shadowRoot.querySelector('#participantCountry' + i);
+						if(countryNameField && countryNameField.hasAttribute('default')) {
+							participant.country = country;
+						}
+					}).bind(this));
+					this.$.form.updateLabelVisibilities();
+				},
+				secondsToExpirationChanged: function(oldValue, newValue) {
+					if(!newValue) {
+						this.timeleft = null;
+						return;
+					}
+					var timeleft = newValue;
+					var currentepoch = Math.floor(new Date().getTime() / 1000);
+					var targetepoch = currentepoch + timeleft;
+					var timeout;
+					var updateTimeleft = function() {
+						var currentepoch = Math.floor(new Date().getTime() / 1000);
+						timeleft = targetepoch - currentepoch;
+						var s = timeleft % 60;
+						var m = (timeleft - s) / 60 % 60;
+
+						if(m > 0) {
+							this.timeleft = '' + m + ' minute' + (m === 1 ? '' : 's');
+						} else if(s > 0) {
+							this.timeleft = '' + s + ' seconds';
+						} else {
+							this.timeleft = false;
+						}
+						timeout = window.setTimeout(updateTimeleft, 1000);
+					}.bind(this);
+					timeout = window.setTimeout(updateTimeleft, 1000);
+				},
+				removeDefault: function(event, index, input) {
+					input.removeAttribute('default');
+				},
+				ready: function() {
+					this.$.form.addEventListener('submitted', function(event) {
+						if (event.detail.status > 199 && event.detail.status < 300) {
+							document.querySelector('app-router').go('/registration/success');
+						}
+					});
+				},
+				submitting: function(event) {
+					event.detail.formData = this.registration;
+					return event;
+				},
+				submit: function() {
+					this.$.form.submit();
+				},
+				rateText: function(rate) {
+					switch(rate) {
+						case 'assoc':
+							return 'Association Member';
+						case 'nonassoc':
+							return 'Non Association Membe';
+						case 'student':
+							return 'Student';
+						case 'core':
+							return 'Active Contributor';
+					}
+				},
+				roomSizeText: function(roomSize) {
+					switch(roomSize) {
+						case 2:
+							return 'another participant';
+						case 3:
+							return 'two other participants';
+						case 4:
+							return 'three other participants';
+					}
+				}
+			});
+
+		})();
+	</script>
+</polymer-element>

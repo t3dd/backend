@@ -10,10 +10,6 @@ use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 use Netlogix\Crud\Domain\Model\DataTransfer\UriPointer as UriPointer;
 
-/**
- * @Flow\Scope("prototype")
- * @Flow\Entity
- */
 class Session extends \T3DD\Backend\Domain\Model\DataTransfer\Session {
 
 	/**
@@ -45,13 +41,6 @@ class Session extends \T3DD\Backend\Domain\Model\DataTransfer\Session {
 	 */
 	public function getExpertiseLevel() {
 		return $this->persistenceManager->getIdentifierByObject($this->payload->getExpertiseLevel());
-	}
-
-	/**
-	 * @return Speaker[]
-	 */
-	public function getSpeakers() {
-		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getPayload()->getSpeakers());
 	}
 
 	/**

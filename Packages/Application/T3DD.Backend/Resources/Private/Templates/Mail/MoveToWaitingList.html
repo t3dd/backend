@@ -1,0 +1,24 @@
+<f:layout name="Email" />
+
+<f:section name="content">
+	<h3>Dear {value.billingAddress.name},</h3>
+
+	<p>the status of tickets and rooms has changed:</p>
+
+	<p><strong>Tickets:</strong></p>
+	<ul>
+		<f:for each="{value.participants}" as="participant">
+			<li>{participant.name}: Status {participant.ticket.bookingState}</li>
+		</f:for>
+	</ul>
+
+	<p><strong>Rooms:</strong></p>
+	<ul>
+		<f:for each="{value.participants}" as="participant">
+			<f:if condition="{participant.room}">
+				<li>{participant.name}: Status {participant.room.bookingState}</li>
+			</f:if>
+		</f:for>
+	</ul>
+
+</f:section>

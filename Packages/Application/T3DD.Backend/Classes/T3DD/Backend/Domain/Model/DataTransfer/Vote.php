@@ -9,17 +9,19 @@ namespace T3DD\Backend\Domain\Model\DataTransfer;
 use TYPO3\Flow\Annotations as Flow;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @Flow\Scope("prototype")
- * @Flow\Entity
- */
 class Vote extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransferObject {
 
 	/**
 	 * @var \T3DD\Backend\Domain\Model\Vote
-	 * @ORM\OneToOne
 	 */
 	protected $payload;
+
+	/**
+	 * @param \T3DD\Backend\Domain\Model\Vote $payload
+	 */
+	public function __construct($payload) {
+		parent::__construct($payload);
+	}
 
 	/**
 	 * @return array<string>

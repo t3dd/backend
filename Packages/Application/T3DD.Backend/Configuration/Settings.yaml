@@ -1,0 +1,19 @@
+T3DD:
+  Backend:
+    Registration:
+      Bookable:
+        Room:
+          fractionBase: 12
+          availableQuota: 55
+        Ticket:
+          availableQuota: 180
+      Mail:
+        Sender:
+          name: 'TYPO3 Developer Days 2015'
+          email: 't3dd@typo3.org'
+        Subjects:
+          default: 'TYPO3 Developer Days 2015 Message'
+          registrationCompleted: 'Registration for TYPO3 Developer Days 2015'
+          participantCompleteRegistration: 'Update your registration for TYPO3 Developer Days 2015'
+          moveToWaitingList: 'Ticket or room status for your registration has changed'
+        BaseUrl: 'https://t3dd15.typo3.org/'

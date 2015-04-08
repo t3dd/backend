@@ -1,0 +1,41 @@
+<polymer-element name="site-registration-status" attributes="registrationResource">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+		</style>
+		<site-ajax id="registrationStatus" url="/registration/status" on-core-response="{{handleStatus}}"></site-ajax>
+		<template if="{{status}}">
+			Tickets left {{status.tickets}}, Rooms left {{status.rooms}}
+		</template>
+	</template>
+	<script>
+		(function () {
+			'use strict';
+
+			Polymer({
+				observe: {
+					'status.registrationResource': 'updateRegistrationResource'
+				},
+				status: null,
+				registrationResource: null,
+				updateRegistrationResource: function(old, newResource) {
+					if (typeof newResource !== 'undefined') {
+						this.registrationResource = newResource;
+					}
+					window.setTimeout(this.fetchStatus.bind(this), 30000);
+				},
+				fetchStatus: function() {
+					this.$.registrationStatus.go();
+				},
+				handleStatus: function(event) {
+					if (typeof event.detail.response !== 'undefined') {
+						this.status = event.detail.response;
+					}
+				}
+			});
+
+		})();
+	</script>
+</polymer-element>

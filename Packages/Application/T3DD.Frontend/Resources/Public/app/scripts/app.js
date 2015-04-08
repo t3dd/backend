@@ -1,6 +1,32 @@
 (function(document) {
 	'use strict';
 
+	function initGlobalFilters() {
+		PolymerExpressions.prototype.enumerateWithWords = function(i) {
+			var names = {
+				1: "first",
+				2: "second",
+				3: "third",
+				4: "fourth",
+				5: "fifth",
+				6: "sixth",
+				7: "seventh",
+				8: "eighth",
+				9: "ninth",
+				10: "tenth",
+				11: "eleventh",
+				12: "twelfth",
+				13: "thirteenth",
+				14: "fourteenth",
+				15: "fifteenth"
+			};
+			return names[i] || '';
+		};
+		PolymerExpressions.prototype.capitalizeFirstLetter = function(string) {
+		    return string.charAt(0).toUpperCase() + string.slice(1);
+		};
+	}
+
 	function smoothStep(start, end, point) {
 		if(point <= start) {
 			return 0
@@ -82,6 +108,8 @@
 	};
 
 	template.addEventListener('template-bound', function() {
+		initGlobalFilters();
+		CoreStyle.g.paperInput.focusedColor = '#FF8700';
 		this.globals.assetRootPath = this.hasAttribute('assetrootpath') ? this.getAttribute('assetrootpath').replace('/.', '') : '';
 		this.globals.scrollTarget = this.$.scrollHeader.shadowRoot.getElementById('mainContainer');
 		this.$.router.addEventListener('activate-route-start', (function(event) {

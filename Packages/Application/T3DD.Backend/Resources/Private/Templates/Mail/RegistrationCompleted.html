@@ -1,0 +1,73 @@
+<f:layout name="Email" />
+
+<f:section name="content">
+	<h3>Dear {value.billingAddress.name},</h3>
+
+	<p>thanks for your registration for T3DD15</p>
+
+	<h3>Your order summary:</h3>
+	<h4>Billing address</h4>
+
+	<table>
+		<tr>
+			<f:if condition="{value.billingAddress.companyName}">
+				<td class="headline">Company Name:</td>
+				<td class="value">{value.billingAddress.companyName}</td>
+			</f:if>
+		</tr>
+		<tr>
+			<td class="headline">Name:</td>
+			<td class="value">{value.billingAddress.name}</td>
+		</tr>
+		<tr>
+			<td class="headline">Street & Street No.:</td>
+			<td class="value">{value.billingAddress.street}</td>
+		</tr>
+		<tr>
+			<td class="headline">Zip & city:</td>
+			<td class="value">{value.billingAddress.zip} {value.billingAddress.city}</td>
+		</tr>
+		<tr>
+			<td class="headline">Country:</td>
+			<td class="value">{value.billingAddress.country}</td>
+		</tr>
+		<tr>
+			<td class="headline">Billing E-Mail Address</td>
+			<td class="value">{value.billingAddress.email}</td>
+		</tr>
+	</table>
+
+
+	<h4>Participants</h4>
+
+	<hr />
+	<f:for each="{value.participants}" as="participant">
+		<div class="table-responsive">
+			<table>
+				<tr>
+					<f:if condition="{participant.companyName}">
+						<td class="headline">Company Name:</td>
+						<td class="value">{participant.companyName}</td>
+					</f:if>
+				</tr>
+				<tr>
+					<td class="headline">Name:</td>
+					<td class="value">{participant.name}</td>
+				</tr>
+				<tr>
+					<td class="headline">Email Address:</td>
+					<td class="value">{participant.email}</td>
+				</tr>
+				<tr>
+					<td class="headline">Country:</td>
+					<td class="value">{participant.country}</td>
+				</tr>
+			</table>
+		</div>
+		<hr />
+	</f:for>
+
+	<p><strong>Invoices will be sent by the beginning of May</strong> to the billing address given during registration. Multiple registrations with the same billing address will be batched to one invoice. You or your company have to pay it within 4 weeks after recieving. Otherwise the registrations will be placed after the last participant on the waiting list. The freed spaces will be given to the first participants on the waiting list. Participants from the waiting list have 2 weeks time to pay after recieving the invoice. Otherwise they will be moved to the end of the waiting list as well.</p>
+	<p>Registrations can be canceled without a reason within 14 days after registration by e-mailing to <a href="mailto:t3dd@typo3.org">t3dd@typo3.org</a>.</p>
+
+</f:section>

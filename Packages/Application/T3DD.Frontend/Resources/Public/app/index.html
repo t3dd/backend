@@ -102,6 +102,8 @@
 					<app-route path="/sessions/edit/:sessionId" import="pages/session-edit.html" element="session-edit" forceLogin?="{{!globals.user}}"></app-route>
 					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter element="session-list"></app-route>
 					<app-route path="/register" import="pages/page-register.html" element="page-register"></app-route>
+					<app-route path="/registration/success" import="pages/registration-success.html" element="registration-success"></app-route>
+					<app-route path="/registration/:registrationId" import="pages/registration-edit.html" element="registration-edit"></app-route>
 					<app-route path="/sponsoring" import="pages/page-sponsoring.html" element="page-sponsoring"></app-route>
 					<app-route path="/legal" import="pages/page-legal-info.html" element="page-legal-info"></app-route>
 				</app-router>

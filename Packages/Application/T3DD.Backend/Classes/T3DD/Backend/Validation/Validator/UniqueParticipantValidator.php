@@ -6,13 +6,15 @@ namespace T3DD\Backend\Validation\Validator;
  *                                                                        *
  *                                                                        */
 
+use T3DD\Backend\Domain\Model\DataTransfer\Registration\Participant;
+use T3DD\Backend\Domain\Repository\Registration\ParticipantRepository;
 use TYPO3\Flow\Annotations as Flow;
 
 class UniqueParticipantValidator extends \TYPO3\Flow\Validation\Validator\AbstractValidator {
 
 	/**
 	 * @Flow\Inject
-	 * @var \T3DD\Backend\Domain\Repository\ParticipantRepository
+	 * @var ParticipantRepository
 	 */
 	protected $participantRepository;
 
@@ -23,7 +25,7 @@ class UniqueParticipantValidator extends \TYPO3\Flow\Validation\Validator\Abstra
 	protected $securityContext;
 
 	/**
-	 * @param \T3DD\Backend\Domain\Model\Participant $participant
+	 * @param Participant $participant
 	 * @return void
 	 */
 	protected function isValid($participant) {

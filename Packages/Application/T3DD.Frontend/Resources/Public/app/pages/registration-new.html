@@ -1,0 +1,249 @@
+<polymer-element name="registration-new" attributes="registrationResource">
+	<template>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+			}
+
+			form {
+				padding: 0;
+			}
+
+			label, paper-radio-group {
+				display: block;
+			}
+
+			label {
+				color: #757575;
+			}
+
+			.participantCount {
+				min-width: 112px;
+				padding-top: 0;
+				text-align: right;
+			}
+
+			.participantIsRegistrant {
+
+			}
+
+			.participantIsRegistrant label {
+				padding: 0 0 0 10px;
+			}
+
+			#existingRegistrationNotice [site-font="subhead"] {
+				margin-bottom: 0;
+			}
+
+			.price {
+				font-weight: bold;
+			}
+
+			#billingAmount {
+				padding-right: 14px;
+			}
+		</style>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<site-ajax id="deleteResource" auto="false" url="{{registrationResource}}" method="DELETE" on-core-response="{{handleDeletion}}"></site-ajax>
+		<template if="{{!registrationResource}}">
+			<form is="site-form" id="form" action="/registration" method="post" enctype="application/json" on-submitting="{{submitting}}" flex>
+				<div class="card__content" horizontal layout>
+					<core-icon class="title-icon" icon="maps:local-attraction"></core-icon>
+					<div flex>
+						<h2 site-font="title">How many participants do you want to register?</h2>
+
+						<div horizontal center layout>
+							<paper-slider min="1" max="15" snaps value="{{participantCount}}" immediateValue="{{participantCountImmediate}}" flex></paper-slider>
+							<label class="participantCount">
+								{{participantCountImmediate > 1 ? participantCountImmediate: 'only myself/one'}}
+								{{participantCountImmediate > 1 ? 'participants' : ''}}
+							</label>
+						</div>
+					</div>
+				</div>
+				<template repeat="{{participant,i in participants}}">
+					<div class="card__content" horizontal layout>
+						<core-icon class="title-icon" icon="assignment-ind"></core-icon>
+						<div flex>
+							<div horizontal center layout>
+								<h4 site-font="title" flex>
+									{{participant.isRegistrant ? 'I' : ''}}
+									{{!participant.isRegistrant ? i + 1 : '' | enumerateWithWords | capitalizeFirstLetter}}
+									{{!participant.isRegistrant ? 'Participant' : ''}}
+									…
+								</h4>
+								<template if="{{i == 0}}">
+									<div class="participantIsRegistrant" horizontal center layout>
+										<site-checkbox checked="{{participant.isRegistrant}}"></site-checkbox>
+										<label site-font="subheader">this is myself</label>
+									</div>
+								</template>
+							</div>
+							<label site-font="caption">… {{participant.isRegistrant ? 'am' : 'is'}} a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}</label>
+							<div horizontal center layout>
+								<div flex>
+									<paper-radio-group selected="{{participant.rate}}">
+										<paper-radio-button name="assoc" label="Association Member"></paper-radio-button>
+										<paper-radio-button name="nonassoc" label="Non Association Member"></paper-radio-button>
+										<paper-radio-button name="student" label="Student"></paper-radio-button>
+										<paper-radio-button name="core" label="Active Contributor"></paper-radio-button>
+									</paper-radio-group>
+								</div>
+								<div class="price">{{participant.rate | getPriceAmountForRate}} €</div>
+							</div>
+							<label site-font="caption">… {{participant.roomSize == 0 ? 'doesn\'t need a room' : 'would like to share a room with'}}</label>
+							<div horizontal center layout>
+								<div flex>
+									<paper-radio-group selected="{{participant.roomSize}}">
+										<paper-radio-button name="2" label="another participant"></paper-radio-button>
+										<paper-radio-button name="3" label="two other participants"></paper-radio-button>
+										<paper-radio-button name="4" label="three other participants"></paper-radio-button>
+										<paper-radio-button name="0" label="No room, please!"></paper-radio-button>
+									</paper-radio-group>
+								</div>
+								<div class="price">{{participant.roomSize | getPriceAmountForRoomSize}} €</div>
+							</div>
+						</div>
+					</div>
+				</template>
+				<div class="card__content card__buttons" horizontal justified center layout>
+					<paper-button on-click="{{submit}}">
+						<core-icon icon="arrow-forward"></core-icon>
+						Continue registration
+					</paper-button>
+					<div id="billingAmount" class="price">Sum: {{billingAmount}} €</div>
+				</div>
+			</form>
+		</template>
+		<template if="{{registrationResource}}">
+			<div id="existingRegistrationNotice" class="card__content" horizontal layout>
+				<core-icon class="title-icon" icon="assignment-ind"></core-icon>
+				<div flex>
+					<h2 site-font="title">You have already started a registration</h2>
+
+					<p site-font="subhead">What would you like to do?</p>
+				</div>
+			</div>
+			<div class="card__content card__buttons" horizontal justified layout>
+				<paper-button on-click="{{complete}}">
+					<core-icon icon="arrow-forward"></core-icon>
+					Complete registration
+				</paper-button>
+				<paper-button on-click="{{delete}}">
+					<core-icon icon="delete"></core-icon>
+					Discard
+				</paper-button>
+			</div>
+		</template>
+	</template>
+	<script>
+		(function () {
+			'use strict';
+
+			Polymer({
+				billingAmount: 0,
+				participantCount: 1,
+				participants: [],
+				registrationResource: null,
+				eventDelegates: {
+					'core-activate': 'calculateBillingAmount'
+				},
+				participantTemplate: function () {
+					return {
+						isRegistrant: false,
+						rate: 'assoc',
+						roomSize: 2
+					}
+				},
+				created: function () {
+					this.participantCountChanged(0, this.participantCount);
+				},
+				ready: function () {
+					this.$.form.addEventListener('submitted', this.$.form.changePageToResource);
+				},
+				submitting: function (event) {
+					event.detail.formData['participantCount'] = this.participantCount;
+					event.detail.formData['participants'] = this.participants;
+					return event;
+				},
+				submit: function () {
+					if (!this.globals.user) {
+						var t = document.getElementById('t');
+						t.requireLogin((function () {
+							this.$.form.submit();
+						}).bind(this));
+					} else {
+						this.$.form.submit();
+					}
+				},
+				participantCountChanged: function (oldValue, newValue) {
+					if (this.participants.length > newValue) {
+						this.participants = this.participants.slice(0, newValue);
+					} else if (this.participants.length < newValue) {
+						var participantsToAdd = newValue - this.participants.length;
+						for (var i = 0; i < participantsToAdd; i++) {
+							var participant = this.participantTemplate();
+							if (i == 0 && this.participants.length === 0) {
+								participant.isRegistrant = true;
+							}
+							this.participants.push(participant);
+						}
+					}
+					this.calculateBillingAmount();
+				},
+				complete: function () {
+					var path = this.registrationResource.replace(/^https?:\/\/[^\/]+/, '');
+					document.querySelector('app-router').go(path);
+				},
+				delete: function () {
+					this.$.deleteResource.go();
+				},
+				handleDeletion: function () {
+					this.registrationResource = null;
+					window.location.reload();
+				},
+				getPriceAmountForRate: function (rate) {
+					var price = 0;
+					switch (rate) {
+						case 'assoc':
+							price = 250;
+							break;
+						case 'nonassoc':
+							price = 355;
+							break;
+						case 'student':
+						case 'core':
+							price = 89;
+							break;
+					}
+					return price;
+				},
+				getPriceAmountForRoomSize: function (roomSize) {
+					var price = 0;
+					switch (parseInt(roomSize)) {
+						case 2:
+							price = 216 / 2;
+							break;
+						case 3:
+							price = 216 / 3;
+							break;
+						case 4:
+							price = 216 / 4;
+							break;
+					}
+					return price;
+				},
+				calculateBillingAmount: function () {
+					var sum = 0;
+					this.participants.forEach(function (element) {
+						sum += this.getPriceAmountForRate(element.rate);
+						sum += this.getPriceAmountForRoomSize(element.roomSize);
+					}.bind(this));
+					this.billingAmount = sum;
+				}
+			});
+
+		})();
+	</script>
+</polymer-element>
