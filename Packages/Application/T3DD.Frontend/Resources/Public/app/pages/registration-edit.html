@@ -364,7 +364,9 @@
 					input.removeAttribute('default');
 				},
 				ready: function() {
-					this.$.form.addEventListener('submitted', this.$.form.changePageToResource);
+					this.$.form.addEventListener('submitted', function(event) {
+						document.querySelector('app-router').go('/registration/success');
+					});
 				},
 				submitting: function(event) {
 					event.detail.formData = this.registration;
