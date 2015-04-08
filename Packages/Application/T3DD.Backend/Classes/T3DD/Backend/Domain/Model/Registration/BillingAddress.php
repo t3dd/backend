@@ -16,9 +16,8 @@ class BillingAddress {
 
 	/**
 	 * @var string
-	 * @Flow\Validate(type="NotEmpty")
 	 */
-	protected $companyName;
+	protected $companyName = '';
 
 	/**
 	 * @var string
