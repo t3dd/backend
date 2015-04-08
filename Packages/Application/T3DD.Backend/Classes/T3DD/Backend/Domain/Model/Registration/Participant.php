@@ -297,17 +297,31 @@ class Participant {
 	}
 
 	/**
-	 * @return \Doctrine\Common\Collections\Collection
+	 * @return \Doctrine\Common\Collections\Collection<\T3DD\Backend\Domain\Model\Registration\Mate>
 	 */
 	public function getRoomMates() {
 		return $this->roomMates;
 	}
 
 	/**
-	 * @param \Doctrine\Common\Collections\Collection $roomMates
+	 * @param \Doctrine\Common\Collections\Collection<\T3DD\Backend\Domain\Model\Registration\Mate> $roomMates
 	 */
 	public function setRoomMates($roomMates) {
 		$this->roomMates = $roomMates;
+	}
+
+	/**
+	 * @param Mate $roomMate
+	 */
+	public function addRoomMate(Mate $roomMate) {
+		$this->roomMates->add($roomMate);
+	}
+
+	/**
+	 * @param Mate $roomMate
+	 */
+	public function removeRoomMate(Mate $roomMate) {
+		$this->roomMates->remove($roomMate);
 	}
 
 	/**
