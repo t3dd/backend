@@ -95,7 +95,7 @@ class Participant {
 	 * @var string
 	 * @ORM\Column(type="string", columnDefinition="ENUM('xs', 's', 'm', 'l', 'xl', 'xxl', '3xl', '4xl')")
 	 */
-	protected $tshirtSize;
+	protected $tshirtSize = 'l';
 
 	/**
 	 * @var string
@@ -111,7 +111,7 @@ class Participant {
 	/**
 	 * @var integer
 	 */
-	protected $yearExpertise = true;
+	protected $yearExpertise = 0;
 
 	/**
 	 * @var Ticket
