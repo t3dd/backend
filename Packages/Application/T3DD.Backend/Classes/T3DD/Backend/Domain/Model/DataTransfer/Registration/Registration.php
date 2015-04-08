@@ -34,7 +34,7 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('resource', 'participantCount', 'participants', 'billingAddress', 'secondsToExpiration');
+		return array('resource', 'participantCount', 'participants', 'billingAddress', 'secondsToExpiration', 'notes');
 	}
 
 	/**
@@ -113,6 +113,13 @@ class Registration extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractData
 	 */
 	public function setSecondsToExpiration($secondsToExpiration) {
 
+	}
+
+	/**
+	 * @param string $notes
+	 */
+	public function setNotes($notes) {
+		$this->payload->setNotes($notes);
 	}
 
 }

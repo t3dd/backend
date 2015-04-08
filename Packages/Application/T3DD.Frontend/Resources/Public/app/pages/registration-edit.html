@@ -263,6 +263,21 @@
 						</template>
 					</div>
 					<div class="card">
+						<div class="card__content">
+							<div horizontal layout>
+								<core-icon class="title-icon" icon="subject"></core-icon>
+								<div flex>
+									<h4 site-font="title">Comments</h4>
+									<paper-input-decorator label="Room for comments (e.g. Sponsor reductions, Membership vouchers, Early Arrival etc.)" floatingLabel>
+										<paper-autogrow-textarea rows="4">
+											<textarea placeholder="Room for comments (e.g. Sponsor reductions, Membership vouchers, etc.)" value="{{registration.notes}}"></textarea>
+										</paper-autogrow-textarea>
+									</paper-input-decorator>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card">
 						<div class="card__content card__buttons">
 							<template if="{{timeleft != null || timeleft != false}}">
 								<paper-button on-click="{{submit}}">
@@ -365,7 +380,9 @@
 				},
 				ready: function() {
 					this.$.form.addEventListener('submitted', function(event) {
-						document.querySelector('app-router').go('/registration/success');
+						if (event.detail.status > 199 && event.detail.status < 300) {
+							document.querySelector('app-router').go('/registration/success');
+						}
 					});
 				},
 				submitting: function(event) {
