@@ -7,10 +7,7 @@
 		</style>
 		<site-ajax id="registrationStatus" url="/registration/status" on-core-response="{{handleStatus}}"></site-ajax>
 		<template if="{{status}}">
-			<div layout vertical>
-				<span>Tickets: {{status.tickets}}</span>
-				<span>Rooms: {{status.rooms}}</span>
-			</div>
+			Tickets left {{status.tickets}}, Rooms left {{status.rooms}}
 		</template>
 	</template>
 	<script>

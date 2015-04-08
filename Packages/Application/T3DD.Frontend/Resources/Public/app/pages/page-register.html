@@ -148,9 +148,9 @@
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
 		<header class="bg-dark-grey">
-			<div class="masthead container" layout horizontal end>
+			<div class="masthead container" layout horizontal?="{{!globals.isPhoneSize}}" end>
 				<div flex>
-					<h1 site-font="display1">Register</h1>
+					<h1 site-font="display1">Register today!</h1>
 				</div>
 				<site-registration-status registrationResource="{{pendingRegistration}}"></site-registration-status>
 			</div>
@@ -172,28 +172,33 @@
 						minutes</strong>. The tickets and room shares are reserved during this time for you. Participants
 						that exceed the amount of available tickets or room shares, will be placed on a waiting list and
 						get notified once a ticket or room share becomes available again. The booking state will be
-						displayed in the registration form below the participant title. Speakers, Active Contributors
-						and Helping Hands have their place guaranteed and don't count into the amount of available spaces.
+						displayed in the registration form below the participant title. <strong>Speakers, Active Contributors
+						and Helping Hands have their ticket guaranteed and don't count into the amount of available tickets.</strong>
+						But only Active Contributors and Helping Hands have also their room share guaranteed.
 						Sponsors, Members with Event Vouchers, Speakers and Helping Hands choose either the Association
 						or Non Association rate accordingly and will be converted to the appropriate rate before invoicing.
-						Speakers will be converted when one of their session proposals has been accepted. Sponsors or
-						Members with Event Vouchers should note in the comments field, to which participant the reductions
-						should apply.
+						Speakers will be converted when one of their session proposals has been accepted. <strong>Sponsors or
+						Members with Event Vouchers should note in the comments field to which participant the reductions
+						should apply.</strong>
 					</p>
 					<p site-font="subhead">
-						After your registration you'll get a notification of your successful registration. Invoices will
-						be sent by the beginning of May to the billing address given during registration. Multiple
+						After your registration you'll get a notification of your successful registration. <strong>Invoices will
+						be sent by the beginning of May</strong> to the billing address given during registration. Multiple
 						registrations with the same billing address will be batched to one invoice. You or your company
 						have to pay it within 4 weeks after recieving. Otherwise the registrations will be placed after
 						the last participant on the waiting list. The freed spaces will be given to the first participants
 						on the waiting list. Participants from the waiting list have 2 weeks time to pay after recieving
 						the invoice. Otherwise they will be moved to the end of the waiting list as well.
 					</p>
+					<p site-font="caption">
+						Registrations can be canceled without a reason within 14 days after registration by e-mailing to
+						<a href="mailto:t3dd@typo3.org">t3dd@typo3.org</a>.
+					</p>
 				</div>
 			</section>
 			<section>
 				<div class="container container__wide">
-					<h2 site-font="title">Admission Fees</h2>
+					<h2 site-font="display1">Admission Fees</h2>
 					<div class="card__container price__container" horizontal?="{{globals.isDesktopSize}}"  layout>
 						<div class="card" vertical layout flex>
 							<div class="card__content bg-orange" horizontal?="{{!globals.isDesktopSize}}" center justified layout>
