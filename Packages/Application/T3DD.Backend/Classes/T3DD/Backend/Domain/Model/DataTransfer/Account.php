@@ -54,7 +54,7 @@ class Account extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTrans
 	 * @return string
 	 */
 	public function getProfileImage() {
-		return sprintf('http://typo3.org/services/userimage.php?username=%s&size=big', $this->payload->getAccountIdentifier());
+		return sprintf('//typo3.org/services/userimage.php?username=%s&size=big', $this->payload->getAccountIdentifier());
 	}
 
 }

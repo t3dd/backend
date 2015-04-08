@@ -31,7 +31,7 @@ class RemoteAuthService {
 			'id' => $account->getAccountIdentifier(),
 			'username' => $person->getName()->getFullName(),
 			'email' => $person->getPrimaryElectronicAddress()->getIdentifier(),
-			'avatar' => sprintf('http://typo3.org/services/userimage.php?username=%s&size=big', $account->getAccountIdentifier())
+			'avatar' => sprintf('//typo3.org/services/userimage.php?username=%s&size=big', $account->getAccountIdentifier())
 		);
 
 		if (!isset($this->settings['disqusApiSecret'])) {
