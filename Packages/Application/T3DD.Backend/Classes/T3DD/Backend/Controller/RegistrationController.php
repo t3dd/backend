@@ -175,7 +175,7 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 		$mailService = $this->objectManager->get(\T3DD\Backend\Domain\Service\MailService::class);
 		if (!$registrationEntity->isCompleted()) {
 			$registrationEntity->setCompleted(TRUE);
-			$mailService->sendRegistrationCompletedMail($registrationEntity->getBillingAddress());
+			$mailService->sendRegistrationCompletedMail($registrationEntity);
 		}
 		/** @var \T3DD\Backend\Domain\Model\Registration\Participant $participant */
 		foreach ($registrationEntity->getParticipants() as $participant) {

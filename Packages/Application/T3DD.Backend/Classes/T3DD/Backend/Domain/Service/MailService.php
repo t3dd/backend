@@ -19,11 +19,11 @@ class MailService {
 	protected $configuration;
 
 	/**
-	 * @param BillingAddress $billingAddress
+	 * @param Registration $registration
 	 * @return int
 	 */
-	public function sendRegistrationCompletedMail(BillingAddress $billingAddress) {
-		return $this->send('registrationCompleted', $billingAddress);
+	public function sendRegistrationCompletedMail(Registration $registration) {
+		return $this->send('registrationCompleted', $registration);
 	}
 
 	/**
@@ -54,7 +54,7 @@ class MailService {
 			->setTo($this->getRecipient($object))
 			->setBody($this->renderContent($purpose, array('value' => $object)), 'text/html');
 
-		if ($purpose !== 'participantCompleteRegistration' && is_array($this->configuration['Bcc'])) {
+		if ($purpose !== 'participantCompleteRegistration' && isset($this->configuration['Bcc'])) {
 			$message->setBcc([$this->configuration['Bcc']['email'] => $this->configuration['Bcc']['name']]);
 		}
 
