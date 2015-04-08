@@ -15,39 +15,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Mate {
 
 	/**
-	 * @var \TYPO3\Flow\Security\Account
-	 * @ORM\ManyToOne
-	 */
-	protected $account = NULL;
-
-	/**
 	 * @var string
 	 */
 	protected $name = '';
 
 	/**
-	 * @var \Doctrine\Common\Collections\Collection<\T3DD\Backend\Domain\Model\Registration\Participant>
-	 * @ORM\ManyToMany(mappedBy="roomMates")
+	 * @var Participant
+	 * @ORM\ManyToOne(inversedBy="roomMates")
 	 */
-	protected $participants;
-
-	public function __construct() {
-		$this->participants = new \Doctrine\Common\Collections\ArrayCollection();
-	}
-
-	/**
-	 * @return \TYPO3\Flow\Security\Account
-	 */
-	public function getAccount() {
-		return $this->account;
-	}
-
-	/**
-	 * @param \TYPO3\Flow\Security\Account $account
-	 */
-	public function setAccount($account) {
-		$this->account = $account;
-	}
+	protected $participant;
 
 	/**
 	 * @return string
@@ -64,17 +40,17 @@ class Mate {
 	}
 
 	/**
-	 * @return \Doctrine\Common\Collections\Collection
+	 * @return Participant
 	 */
-	public function getParticipants() {
-		return $this->participants;
+	public function getParticipant() {
+		return $this->participant;
 	}
 
 	/**
-	 * @param \Doctrine\Common\Collections\Collection $participants
+	 * @param Participant $participant
 	 */
-	public function setParticipants($participants) {
-		$this->participants = $participants;
+	public function setParticipant(Participant $participant) {
+		$this->participant = $participant;
 	}
 
 }

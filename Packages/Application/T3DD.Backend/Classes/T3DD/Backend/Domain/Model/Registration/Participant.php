@@ -69,8 +69,8 @@ class Participant {
 	protected $roomSize = 0;
 
 	/**
-	 * @var \Doctrine\Common\Collections\Collection<\T3DD\Backend\Domain\Model\Registration\Mate>
-	 * @ORM\ManyToMany(inversedBy="roomMates")
+	 * @var \Doctrine\Common\Collections\ArrayCollection<Mate>
+	 * @ORM\OneToMany(mappedBy="participant", cascade={"all"})
 	 */
 	protected $roomMates;
 
@@ -314,6 +314,7 @@ class Participant {
 	 * @param Mate $roomMate
 	 */
 	public function addRoomMate(Mate $roomMate) {
+		$roomMate->setParticipant($this);
 		$this->roomMates->add($roomMate);
 	}
 

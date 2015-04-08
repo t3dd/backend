@@ -214,6 +214,15 @@
 												<input value="{{participant.email}}" is="core-input" type="email" required>
 											</paper-input-decorator>
 											<template if="{{participant.isRegistrant}}">
+												<template if="{{participant.roomMates}}">
+													<label site-font="caption">… want to share my room with …</label>
+													<template repeat="{{roomMate,j in participant.roomMates}}">
+														<paper-input-decorator label="… {{j + 1 : '' | enumerateWithWords}} (name/email/typo3.org username)" floatingLabel flex>
+															<input value="{{roomMate.name}}" is="core-input">
+														</paper-input-decorator>
+													</template>
+												</template>
+
 												<label site-font="caption">… am eating</label>
 												<paper-radio-group selected="{{participant.foodType}}">
 													<paper-radio-button name="default" label="regular"></paper-radio-button>

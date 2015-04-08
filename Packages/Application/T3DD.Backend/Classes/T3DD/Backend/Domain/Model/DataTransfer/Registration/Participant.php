@@ -12,6 +12,12 @@ use TYPO3\Flow\Annotations as Flow;
 class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransferObject {
 
 	/**
+	 * @var \Netlogix\Crud\Domain\Service\DataTransferObjectFactory
+	 * @Flow\Inject
+	 */
+	protected $dataTransferObjectFactory;
+
+	/**
 	 * @var \T3DD\Backend\Domain\Model\Registration\Participant
 	 */
 	protected $payload;
@@ -33,7 +39,7 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('__identity', 'resource', 'isRegistrant', 'rate', 'roomSize', 'companyName', 'name', 'country', 'email', 'foodType', 'foodWishes', 'tshirtType', 'tshirtSize', 'newcomer', 'yearExpertise', 'ticketBookingState', 'roomBookingState');
+		return array('__identity', 'resource', 'isRegistrant', 'rate', 'roomSize', 'companyName', 'name', 'country', 'email', 'foodType', 'foodWishes', 'tshirtType', 'tshirtSize', 'newcomer', 'yearExpertise', 'ticketBookingState', 'roomBookingState', 'roomMates');
 	}
 
 	/**
@@ -102,6 +108,13 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	 */
 	public function setRoomSize($roomSize) {
 
+	}
+
+	/**
+	 * @return \Doctrine\Common\Collections\Collection
+	 */
+	public function getRoomMates() {
+		return $this->dataTransferObjectFactory->getDataTransferObjects($this->getPayload()->getRoomMates());
 	}
 
 	/**

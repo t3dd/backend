@@ -122,6 +122,11 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 				$person = $this->partyService->getAssignedPartyOfAccount($account);
 				$participant->setAccount($account);
 				$participant->setPerson($person);
+				if ($participant->getRoomSize() > 0) {
+					for ($i = 1; $i < $participant->getRoomSize(); $i++) {
+						$participant->addRoomMate(new \T3DD\Backend\Domain\Model\Registration\Mate());
+					}
+				}
 			}
 
 			$ticketRequest[] = $participant->getTicketRequest();
@@ -156,11 +161,11 @@ class RegistrationController extends \Netlogix\Crud\Controller\RestController {
 			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED,
 			TRUE);
 
-		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('participants.*.roomMates');
+		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('participants.*.roomMates.*');
 		$configuration->allowProperties('name');
 		$configuration->skipUnknownProperties();
 		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter',
-			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_CREATION_ALLOWED,
+			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED,
 			TRUE);
 
 		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('billingAddress');
