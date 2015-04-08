@@ -215,9 +215,8 @@
 											</paper-input-decorator>
 											<template if="{{participant.isRegistrant}}">
 												<template if="{{participant.roomMates}}">
-													<label site-font="caption">… want to share my room with …</label>
 													<template repeat="{{roomMate,j in participant.roomMates}}">
-														<paper-input-decorator label="… {{j + 1 : '' | enumerateWithWords}} (name/email/typo3.org username)" floatingLabel flex>
+														<paper-input-decorator label="… would like to share my room with {{j + 1 | enumerateWithWords}} room mate (name/email/typo3.org username, leave empty for random mate)" floatingLabel flex>
 															<input value="{{roomMate.name}}" is="core-input">
 														</paper-input-decorator>
 													</template>
