@@ -58,7 +58,7 @@ class Participant {
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string", columnDefinition="ENUM('noassoc', 'assoc', 'student', 'speaker', 'core', 'helper', 'sponsornonassoc', 'sponsornassoc', 'voucher')")
+	 * @ORM\Column(type="string", columnDefinition="ENUM('nonassoc', 'assoc', 'student', 'speaker', 'core', 'helper', 'sponsornonassoc', 'sponsorassoc', 'voucher')")
 	 */
 	protected $rate;
 
