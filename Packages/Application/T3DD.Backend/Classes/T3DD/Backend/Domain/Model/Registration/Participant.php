@@ -81,7 +81,7 @@ class Participant {
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string", columnDefinition="ENUM('default', 'vegetarian', 'vegan', 'other')")
+	 * @ORM\Column(type="string", columnDefinition="ENUM('default', 'vegetarian', 'vegan')")
 	 */
 	protected $foodType = 'default';
 
