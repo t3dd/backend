@@ -83,6 +83,13 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	}
 
 	/**
+	 * @param string $country
+	 */
+	public function setCountry($country) {
+
+	}
+
+	/**
 	 * @param string $email
 	 */
 	public function setEmail($email) {

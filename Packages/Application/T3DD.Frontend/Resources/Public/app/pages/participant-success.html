@@ -1,0 +1,63 @@
+<polymer-element name="participant-success" noscript>
+	<template>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 16px;
+			}
+
+			@media (min-width: 768px) {
+				.container {
+					padding: 24px 32px;
+				}
+			}
+
+			header h1 {
+				margin-bottom: 0;
+				color: #fff;
+			}
+
+			@media (min-width: 768px) {
+				:host {
+					height: calc(100vh - 192px - 64px);
+					background-size: cover;
+					background-image: url('../images/double_rainbow.jpg');
+				}
+				header.bg-dark-grey {
+					background: none;
+				}
+				.masthead {
+					height: 160px;
+					padding: 0 32px 160px;
+				}
+				#headCard {
+					margin: -160px auto 0;
+				}
+			}
+		</style>
+		<header class="bg-dark-grey">
+			<div class="masthead container" horizontal layout end>
+				<div flex>
+					<h1 site-font="display1">Thank you for updating your registration!</h1>
+				</div>
+			</div>
+		</header>
+		<main>
+			<div id="headCard" class="container">
+				<div class="card__container">
+					<div class="card">
+						<div class="card__content">
+							If you would like to change your registration write us a mail to
+							<a href="mailto:t3dd@typo3.org">t3dd@typo3.org</a> and we will see what we can do.
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</template>
+</polymer-element>
