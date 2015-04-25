@@ -90,16 +90,27 @@ class RegistrationCommandController extends CommandController {
 			$waitingTickets = $this->ticketRepository->findWaitingByCount($numberOfTickets);
 			/** @var Ticket $ticket */
 			foreach ($waitingTickets as $ticket) {
+				$priorBookingState = $ticket->getBookingState();
 				$ticket->setBookingState(AbstractBookable::BOOKING_STATE_PENDING);
 				$this->ticketRepository->update($ticket);
 				/** @var Participant $participant */
 				$participant = $this->participantRepository->findOneByTicket($ticket);
-				/** @var Registration $registration */
-				$registration = $participant->getRegistration();
-				$registrationIdentifier = $this->persistenceManager->getIdentifierByObject($registration);
+				/** @var Registration $notification */
+				$notification = $participant->getRegistration();
+				$registrationIdentifier = $this->persistenceManager->getIdentifierByObject($notification);
 				if (!array_key_exists($registrationIdentifier, $registrationsToNotify)) {
-					$registrationsToNotify[$registrationIdentifier] = $registration;
+					$registrationsToNotify[$registrationIdentifier] = [
+						'registration' => $notification,
+						'ticketBookingStateChanged' => [],
+						'roomBookingStateChanged' => [],
+					];
 				}
+				$participantIdentifier = $this->persistenceManager->getIdentifierByObject($participant);
+				$registrationsToNotify[$registrationIdentifier]['ticketBookingStateChanged'][$participantIdentifier] = [
+					'participant' => $participant,
+					'priorBookingState' => $priorBookingState,
+					'newBookingState' => $ticket->getBookingState()
+				];
 			}
 		}
 
@@ -108,23 +119,34 @@ class RegistrationCommandController extends CommandController {
 			$waitingRooms = $this->roomRepository->findWaitingByCount($numberOfRooms);
 			/** @var Room $room */
 			foreach ($waitingRooms as $room) {
+				$priorBookingState = $room->getBookingState();
 				$room->setBookingState(AbstractBookable::BOOKING_STATE_PENDING);
 				$this->roomRepository->update($room);
 				/** @var Participant $participant */
 				$participant = $this->participantRepository->findOneByRoom($room);
 				/** @var Registration $registration */
-				$registration = $participant->getRegistration();
-				$registrationIdentifier = $this->persistenceManager->getIdentifierByObject($registration);
+				$notification = $participant->getRegistration();
+				$registrationIdentifier = $this->persistenceManager->getIdentifierByObject($notification);
 				if (!array_key_exists($registrationIdentifier, $registrationsToNotify)) {
-					$registrationsToNotify[$registrationIdentifier] = $registration;
+					$registrationsToNotify[$registrationIdentifier] = [
+						'registration' => $notification,
+						'ticketBookingStateChanged' => [],
+						'roomBookingStateChanged' => [],
+					];
 				}
+				$participantIdentifier = $this->persistenceManager->getIdentifierByObject($participant);
+				$registrationsToNotify[$registrationIdentifier]['roomBookingStateChanged'][$participantIdentifier] = [
+					'participant' => $participant,
+					'priorBookingState' => $priorBookingState,
+					'newBookingState' => $ticket->getBookingState()
+				];
 			}
 		}
 		$this->persistenceManager->persistAll();
 
 		/** @var Registration $registration */
-		foreach ($registrationsToNotify as $registration) {
-			$this->mailService->sendMoveToWaitingListMail($registration);
+		foreach ($registrationsToNotify as $notification) {
+			$this->mailService->sendMoveToWaitingListMail($notification);
 		}
 
 	}

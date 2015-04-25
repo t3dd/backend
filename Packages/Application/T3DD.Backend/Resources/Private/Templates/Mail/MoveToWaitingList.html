@@ -1,24 +1,48 @@
 <f:layout name="Email" />
 
 <f:section name="content">
-	<h3>Dear {value.billingAddress.name},</h3>
+	<h3>Dear {value.registration.billingAddress.name},</h3>
 
-	<p>the status of tickets and rooms has changed:</p>
+	<p>the status of participants changed:</p>
 
+	<f:if condition="{value.ticketBookingStateChanged -> f:count()} > 0">
 	<p><strong>Tickets:</strong></p>
 	<ul>
-		<f:for each="{value.participants}" as="participant">
-			<li>{participant.name}: Status {participant.ticket.bookingState}</li>
+		<f:for each="{value.ticketBookingStateChanged}" as="change">
+			<li>
+				{change.participant.name}: From
+				<f:switch expression="{change.priorBookingState}">
+					<f:case value="waiting">waitinglist</f:case>
+					<f:defaultCase>booked</f:defaultCase>
+				</f:switch>
+				to
+				<f:switch expression="{change.newBookingState}">
+					<f:case value="waiting">waitinglist</f:case>
+					<f:defaultCase>booked</f:defaultCase>
+				</f:switch>
+			</li>
 		</f:for>
 	</ul>
+	</f:if>
 
+	<f:if condition="{value.roomBookingStateChanged -> f:count()} > 0">
 	<p><strong>Rooms:</strong></p>
 	<ul>
-		<f:for each="{value.participants}" as="participant">
-			<f:if condition="{participant.room}">
-				<li>{participant.name}: Status {participant.room.bookingState}</li>
-			</f:if>
+		<f:for each="{value.roomBookingStateChanged}" as="change">
+			<li>
+				{change.participant.name}: From
+				<f:switch expression="{change.priorBookingState}">
+					<f:case value="waiting">waitinglist</f:case>
+					<f:defaultCase>booked</f:defaultCase>
+				</f:switch>
+				to
+				<f:switch expression="{change.newBookingState}">
+					<f:case value="waiting">waitinglist</f:case>
+					<f:defaultCase>booked</f:defaultCase>
+				</f:switch>
+			</li>
 		</f:for>
 	</ul>
+	</f:if>
 
 </f:section>

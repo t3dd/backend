@@ -35,11 +35,11 @@ class MailService {
 	}
 
 	/**
-	 * @param Registration $registration
+	 * @param array $notification
 	 * @return int
 	 */
-	public function sendMoveToWaitingListMail(Registration $registration) {
-		return $this->send('moveToWaitingList', $registration);
+	public function sendMoveToWaitingListMail(array $notification) {
+		return $this->send('moveToWaitingList', $notification);
 	}
 
 	/**
