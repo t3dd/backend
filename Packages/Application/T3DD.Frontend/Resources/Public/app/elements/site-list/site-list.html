@@ -1139,10 +1139,11 @@ the following abstract API:
             wrap(document.activeElement) : this.shadowRoot.activeElement;
 
         // T3DD Team: Exclude IE from this condition, we don't need it and document.activeElement returns the wrong element
-        if (navigator.appVersion.indexOf("Trident") === -1 && active && (active != this) && (active.parentElement != this) &&
-            (document.activeElement != document.body)) {
-          return;
-        }
+        // T3DD Team: Remove this condition, because it's not useful and doesn't work in chrome 43 beta
+//        if (navigator.appVersion.indexOf("Trident") === -1 && active && (active != this) && (active.parentElement != this) &&
+//            (document.activeElement != document.body)) {
+//          return;
+//        }
         // Unfortunately, Safari does not focus certain form controls via mouse,
         // so we also blacklist input, button, & select
         // (https://bugs.webkit.org/show_bug.cgi?id=118043)
