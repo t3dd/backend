@@ -12,7 +12,7 @@ privilegeTargets:
     T3DD_Backend_Session:
       matcher: method(T3DD\Backend\Controller\SessionController->(edit|create|update|delete|error)Action())
     T3DD_Backend_Vote:
-      matcher: method(T3DD\Backend\Controller\VoteController->(myVotes|create|delete)Action())
+      matcher: method(T3DD\Backend\Controller\VoteController->(myVotes|create|delete|error)Action())
 roles:
   'T3DD.Backend:Authenticated':
     parentRoles:
