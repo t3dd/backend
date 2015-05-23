@@ -6,6 +6,7 @@ namespace T3DD\Backend\Domain\Repository\Registration;
  *                                                                        *
  *                                                                        */
 
+use T3DD\Backend\Domain\Model\Registration\AbstractBookable;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Persistence\Repository;
 
@@ -19,11 +20,10 @@ class ParticipantRepository extends Repository {
 	 */
 	public function findUncompletedParticipants() {
 		$query = $this->createQuery();
-		$queryConstraints = array();
+		$queryConstraints = [];
 		$queryConstraints[] = $query->equals('completed', FALSE);
+		$queryConstraints[] = $query->logicalNot($query->equals('ticket.bookingState', AbstractBookable::BOOKING_STATE_WAITING));
 		$queryConstraints[] = $query->lessThanOrEqual('lastEmailSent', new \DateTime('now - 7 Days'));
-
-		// Todo: Remove participants with waiting tickets
 
 		$query->matching($query->logicalAnd($queryConstraints));
 		return $query->execute();

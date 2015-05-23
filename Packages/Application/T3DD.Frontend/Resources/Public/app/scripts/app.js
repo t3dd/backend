@@ -110,14 +110,12 @@
 		this.$.router.go(this.currentPath);
 	};
 
-	template.isLoginRequired = function(path) {
-		var forceLoginRoute = this.$.router.querySelector('[path="' + path + '"][forceLogin]');
-		return !!forceLoginRoute;
-	}
+	template.isLoginRequired = function(route) {
+		return !!route.hasAttribute('forceLogin');
+	};
 
 	template.interceptRouting = function(event) {
-		var path = event.detail.path;
-		if (!this.isLoginRequired(path)) return;
+		if (!this.isLoginRequired(event.detail.route)) return;
 		event.preventDefault();
 		if (!this.globals.userStatusKnown) {
 			this.observeOnce('globals.userStatusKnown', function(newValue) {
@@ -125,7 +123,7 @@
 			});
 			return;
 		}
-		this.requireLogin(path);
+		this.requireLogin(event.detail.path);
 	};
 
 	template.observeOnce = function(attributeName, listener) {

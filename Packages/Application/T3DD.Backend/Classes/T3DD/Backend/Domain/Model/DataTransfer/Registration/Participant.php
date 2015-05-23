@@ -125,7 +125,7 @@ class Participant extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataT
 	}
 
 	/**
-	 * @param \Doctrine\Common\Collections\Collection $roomMates
+	 * @param \Doctrine\Common\Collections\Collection<\T3DD\Backend\Domain\Model\Registration\Mate> $roomMates
 	 */
 	public function setRoomMates($roomMates) {
 		$this->getPayload()->setRoomMates($roomMates);

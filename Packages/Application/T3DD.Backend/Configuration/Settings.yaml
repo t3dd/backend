@@ -16,4 +16,8 @@ T3DD:
           registrationCompleted: 'Registration for TYPO3 Developer Days 2015'
           participantCompleteRegistration: 'Update your registration for TYPO3 Developer Days 2015'
           moveToWaitingList: 'Ticket or room status for your registration has changed'
-        BaseUrl: 'https://t3dd15.typo3.org/'
+
+TYPO3:
+  Flow:
+    http:
+      baseUri: 'https://t3dd15.typo3.org/'

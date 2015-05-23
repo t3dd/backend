@@ -87,7 +87,11 @@
 				font-weight: bold;
 			}
 		</style>
-		<site-ajax url="/participant/{{participantId}}" loading="{{loading}}" on-core-response="{{handleParticipant}}" on-core-error="{{handleParticipantError}}"></site-ajax>
+
+
+		<template if="{{globals.user}}">
+			<site-ajax url="/participant/{{participantId}}" loading="{{loading}}" on-core-response="{{handleParticipant}}" on-core-error="{{handleParticipantError}}"></site-ajax>
+		</template>
 		<header class="bg-dark-grey">
 			<div class="container">
 				<h1 site-font="display1">Update your registration</h1>
@@ -208,7 +212,6 @@
 				},
 				handleParticipant: function (event) {
 					this.participant = event.detail.response;
-					console.log(this.participant);
 					this.$.form.updateLabelVisibilities();
 				},
 				removeDefault: function (event, index, input) {
@@ -252,6 +255,26 @@
 				},
 				capitalizeFirstLetter: function (string) {
 					return string.charAt(0).toUpperCase() + string.slice(1);
+				},
+				enumerateWithWords: function(i) {
+					var names = {
+						1: "first",
+						2: "second",
+						3: "third",
+						4: "fourth",
+						5: "fifth",
+						6: "sixth",
+						7: "seventh",
+						8: "eighth",
+						9: "ninth",
+						10: "tenth",
+						11: "eleventh",
+						12: "twelfth",
+						13: "thirteenth",
+						14: "fourteenth",
+						15: "fifteenth"
+					};
+					return names[i] || '';
 				}
 			});
 
