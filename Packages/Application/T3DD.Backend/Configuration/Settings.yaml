@@ -6,7 +6,7 @@ T3DD:
           fractionBase: 12
           availableQuota: 53
         Ticket:
-          availableQuota: 180
+          availableQuota: 188
       Mail:
         Sender:
           name: 'TYPO3 Developer Days 2015'
