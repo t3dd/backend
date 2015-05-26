@@ -97,6 +97,8 @@ class MailService {
 			$recipient = [$object->getEmail() => $object->getName()];
 		} elseif ($object instanceof Registration) {
 			$recipient = $this->getRecipient($object->getBillingAddress());
+		} elseif (is_array($object) && isset($object['registration'])) {
+			return $this->getRecipient($object['registration']);
 		}
 		return $recipient;
 	}

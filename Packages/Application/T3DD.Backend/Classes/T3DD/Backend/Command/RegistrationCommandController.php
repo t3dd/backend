@@ -144,7 +144,7 @@ class RegistrationCommandController extends CommandController {
 		}
 		$this->persistenceManager->persistAll();
 
-		/** @var Registration $registration */
+		/** @var array $notification */
 		foreach ($registrationsToNotify as $notification) {
 			$this->mailService->sendMoveToWaitingListMail($notification);
 		}
