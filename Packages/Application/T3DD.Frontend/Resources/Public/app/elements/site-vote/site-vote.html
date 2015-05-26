@@ -61,15 +61,22 @@
 					this.vote = this.votes.filter(function (vote) {
 						return vote.session === this.sessionResource;
 					}.bind(this))[0] || {numberOfVotes: 0, session: this.sessionResource};
+					this.myVotesChanged();
 				},
 
 				myVotesChanged: function () {
 					if (!this.myVotes) {
 						this.myVote = null;
 					} else {
-						this.myVote = this.myVotes.filter(function (vote) {
-							return vote.session === this.sessionResource;
-						}.bind(this))[0];
+						var myVote = null;
+						this.myVotes.some(function (vote) {
+							if (vote.session === this.sessionResource) {
+								myVote = vote;
+								return true;
+							}
+							return false;
+						}.bind(this));
+						this.myVote = myVote;
 					}
 				},
 
