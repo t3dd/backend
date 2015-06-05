@@ -1,3 +1,11 @@
 T3DD:
   Login:
     ssoURL: 'https://typo3.org/my-account/sso/t3dd15/'
+TYPO3:
+  Flow:
+    object:
+      excludeClasses:
+       'Networkteam.SentryClient': ['Networkteam\\SentryClient\\Aspect\\TypoScriptHandlerAspect']
+Networkteam:
+  SentryClient:
+    dsn: 'https://ea52a63aa8354ff691556bc72c4acf14:4651f8c2fc9e488e8a3a0c62ebfa4541@app.getsentry.com/45343'

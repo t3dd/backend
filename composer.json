@@ -15,7 +15,8 @@
         "doctrine/migrations": "@dev",
         "netlogix/crud": "dev-master",
         "typo3/swiftmailer": "5.3.1",
-        "fzaninotto/faker": "1.4.0"
+        "fzaninotto/faker": "1.4.0",
+        "networkteam/sentryclient": "^1.0"
     },
     "require-dev": {
         "typo3/kickstart": "3.0.0-beta2",
