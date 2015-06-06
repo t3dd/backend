@@ -125,9 +125,10 @@
 										<p>… am called <strong>{{participant.name}}</strong> and {{participant.companyName ? 'work at ' + participant.companyName : ' I have no company'}}</p>
 
 										<template if="{{participant.roomMates}}">
+											{{participant.roomMates}}
 											<template repeat="{{roomMate,j in participant.roomMates}}">
 												<paper-input-decorator label="… would like to share my room with {{j + 1 | enumerateWithWords}} room mate (name/email/typo3.org username, leave empty for random mate)" floatingLabel flex>
-													<input value="{{roomMate.name}}" is="core-input">
+													<input value="{{roomMate}}" is="core-input">
 												</paper-input-decorator>
 											</template>
 										</template>

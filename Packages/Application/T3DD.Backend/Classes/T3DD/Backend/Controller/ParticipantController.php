@@ -7,8 +7,8 @@ namespace T3DD\Backend\Controller;
  *                                                                        */
 
 use Netlogix\Crud\Controller\RestController;
-use T3DD\Backend\Domain\Model\DataTransfer\Registration\Participant;
-use T3DD\Backend\Domain\Repository\Registration\ParticipantRepository;
+use T3DD\Backend\Domain\Model\DataTransfer\Participant;
+use T3DD\Backend\Domain\Repository\ParticipantRepository;
 use TYPO3\Flow\Annotations as Flow;
 
 class ParticipantController extends RestController {
@@ -39,30 +39,7 @@ class ParticipantController extends RestController {
 			$this->response->setStatus(403);
 			return;
 		}
-		if ($participantEntity->getRoomSize() > 0 && $participantEntity->getRoomMates()->count() === 0) {
-			for ($i = 1; $i < $participantEntity->getRoomSize(); $i++) {
-				$participantEntity->addRoomMate(new \T3DD\Backend\Domain\Model\Registration\Mate());
-			}
-			$this->participantRepository->update($participantEntity);
-			$this->persistenceManager->persistAll();
-		}
 		$this->view->assign('value', $participant);
-	}
-
-	/**
-	 *
-	 */
-	public function initializeUpdateAction() {
-		parent::initializeUpdateAction();
-
-		/** @var \TYPO3\Flow\Mvc\Controller\Argument $argument */
-		$argument = $this->arguments[$this->resourceArgumentName];
-		$configuration = $argument->getPropertyMappingConfiguration()->forProperty('roomMates.*');
-		$configuration->allowProperties('name');
-		$configuration->skipUnknownProperties();
-		$configuration->setTypeConverterOption('TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter',
-			\TYPO3\Flow\Property\TypeConverter\PersistentObjectConverter::CONFIGURATION_MODIFICATION_ALLOWED,
-			TRUE);
 	}
 
 	/**
