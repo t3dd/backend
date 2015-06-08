@@ -86,6 +86,32 @@
 			#coc {
 				font-weight: bold;
 			}
+
+			paper-input-decorator {
+				padding: 0 0 .75em;
+			}
+
+			.info {
+				margin: 14px 0 0;
+			}
+
+			dl {
+				margin: 0 32px 0 0;
+			}
+
+			dl dt,
+			dl dd {
+				display: inline;
+			}
+
+			dl dt {
+				margin-right: 4px;
+				font-weight: bold;
+			}
+
+			dl dd {
+				margin-left: 0;
+			}
 		</style>
 
 
@@ -94,7 +120,7 @@
 		</template>
 		<header class="bg-dark-grey">
 			<div class="container">
-				<h1 site-font="display1">Update your registration</h1>
+				<h1 site-font="display1">Please complete/check your participant details</h1>
 				<h4 site-font="title">
 					<template if="{{loading}}">
 						… loading
@@ -112,28 +138,58 @@
 									<core-icon class="title-icon" icon="assignment-ind"></core-icon>
 									<div flex>
 										<h4 site-font="title">
-											I …
+											Badge Information
 										</h4>
-
-										<p class="participant__rate-room" site-font="caption">
-											… am a{{participant.rate == 'assoc' || participant.rate == 'core' ? 'n' : ''}}
-											{{participant.rate | rateText}}
-											and
-											{{participant.roomSize == 0 ? 'n\'t need a room' : 'would like to share a room with'}}
-											{{participant.roomSize | roomSizeText}}.
+										<div class="info" horizontal layout>
+											<dl site-font="subhead">
+												<dt>Name</dt>
+												<dd>{{participant.name}}</dd>
+											</dl>
+											<dl site-font="subhead">
+												<dt>Company</dt>
+												<dd>{{participant.companyName ? participant.companyName : '[none]'}}</dd>
+											</dl>
+											<dl site-font="subhead">
+												<dt>Country</dt>
+												<dd>{{participant.country}}</dd>
+											</dl>
+										</div>
+									</div>
+								</div>
+							</div>
+								<template if="{{participant.roomSize}}">
+							<div class="card__content">
+								<div horizontal layout>
+									<core-icon class="title-icon" icon="maps:hotel"></core-icon>
+									<div flex>
+										<h4 site-font="title">
+											Room Mates
+										</h4>
+										<p class="info" site-font="subhead">
+											You are sharing a room with {{participant.roomSize | roomSizeText}}.
 										</p>
-										<p>… am called <strong>{{participant.name}}</strong> and {{participant.companyName ? 'work at ' + participant.companyName : ' I have no company'}}</p>
 
 										<template if="{{participant.roomMates}}">
-											{{participant.roomMates}}
 											<template repeat="{{roomMate,j in participant.roomMates}}">
-												<paper-input-decorator label="… would like to share my room with {{j + 1 | enumerateWithWords}} room mate (name/email/typo3.org username, leave empty for random mate)" floatingLabel flex>
-													<input value="{{roomMate}}" is="core-input">
+												<label site-font="caption">{{j + 1 | enumerateWithWords}} room mate</label>
+												<paper-input-decorator label="name/email/typo3.org username, leave empty for random mate" flex>
+													<input value="{{roomMate.value}}" is="core-input">
 												</paper-input-decorator>
 											</template>
 										</template>
+									</div>
+								</div>
+							</div>
+								</template>
+							<div class="card__content">
+								<div horizontal layout>
+									<core-icon class="title-icon" icon="social:person"></core-icon>
+									<div flex>
+										<h4 site-font="title">
+											Personal Information
+										</h4>
 
-										<label site-font="caption">… am eating</label>
+										<label site-font="caption">Food preference</label>
 										<paper-radio-group selected="{{participant.foodType}}">
 											<paper-radio-button name="default" label="regular"></paper-radio-button>
 											<paper-radio-button name="vegetarian" label="vegetarian"></paper-radio-button>
@@ -142,20 +198,21 @@
 										</paper-radio-group>
 
 										<template if="{{participant.foodType == 'other'}}">
-											<paper-input-decorator label="Tell us your special food demands" floatingLabel error="Enter what your Demands!">
+											<label site-font="caption">Tell us your special food demands</label>
+											<paper-input-decorator label="e.g. no pork" error="Enter what your Demands!">
 												<paper-autogrow-textarea>
 													<textarea value="{{participant.foodWishes}}" required></textarea>
 												</paper-autogrow-textarea>
 											</paper-input-decorator>
 										</template>
 
-										<label site-font="caption">… would like to have a T-Shirt with the style</label>
+										<label site-font="caption">T-Shirt Style</label>
 										<paper-radio-group selected="{{participant.tshirtType}}">
 											<paper-radio-button name="default" label="regular"></paper-radio-button>
 											<paper-radio-button name="girlie" label="girlie"></paper-radio-button>
 										</paper-radio-group>
 
-										<label site-font="caption">… wear T-Shirts in size</label>
+										<label site-font="caption">T-Shirts Size</label>
 										<paper-radio-group selected="{{participant.tshirtSize}}">
 											<paper-radio-button name="s" label="S"></paper-radio-button>
 											<paper-radio-button name="m" label="M"></paper-radio-button>
@@ -166,21 +223,17 @@
 											<paper-radio-button name="xxxxl" label="4XL"></paper-radio-button>
 										</paper-radio-group>
 
-										<label site-font="caption">… am attending the Developer Days for the first time</label>
+										<label site-font="caption">Are you attending the Developer Days for the first time?</label>
 										<paper-radio-group selected="{{participant.newcomer}}">
 											<paper-radio-button name="1" label="yes"></paper-radio-button>
 											<paper-radio-button name="0" label="no"></paper-radio-button>
 										</paper-radio-group>
 
-										<label site-font="caption">… am having experience in TYPO3 products (CMS, Neos or Flow) for</label>
-
+										<label site-font="caption">How is your experience in TYPO3 products (CMS, Neos or Flow)?</label>
 										<div horizontal center layout>
 											<paper-slider min="0" max="15" snaps value="{{participant.yearExpertise}}" immediateValue="{{yearsExperience}}" flex></paper-slider>
 											<label class="yearsExperience">{{yearsExperience == 0 ? 'none yet' : yearsExperience}} {{yearsExperience > 0 ? 'year' : ''}}{{yearsExperience > 1 ? 's' : ''}}</label>
 										</div>
-
-										<label id="coc" site-font="subhead">… accept the
-											<a href="http://confcodeofconduct.com/" target="_blank">Code of Conduct</a> with my registration.</label>
 									</div>
 								</div>
 							</div>
@@ -190,7 +243,7 @@
 						<div class="card__content card__buttons">
 							<paper-button on-click="{{submit}}">
 								<core-icon icon="check"></core-icon>
-								Update registration
+								Update my details
 							</paper-button>
 						</div>
 					</div>
@@ -212,7 +265,13 @@
 					this.$.form.onSubmitted(eventDummy);
 				},
 				handleParticipant: function (event) {
-					this.participant = event.detail.response;
+					var participant = event.detail.response;
+					if (participant.roomMates) {
+						participant.roomMates = participant.roomMates.map(function(roomMate, index) {
+							return {key: index, value: roomMate};
+						});
+					}
+					this.participant = participant;
 					this.$.form.updateLabelVisibilities();
 				},
 				removeDefault: function (event, index, input) {
@@ -226,7 +285,14 @@
 					});
 				},
 				submitting: function (event) {
-					event.detail.formData = this.participant;
+					// clone participant to avoid UI databinding issues
+					var participant = (JSON.parse(JSON.stringify(this.participant)));
+					if (participant.roomMates) {
+						participant.roomMates = participant.roomMates.map(function(roomMate, index) {
+							return roomMate.value;
+						});
+					}
+					event.detail.formData = participant;
 					return event;
 				},
 				submit: function () {
@@ -246,6 +312,8 @@
 				},
 				roomSizeText: function (roomSize) {
 					switch (roomSize) {
+						case 1:
+							return 'noone';
 						case 2:
 							return 'another participant';
 						case 3:

@@ -22,7 +22,6 @@ class ParticipantRepository extends Repository {
 		$query = $this->createQuery();
 		$queryConstraints = [];
 		$queryConstraints[] = $query->equals('completed', FALSE);
-		$queryConstraints[] = $query->logicalNot($query->equals('ticket.bookingState', AbstractBookable::BOOKING_STATE_WAITING));
 		$queryConstraints[] = $query->lessThanOrEqual('lastEmailSent', new \DateTime('now - 7 Days'));
 
 		$query->matching($query->logicalAnd($queryConstraints));

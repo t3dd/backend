@@ -14,7 +14,7 @@ T3DD:
         Subjects:
           default: 'TYPO3 Developer Days 2015 Message'
           registrationCompleted: 'Registration for TYPO3 Developer Days 2015'
-          participantCompleteRegistration: 'Update your registration for TYPO3 Developer Days 2015'
+          participantCompleteRegistration: 'Update your participant details'
           moveToWaitingList: 'Ticket or room status for your registration has changed'
 
 TYPO3:
