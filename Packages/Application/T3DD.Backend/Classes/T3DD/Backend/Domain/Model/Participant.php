@@ -42,13 +42,13 @@ class Participant {
 
 	/**
 	 * @var string
-	 * @ORM\Column(type="string", columnDefinition="ENUM('nonassoc', 'assoc', 'student', 'speaker', 'core', 'helper', 'sponsornonassoc', 'sponsorassoc', 'voucher')")
+	 * @ORM\Column(type="string", columnDefinition="ENUM('nonassoc', 'assoc', 'student', 'speaker', 'externalspeaker', 'core', 'helper', 'sponsornonassoc', 'sponsorassoc', 'voucher', 'rookie')")
 	 */
 	protected $rate;
 
 	/**
 	 * @var integer
-	 * @ORM\Column(type="string", columnDefinition="ENUM('0', '2', '3', '4')")
+	 * @ORM\Column(type="string", columnDefinition="ENUM('0', '1', '2', '3', '4')")
 	 */
 	protected $roomSize = 0;
 
