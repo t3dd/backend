@@ -4,9 +4,9 @@ T3DD:
       Bookable:
         Room:
           fractionBase: 12
-          availableQuota: 53
+          availableQuota: 55
         Ticket:
-          availableQuota: 188
+          availableQuota: 196
       Mail:
         Sender:
           name: 'TYPO3 Developer Days 2015'
