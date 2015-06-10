@@ -255,6 +255,16 @@
 	<script>
 		(function (undefined) {
 			'use strict';
+
+			var clone = function(obj) {
+				if(null == obj || "object" != typeof obj) return obj;
+				var copy = obj.constructor();
+				for(var attr in obj) {
+					if(obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+				}
+				return copy;
+			}
+
 			Polymer({
 				handleParticipantError: function (event) {
 					var eventDummy = {};
@@ -286,7 +296,7 @@
 				},
 				submitting: function (event) {
 					// clone participant to avoid UI databinding issues
-					var participant = (JSON.parse(JSON.stringify(this.participant)));
+					var participant = clone(this.participant);
 					if (participant.roomMates) {
 						participant.roomMates = participant.roomMates.map(function(roomMate, index) {
 							return roomMate.value;
