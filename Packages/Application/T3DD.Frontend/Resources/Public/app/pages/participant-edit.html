@@ -239,14 +239,16 @@
 							</div>
 						</div>
 					</div>
-					<div class="card">
-						<div class="card__content card__buttons">
-							<paper-button on-click="{{submit}}">
-								<core-icon icon="check"></core-icon>
-								Update my details
-							</paper-button>
+					<template if="{{!loading}}">
+						<div class="card">
+							<div class="card__content card__buttons">
+								<paper-button on-click="{{submit}}">
+									<core-icon icon="check"></core-icon>
+									Update my details
+								</paper-button>
+							</div>
 						</div>
-					</div>
+					</template>
 					<site-overlay-spinner id="spinner" active?="{{loading || $.form.isSubmitting}}" hidden?="{{!loading && !$.form.isSubmitting}}" fit></site-overlay-spinner>
 				</div>
 			</form>
@@ -256,14 +258,14 @@
 		(function (undefined) {
 			'use strict';
 
-			var clone = function(obj) {
+			function clone(obj) {
 				if(null == obj || "object" != typeof obj) return obj;
 				var copy = obj.constructor();
 				for(var attr in obj) {
-					if(obj.hasOwnProperty(attr)) copy[attr] = obj[attr];
+					if(obj.hasOwnProperty(attr)) copy[attr] = clone(obj[attr]);
 				}
 				return copy;
-			}
+			};
 
 			Polymer({
 				handleParticipantError: function (event) {
@@ -276,7 +278,7 @@
 				},
 				handleParticipant: function (event) {
 					var participant = event.detail.response;
-					if (participant.roomMates) {
+					if (typeof participant.roomMates !== 'undefined') {
 						participant.roomMates = participant.roomMates.map(function(roomMate, index) {
 							return {key: index, value: roomMate};
 						});
