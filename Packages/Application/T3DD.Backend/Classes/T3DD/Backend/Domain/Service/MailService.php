@@ -1,8 +1,8 @@
 <?php
 namespace T3DD\Backend\Domain\Service;
 
+use T3DD\Backend\Domain\Model\Participant;
 use T3DD\Backend\Domain\Model\Registration\BillingAddress;
-use T3DD\Backend\Domain\Model\Registration\Participant;
 use T3DD\Backend\Domain\Model\Registration\Registration;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Configuration\ConfigurationManager;

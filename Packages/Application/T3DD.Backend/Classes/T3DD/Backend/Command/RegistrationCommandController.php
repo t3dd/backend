@@ -6,13 +6,13 @@ namespace T3DD\Backend\Command;
  *                                                                        *
  *                                                                        */
 
+use T3DD\Backend\Domain\Model\Participant;
 use T3DD\Backend\Domain\Model\Registration\AbstractBookable;
-use T3DD\Backend\Domain\Model\Registration\Participant;
 use T3DD\Backend\Domain\Model\Registration\Registration;
 use T3DD\Backend\Domain\Model\Registration\Room;
 use T3DD\Backend\Domain\Model\Registration\Ticket;
+use T3DD\Backend\Domain\Repository\ParticipantRepository;
 use T3DD\Backend\Domain\Repository\Registration\RegistrationRepository;
-use T3DD\Backend\Domain\Repository\Registration\ParticipantRepository;
 use T3DD\Backend\Domain\Service\MailService;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Cli\CommandController;
@@ -138,7 +138,7 @@ class RegistrationCommandController extends CommandController {
 				$registrationsToNotify[$registrationIdentifier]['roomBookingStateChanged'][$participantIdentifier] = [
 					'participant' => $participant,
 					'priorBookingState' => $priorBookingState,
-					'newBookingState' => $ticket->getBookingState()
+					'newBookingState' => $room->getBookingState()
 				];
 			}
 		}
