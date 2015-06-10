@@ -297,7 +297,7 @@
 				submitting: function (event) {
 					// clone participant to avoid UI databinding issues
 					var participant = clone(this.participant);
-					if (participant.roomMates) {
+					if (typeof participant.roomMates !== 'undefined') {
 						participant.roomMates = participant.roomMates.map(function(roomMate, index) {
 							return roomMate.value;
 						});
