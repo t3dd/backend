@@ -1,0 +1,172 @@
+<polymer-element name="schedule-show" attributes="sessionId router">
+	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<core-style id="session-show">
+			:host .title {
+				margin-bottom: 0;
+			}
+
+			#spinner {
+				position: absolute;
+				left: 50%;
+				margin-left: -14px;
+				top: 50%;
+				margin-top: -14px;
+			}
+
+			.card {
+				min-height: 30vh;
+				margin: 0;
+			}
+
+			.card__content {
+				border-bottom:1px solid #eee
+			}
+
+			@media (min-width: 768px) {
+				.card {
+					margin: 16px;
+				}
+				.card__content {
+					padding: 16px 32px;
+				}
+			}
+
+			#header {
+				min-height: 48px;
+			}
+
+			[core-overlay-toggle] {
+				position: absolute;
+				right: 16px;
+				top: 12px;
+			}
+
+			site-vote {
+				margin: -4px 8px 0 -8px;
+			}
+
+			@media (min-width: 640px) {
+				site-vote {
+					float: left;
+					margin: -4px 8px 0 -4px;
+				}
+			}
+
+			dl {
+				display: block;
+				margin: 0 8px 0 0;
+				overflow: hidden;
+				text-overflow: ellipsis;
+			}
+
+			@media (min-width: 640px) {
+				dl {
+					display: inline-block;
+				}
+				dl[site-font=caption] {
+					line-height: 1;
+				}
+			}
+
+			dt, dd {
+				display: inline-block;
+				margin: 0;
+			}
+
+			dt {
+				font-weight: 700;
+			}
+		</core-style>
+		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/od6/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
+		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/ob7m5j0/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
+		<site-overlay id="overlay" backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
+			<core-style ref="main"></core-style>
+			<core-style ref="session-show"></core-style>
+			<div class="card__container container">
+				<div class="card">
+					<paper-spinner id="spinner" active?="{{!session}}" hidden?="{{sessions}}"></paper-spinner>
+					<div id="header" class="card__content" relative>
+						<core-icon-button icon="clear" core-overlay-toggle></core-icon-button>
+						<template if="{{sessions}}">
+							<h1 class="title" site-font="headline">{{sessions.title}}</h1>
+						</template>
+					</div>
+					<div class="card__content" hidden?="{{!abstracts.abstract}}" vertical layout>
+						<marked-element text="{{abstracts.abstract}}"></marked-element>
+					</div>
+					<div class="card__content">
+						<template if="{{$.overlay.opened && session}}">
+							<site-comments pageTitle="{{sessions.title}}" pageUri="schedule/sessions/{{session.id}}" identifier="{{session.id}}"></site-comments>
+						</template>
+					</div>
+				</div>
+			</div>
+		</site-overlay>
+	</template>
+	<script>
+		Polymer({
+			sessions: null,
+			abstracts: null,
+			speakers: null,
+			ready: function () {
+				this.$.overlay.opened = true;
+			},
+			filterSheetData: function(event) {
+				var name = event.detail.response.feed.title.$t.toLowerCase();
+				var entries = event.detail.response.feed.entry;
+
+				entries = name === 'speakers' ? entries : entries.slice(0, 1);
+
+				entries = entries.map(function(entry) {
+					var newEntry = {};
+					for(var property in entry) {
+						if(property.substr(0, 4) === 'gsx$') {
+							var cleanProperty = property.substr(4);
+							newEntry[cleanProperty] = entry[property]['$t'];
+						}
+					}
+					return newEntry;
+				});
+
+				if(name === 'speakers') {
+					var newEntries = {};
+					entries.forEach(function(entry) {
+						newEntries[entry.id] = entry;
+					});
+					entries = newEntries;
+				} else if (entries.length === 1) {
+					entries = entries[0];
+				}
+
+				if (name === 'abstracts') {
+					entries['abstract'] = entries['abstract'].replace(/↵/g, "\n");
+				}
+
+				this[name] = entries;
+
+				if (name === 'sessions') {
+					this.fire('session-open', this.sessions);
+				}
+			},
+			onClose: function() {
+				this.sessions = null;
+				this.abstracts = null;
+				this.speakers = null;
+				this.fire('session-close');
+			},
+			joinThemes: function(themes) {
+				if (typeof themes === 'undefined') {
+					return '';
+				}
+				var themeTitles = [];
+
+				themes.forEach(function (theme) {
+					themeTitles.push(theme.title);
+				});
+
+				return themeTitles.join(', ');
+			},
+		});
+	</script>
+</polymer-element>

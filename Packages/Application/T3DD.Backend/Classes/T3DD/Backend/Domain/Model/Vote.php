@@ -17,8 +17,7 @@ class Vote {
 	protected $account = NULL;
 
 	/**
-	 * @var Session
-	 * @ORM\ManyToOne
+	 * @var string
 	 */
 	protected $session;
 
@@ -46,14 +45,14 @@ class Vote {
 	}
 
 	/**
-	 * @return Session
+	 * @return string
 	 */
 	public function getSession() {
 		return $this->session;
 	}
 
 	/**
-	 * @param Session $session
+	 * @param string $session
 	 */
 	public function setSession($session) {
 		$this->session = $session;

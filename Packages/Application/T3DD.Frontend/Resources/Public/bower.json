@@ -10,7 +10,8 @@
     "pushstate-anchor": "~0.3.0",
     "google-map": "~0.4.0",
     "marked": "~0.3.2",
-    "iframe-resizer": "~2.8.4"
+    "iframe-resizer": "~2.8.4",
+    "google-sheets": "GoogleWebComponents/google-sheets#0.0.5"
   },
   "devDependencies": {
     "web-component-tester": "Polymer/web-component-tester#^2.0.0"

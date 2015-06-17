@@ -33,6 +33,20 @@ class VoteController extends \Netlogix\Crud\Controller\RestController {
 	 */
 	protected $resourceArgumentName = 'session';
 
+	/**
+	 * Implementation of the arguments initialization in the action controller:
+	 * Automatically registers arguments of the current action
+	 *
+	 * Don't override this method - use initializeAction() instead.
+	 *
+	 * @return void
+	 * @throws \TYPO3\Flow\Mvc\Exception\InvalidArgumentTypeException
+	 * @see initializeArguments()
+	 */
+	public function initializeActionMethodArguments() {
+		\TYPO3\Flow\Mvc\Controller\RestController::initializeActionMethodArguments();
+	}
+
 	public function listAction() {
 		$sessionVotes = $this->voteRepository->getVoteCountForSessions();
 		foreach ($sessionVotes as $index => $sessionVote) {
@@ -52,10 +66,9 @@ class VoteController extends \Netlogix\Crud\Controller\RestController {
 	}
 
 	/**
-	 * @param \T3DD\Backend\Domain\Model\Session $session
-	 * @Flow\Validate(argumentName="session", type="T3DD\Backend\Validation\Validator\UniqueVoteValidator")
+	 * @param string $session
 	 */
-	public function createAction(\T3DD\Backend\Domain\Model\Session $session) {
+	public function createAction($session) {
 		/** @var \T3DD\Backend\Domain\Model\Vote $vote */
 		$vote = $this->objectManager->get('T3DD\\Backend\\Domain\\Model\\Vote');
 		$vote->setSession($session);
@@ -65,9 +78,9 @@ class VoteController extends \Netlogix\Crud\Controller\RestController {
 	}
 
 	/**
-	 * @param \T3DD\Backend\Domain\Model\Session $session
+	 * @param string $session
 	 */
-	public function deleteAction(\T3DD\Backend\Domain\Model\Session $session) {
+	public function deleteAction($session) {
 		$account = $this->securityContext->getAccount();
 		/** @var \T3DD\Backend\Domain\Model\Vote $vote */
 		$vote = $this->voteRepository->getVoteForAccountAndSession($session, $account);
