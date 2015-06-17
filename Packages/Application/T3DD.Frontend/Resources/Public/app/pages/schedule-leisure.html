@@ -1,0 +1,58 @@
+<polymer-element name="schedule-leisure" extends="site-schedule" noscript>
+	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+			}
+
+			core-icon {
+				margin-right: 40px;
+			}
+
+			.item-row {
+				margin-bottom: 8px;
+			}
+			.item-row:last-child {
+				margin-bottom: 0;
+			}
+			.item-row__time {
+				min-width: 112px;
+				margin-right: 16px;
+				color: #515151;
+			}
+			.item-row__time span {
+				display: inline-block;
+				min-width: 36px;
+				text-align: center;
+			}
+		</style>
+		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/o6kf8lr/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>
+		<template repeat="{{timeBlock in response}}">
+			<div class="card">
+				<div class="card__content" horizontal layout>
+					<core-icon icon="today"></core-icon>
+					<h3 site-font="title" flex>
+						{{timeBlock.key}}
+					</h3>
+				</div>
+				<div class="card__content" layout horizontal>
+					<core-icon icon="schedule"></core-icon>
+					<div flex>
+						<template repeat="{{item in timeBlock.items}}">
+							<div class="item-row" layout horizontal>
+								<div class="item-row__time">
+									<span>{{item.begin}}</span>{{item.end | dashIfAny}}<span>{{item.end}}</span>
+								</div>
+								<div flex>
+									{{item.title}}
+								</div>
+							</div>
+						</template>
+					</div>
+				</div>
+			</div>
+		</template>
+	</template>
+</polymer-element>

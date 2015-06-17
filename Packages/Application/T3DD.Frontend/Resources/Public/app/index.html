@@ -98,9 +98,7 @@
 					<app-route path="/" import="pages/page-home.html" element="page-home"></app-route>
 					<app-route path="/location" import="pages/page-location.html" element="page-location"></app-route>
 					<app-route path="/lodging" import="pages/page-lodging.html" element="page-lodging"></app-route>
-					<app-route path="/sessions/new" import="pages/session-new.html" element="session-new" forceLogin?="{{!globals.user}}"></app-route>
-					<app-route path="/sessions/edit/:sessionId" import="pages/session-edit.html" element="session-edit" forceLogin?="{{!globals.user}}"></app-route>
-					<app-route path="/\/sessions.*/" regex import="pages/session-list.html" onUrlChange="noop" bindRouter element="session-list"></app-route>
+					<app-route path="/\/schedule.*/" regex import="pages/schedule-list.html" onUrlChange="noop" bindRouter element="schedule-list"></app-route>
 					<app-route path="/register" import="pages/page-register.html" element="page-register"></app-route>
 					<app-route path="/registration/success" import="pages/registration-success.html" element="registration-success"></app-route>
 					<app-route path="/registration/:registrationId" import="pages/registration-edit.html" element="registration-edit"></app-route>

@@ -1,0 +1,66 @@
+<polymer-element name="schedule-day" extends="site-schedule" attributes="dayId" noscript>
+	<template>
+		<pvc-globals values="{{globals}}"></pvc-globals>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+			}
+
+			core-icon, site-vote {
+				margin-right: 40px;
+			}
+
+			site-vote {
+				margin-left: -8px;
+			}
+
+			.item-row {
+				margin-bottom: 8px;
+			}
+			.item-row--highlight {
+				font-weight: bold;
+			}
+			.item-row:last-child {
+				margin-bottom: 0;
+			}
+			.item-row__time {
+				min-width: 36px;
+				margin-right: 48px;
+				color: #515151;
+			}
+			.item-row__time span {
+				display: inline-block;
+				min-width: 36px;
+				text-align: center;
+			}
+			a {
+				border-bottom: none;
+			}
+		</style>
+		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/od6/public/full?alt=json&sq=day%3D{{dayId}}&orderby=column:timeorder" on-core-response="{{filterSheetData}}"></site-ajax>
+		<template repeat="{{timeBlock in response}}">
+			<div class="card">
+				<div class="card__content" horizontal center layout>
+					<core-icon icon="schedule"></core-icon>
+					<h3 site-font="title" flex>
+						{{timeBlock.key}}
+					</h3>
+				</div>
+				<div class="card__content">
+					<template repeat="{{item in timeBlock.items}}">
+						<div class="item-row {{ {'item-row--highlight':item.highlight == 1} | tokenList }}" horizontal center layout>
+							<site-vote sessionResource="{{item.id}}"></site-vote>
+							<div class="item-row__time">
+								<span>{{item.lightning ? item.lightning : item.begin}}</span>
+							</div>
+							<div flex>
+								<a is="pushstate-anchor" href="/schedule/sessions/{{item.id}}">{{item.title}}</a>
+							</div>
+						</div>
+					</template>
+				</div>
+			</div>
+		</template>
+	</template>
+</polymer-element>

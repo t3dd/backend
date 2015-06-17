@@ -1,0 +1,118 @@
+<polymer-element name="schedule-list" attributes="router">
+	<template>
+		<pvc-globals id="globals" values="{{globals}}"></pvc-globals>
+		<core-style ref="main"></core-style>
+		<style>
+			:host {
+				display: block;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 16px;
+			}
+
+			@media (min-width: 768px) {
+				.container {
+					padding: 24px 32px;
+				}
+
+			}
+
+			.masthead {
+				height: 192px;
+				margin: 0 auto;
+				padding: 0 16px;
+			}
+
+			@media (min-width: 768px) {
+				.masthead {
+					padding: 0 32px 128px;
+				}
+			}
+
+			@media (min-width: 768px) {
+				.card__container {
+					position: relative;
+					top: -144px;
+					margin: 0 0 -128px;
+				}
+			}
+
+			paper-tab {
+				text-transform: uppercase;
+			}
+		</style>
+		<!-- Leisure -->
+		<!--<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/o6kf8lr/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>-->
+		<!-- Sessions -->
+		<!--<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/od6/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>-->
+		<!-- Speakers -->
+		<!--<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/oow7509/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>-->
+		<!-- Abstracts -->
+		<!--<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/ob7m5j0/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>-->
+		<header class="bg-light-blue">
+			<div class="masthead container" layout horizontal end>
+				<div>
+					<h1 site-font="display1">Schedule</h1>
+					<paper-tabs valueattr="href" selected="{{currentPath}}" on-core-activate="{{changeTab}}">
+						<paper-tab href="/schedule">Agenda</paper-tab>
+						<paper-tab href="/schedule/leisure">Leisure</paper-tab>
+						<paper-tab href="/schedule/days/thursday">Thursday</paper-tab>
+						<paper-tab href="/schedule/days/friday">Friday</paper-tab>
+						<paper-tab href="/schedule/days/saturday">Saturday</paper-tab>
+						<paper-tab href="/schedule/days/sunday">Sunday</paper-tab>
+					</paper-tabs>
+				</div>
+			</div>
+		</header>
+		<main>
+			<div class="container">
+				<div class="card__container">
+					<app-router id="scheduleRouter" mode="pushstate" trailingSlash="ignore" on-state-change="{{interceptRouting}}">
+						<app-route path="/schedule" import="{{globals.assetRootPath}}/pages/schedule-agenda.html" element="schedule-agenda" onUrlChange="noop" ></app-route>
+						<app-route path="/schedule/leisure" import="{{globals.assetRootPath}}/pages/schedule-leisure.html" element="schedule-leisure" onUrlChange="noop" ></app-route>
+						<app-route path="/schedule/days/:dayId" import="{{globals.assetRootPath}}/pages/schedule-day.html" element="schedule-day" onUrlChange="updateModel" ></app-route>
+					</app-router>
+				</div>
+			</div>
+		</main>
+		<app-router mode="pushstate" trailingSlash="ignore">
+			<app-route path="/schedule/sessions/:sessionId" import="{{globals.assetRootPath}}/pages/schedule-show.html" element="schedule-show"></app-route>
+		</app-router>
+	</template>
+	<script>
+		Polymer({
+			currentPath: null,
+			selectedSessionResource: null,
+			eventDelegates: {
+				'session-open': 'focusOpenSession',
+				'session-close': 'unselectSession'
+			},
+			observe: {
+				'$.globals.values.currentPath': 'currentPathChanged'
+			},
+			currentPathChanged: function(oldPath, newPath) {
+				this.currentPath = newPath;
+			},
+			changeTab: function(event) {
+				this.router.go(event.detail.item.getAttribute('href'));
+			},
+			interceptRouting: function(event) {
+				if (event.detail.path.substring(0, 19) === '/schedule/sessions/') {
+					event.preventDefault();
+				}
+			},
+			focusOpenSession: function(event) {
+				this.currentPath = '/schedule/days/' + event.detail.day.toLowerCase();
+			},
+			unselectSession: function() {
+				this.router.go(this.currentPath);
+			},
+			selectSession: function(event, detail) {
+				this.selectedSessionResource = detail.data.resource;
+				this.router.go(this.selectedSessionResource);
+			}
+		});
+	</script>
+</polymer-element>

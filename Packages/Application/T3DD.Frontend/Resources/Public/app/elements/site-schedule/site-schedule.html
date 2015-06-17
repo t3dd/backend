@@ -1,0 +1,58 @@
+<polymer-element name="site-schedule" attributes="router">
+	<script>
+		function groupBy(obj, val) {
+			var result = {};
+			var iterator = function(obj) {
+				return obj[val];
+			};
+			obj.forEach(function(value, index) {
+				var key = iterator(value, index);
+				(result[key] || (result[key] = [])).push(value);
+			});
+			var array = [];
+			for (var key in result) {
+				array.push({
+					key: key,
+					items: result[key]
+				});
+			}
+			return array;
+		}
+
+		Polymer({
+			response: null,
+			filterSheetData: function(event) {
+				var name = event.detail.response.feed.title.$t.toLowerCase();
+				var entries = event.detail.response.feed.entry;
+				entries = entries.slice(1).map(function(entry) {
+					var newEntry = {};
+					for(var property in entry) {
+						if(property.substr(0, 4) === 'gsx$') {
+							var cleanProperty = property.substr(4);
+							newEntry[cleanProperty] = entry[property]['$t'];
+						}
+					}
+					return newEntry;
+				});
+				if(name === 'speakers' || name === 'abstract') {
+					var newEntries = {};
+					entries.forEach(function(entry) {
+						newEntries[entry.id] = entry;
+					});
+					entries = newEntries;
+				} else if (name === 'sessions') {
+					entries = groupBy(entries, 'daytime')
+				} else {
+					entries = groupBy(entries, 'day')
+				}
+				this.response = entries;
+			},
+			dashIfAny: function(end) {
+				if (end) {
+					return ' – ';
+				}
+				return '';
+			}
+		});
+	</script>
+</polymer-element>

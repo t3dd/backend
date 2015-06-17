@@ -27,7 +27,7 @@ class Vote extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransfer
 	 * @return array<string>
 	 */
 	public function getPropertyNamesToBeApiExposed() {
-		return array('session', 'date', 'voteUri');
+		return array('date', 'session');
 	}
 
 	/**
@@ -45,27 +45,10 @@ class Vote extends \Netlogix\Crud\Domain\Model\DataTransfer\AbstractDataTransfer
 	}
 
 	/**
-	 * @return \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer
+	 * @return string
 	 */
 	public function getSession() {
-		return new \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer(array(
-			'packageKey' => 'T3DD.Backend',
-			'controllerName' => 'Session',
-			'actionName' => 'index',
-			'arguments' => array('session' => $this->payload->getSession()),
-		));
-	}
-
-	/**
-	 * @return \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer
-	 */
-	public function getVoteUri() {
-		return new \Netlogix\Crud\Domain\Model\DataTransfer\UriPointer(array(
-			'packageKey' => 'T3DD.Backend',
-			'controllerName' => 'Vote',
-			'actionName' => 'index',
-			'arguments' => array('session' => $this->payload->getSession()),
-		));
+		return $this->getPayload()->getSession();
 	}
 
 }

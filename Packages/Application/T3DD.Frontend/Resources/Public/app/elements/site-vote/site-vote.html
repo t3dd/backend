@@ -2,7 +2,7 @@
 <link rel="import" href="../site-style/site-style.html">
 <link rel="import" href="../site-ajax/site-ajax.html">
 
-<polymer-element name="site-vote" attributes="sessionResource voteUri horizontal">
+<polymer-element name="site-vote" attributes="sessionResource">
 	<template>
 		<core-style ref="main"></core-style>
 		<style>
@@ -10,6 +10,7 @@
 				display: block;
 			}
 			#button {
+				display: block;
 				color: #b4b4b4;
 			}
 			#button::shadow #ripple {
@@ -23,20 +24,15 @@
 			}
 		</style>
 		<pvc-globals values="{{globals}}"></pvc-globals>
-		<site-ajax cache="true" url="/votes" response="{{votes}}"></site-ajax>
 		<site-ajax id="myVoteAjax" cache="true" url="/votes/me" response="{{myVotes}}" auto="false"></site-ajax>
-		<site-ajax id="voteAjax" auto="false" url="{{voteUri}}" on-core-response="{{handleVoteResponse}}"></site-ajax>
-		<div layout vertical?="{{!horizontal}}" horizontal?="{{horizontal}}">
-			<paper-icon-button id="button" class="{{ {'voted':myVote} | tokenList}}" icon="{{myVote ? 'favorite' : 'favorite-outline'}}" on-tap="{{toggleVote}}"></paper-icon-button>
-			<div id="count" site-font="caption" layout horizontal center-center>{{vote.numberOfVotes || 'no'}} fav{{vote.numberOfVotes > 1 ? 's' : ''}}</div>
-		</div>
+		<site-ajax id="voteAjax" auto="false" url="/votes/{{sessionResource}}" on-core-response="{{handleVoteResponse}}"></site-ajax>
+		<paper-icon-button id="button" class="{{ {'voted':myVote} | tokenList}}" icon="{{myVote ? 'check-box' : 'check-box-outline-blank'}}" on-tap="{{toggleVote}}"></paper-icon-button>
 	</template>
 	<script>
 		(function () {
 			'use strict';
 
 			Polymer({
-				horizontal: false,
 				vote: {},
 				myVote: null,
 				myVotes: [],
@@ -54,14 +50,6 @@
 					} else {
 						this.$.myVoteAjax.go();
 					}
-				},
-
-				votesChanged: function () {
-					if (!this.votes) return;
-					this.vote = this.votes.filter(function (vote) {
-						return vote.session === this.sessionResource;
-					}.bind(this))[0] || {numberOfVotes: 0, session: this.sessionResource};
-					this.myVotesChanged();
 				},
 
 				myVotesChanged: function () {
