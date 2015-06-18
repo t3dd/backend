@@ -77,9 +77,34 @@
 			dt {
 				font-weight: 700;
 			}
+			.session-time {
+				min-width: 112px;
+				margin-right: 16px;
+				color: #515151;
+			}
+
+			.session-time span {
+				display: inline-block;
+				min-width: 36px;
+				text-align: center;
+			}
+
+			.session__speaker {
+				width: 33.333%;
+				margin-top: 12px;
+			}
+
+			.session__speaker__image {
+				width: 45px;
+				height: 45px;
+				border-radius: 50%;
+				vertical-align: middle;
+				margin: 0 8px 0 0;
+			}
 		</core-style>
 		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/od6/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
 		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/ob7m5j0/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
+		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/oow7509/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>
 		<site-overlay id="overlay" backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
 			<core-style ref="main"></core-style>
 			<core-style ref="session-show"></core-style>
@@ -89,11 +114,58 @@
 					<div id="header" class="card__content" relative>
 						<core-icon-button icon="clear" core-overlay-toggle></core-icon-button>
 						<template if="{{sessions}}">
-							<h1 class="title" site-font="headline">{{sessions.title}}</h1>
+							<h1 class="title" site-font="headline">{{sessions.title}} - asdasd</h1>
+							<div class="session-time">
+								<core-icon icon="today"></core-icon> <span>{{sessions.begin}}</span>{{sessions.end | dashIfAny}}<span>{{sessions.end}}</span>
+								<template if="{{sessions.room}}">
+									in room {{sessions.room}}
+								</template>
+							</div>
+							<template if="{{sessions.type}}">
+								<dl site-font="caption">
+									<dt>Type:</dt>
+									<dd>{{sessions.type}}</dd>
+								</dl>
+							</template>
+							<template if="{{sessions.themes.length}}">
+								<dl site-font="caption">
+									<dt>Theme:</dt>
+									<dd>{{sessions.themes | joinThemes}}</dd>
+								</dl>
+							</template>
+							<template if="{{sessions.expertiseLevel}}">
+								<dl site-font="caption">
+									<dt>Knowledge:</dt>
+									<dd>{{sessions.expertiseLevel}}</dd>
+								</dl>
+							</template>
 						</template>
 					</div>
 					<div class="card__content" hidden?="{{!abstracts.abstract}}" vertical layout>
 						<marked-element text="{{abstracts.abstract}}"></marked-element>
+					</div>
+					<div class="card__content session__speakers">
+						<h4>Speakers:</h4>
+						<div layout horizontal wrap>
+							<template if="{{sessions.speaker1 && speakers}}">
+								<div class="session__speaker" layout horizontal center>
+									<core-image class="session__speaker__image" src="{{sessions.speaker1 | getSpeakerImage}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
+									{{sessions.speaker1}}
+								</div>
+							</template>
+							<template if="{{sessions.speaker2 && speakers}}">
+								<div class="session__speaker" layout horizontal center>
+									<core-image class="session__speaker__image" src="{{sessions.speaker2 | getSpeakerImage}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
+									{{sessions.speaker2}}
+								</div>
+							</template>
+							<template if="{{sessions.speaker3 && speakers}}">
+								<div class="session__speaker" layout horizontal center>
+									<core-image class="session__speaker__image" src="{{sessions.speaker3 | getSpeakerImage}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
+									{{sessions.speaker1}}
+								</div>
+							</template>
+						</div>
 					</div>
 					<div class="card__content">
 						<template if="{{$.overlay.opened && session}}">
@@ -109,8 +181,20 @@
 			sessions: null,
 			abstracts: null,
 			speakers: null,
-			ready: function () {
+			ready: function() {
 				this.$.overlay.opened = true;
+			},
+			logFilter: function(value) {
+				console.log(value);
+			},
+			dashIfAny: function(end) {
+				if (end) {
+					return ' – ';
+				}
+				return '';
+			},
+			getSpeakerImage: function(value) {
+				return typeof this.speakers[value] === 'object' ? this.speakers[value].profile : '';
 			},
 			filterSheetData: function(event) {
 				var name = event.detail.response.feed.title.$t.toLowerCase();
@@ -120,8 +204,8 @@
 
 				entries = entries.map(function(entry) {
 					var newEntry = {};
-					for(var property in entry) {
-						if(property.substr(0, 4) === 'gsx$') {
+					for (var property in entry) {
+						if (property.substr(0, 4) === 'gsx$') {
 							var cleanProperty = property.substr(4);
 							newEntry[cleanProperty] = entry[property]['$t'];
 						}
@@ -129,7 +213,7 @@
 					return newEntry;
 				});
 
-				if(name === 'speakers') {
+				if (name === 'speakers') {
 					var newEntries = {};
 					entries.forEach(function(entry) {
 						newEntries[entry.id] = entry;
@@ -161,7 +245,7 @@
 				}
 				var themeTitles = [];
 
-				themes.forEach(function (theme) {
+				themes.forEach(function(theme) {
 					themeTitles.push(theme.title);
 				});
 
