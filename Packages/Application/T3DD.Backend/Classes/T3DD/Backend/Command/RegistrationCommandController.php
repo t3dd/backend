@@ -26,6 +26,12 @@ class RegistrationCommandController extends CommandController {
 	protected $registrationRepository;
 
 	/**
+	 * @var \T3DD\Backend\Domain\Repository\Registration\ParticipantRepository
+	 * @Flow\Inject
+	 */
+	protected $registrationParticipantRepository;
+
+	/**
 	 * @var ParticipantRepository
 	 * @Flow\Inject
 	 */
@@ -84,7 +90,6 @@ class RegistrationCommandController extends CommandController {
 	 */
 	public function updateWaitingListCommand() {
 		$registrationsToNotify = [];
-
 		$numberOfTickets = $this->bookableService->getTicketsStatus();
 		if ($numberOfTickets > 0) {
 			$waitingTickets = $this->ticketRepository->findWaitingByCount($numberOfTickets);
@@ -94,7 +99,7 @@ class RegistrationCommandController extends CommandController {
 				$ticket->setBookingState(AbstractBookable::BOOKING_STATE_PENDING);
 				$this->ticketRepository->update($ticket);
 				/** @var Participant $participant */
-				$participant = $this->participantRepository->findOneByTicket($ticket);
+				$participant = $this->registrationParticipantRepository->findOneByTicket($ticket);
 				/** @var Registration $notification */
 				$notification = $participant->getRegistration();
 				$registrationIdentifier = $this->persistenceManager->getIdentifierByObject($notification);
@@ -123,7 +128,7 @@ class RegistrationCommandController extends CommandController {
 				$room->setBookingState(AbstractBookable::BOOKING_STATE_PENDING);
 				$this->roomRepository->update($room);
 				/** @var Participant $participant */
-				$participant = $this->participantRepository->findOneByRoom($room);
+				$participant = $this->registrationParticipantRepository->findOneByRoom($room);
 				/** @var Registration $registration */
 				$notification = $participant->getRegistration();
 				$registrationIdentifier = $this->persistenceManager->getIdentifierByObject($notification);
