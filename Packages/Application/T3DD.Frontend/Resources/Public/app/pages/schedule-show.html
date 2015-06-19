@@ -81,11 +81,12 @@
 				font-weight: 700;
 			}
 			.session__subhead {
+				margin-bottom: -4px;
 				color: #515151;
 			}
 
 			.session__subhead span {
-				margin-right: 16px;
+				margin: 0 16px 4px 0;
 			}
 
 			.session__subhead core-icon {
@@ -135,12 +136,12 @@
 						<core-icon-button icon="clear" core-overlay-toggle></core-icon-button>
 						<template if="{{sessions}}" bind="{{sessions}}">
 							<h1 class="title" site-font="headline">{{title}}</h1>
-							<div class="session__subhead" site-font="subheader" horizontal layout>
+							<div class="session__subhead" site-font="subheader" horizontal layout wrap>
 								<span horizontal center layout><core-icon icon="today"></core-icon> {{day}}</span>
 								<template if="{{lightning && !room}}">
 									<span horizontal center layout><core-icon icon="schedule"></core-icon> {{lightning}}</span>
 									<span horizontal center layout><core-icon icon="room"></core-icon> jweiland.net hall</span>
-									<span horizontal center layout><core-icon icon="subject"></core-icon> Lightning Talk at first, Session afterwards</span>
+									<span horizontal center layout><core-icon icon="subject"></core-icon> Lightning Talk first, Session afterwards</span>
 								</template>
 								<template if="{{room}}">
 									<span horizontal center layout><core-icon icon="schedule"></core-icon> {{begin}}{{end ? ' – ' : ''}}{{end}}</span>

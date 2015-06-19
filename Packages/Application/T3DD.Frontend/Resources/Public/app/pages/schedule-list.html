@@ -12,6 +12,10 @@
 				padding: 16px;
 			}
 
+			main .container {
+				padding: 0;
+			}
+
 			@media (min-width: 768px) {
 				.container {
 					padding: 24px 32px;
@@ -20,7 +24,7 @@
 			}
 
 			.masthead {
-				height: 192px;
+				height: 144px;
 				margin: 0 auto;
 				padding: 0 16px;
 			}
@@ -51,8 +55,14 @@
 				}
 			}
 
+			paper-tabs {
+				max-width: 460px;
+				margin-bottom: 16px;
+			}
+
 			paper-tab {
 				text-transform: uppercase;
+				width: 72px;
 			}
 
 			paper-tabs::shadow #selectionBar {
@@ -61,6 +71,10 @@
 
 			paper-tabs paper-tab::shadow #ink {
 			  color: #fff;
+			}
+
+			.session-format a {
+				border-bottom: none;
 			}
 		</style>
 		<!-- Leisure -->
@@ -71,26 +85,20 @@
 		<!--<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/oow7509/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>-->
 		<!-- Abstracts -->
 		<!--<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/ob7m5j0/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>-->
-		<header class="bg-light-blue">
+		<header class="bg-medium-blue">
 			<div class="masthead container" layout horizontal end>
 				<div class="masthead__content">
-					<h1 site-font="display1">Schedule</h1>
-
-					<div horizontal justified layout>
-						<paper-tabs valueattr="href" selected="{{currentPath}}" on-core-activate="{{changeTab}}">
-							<paper-tab href="/schedule">Agenda</paper-tab>
-							<paper-tab href="/schedule/leisure">Leisure</paper-tab>
-							<paper-tab href="/schedule/days/thursday">Thursday</paper-tab>
-							<paper-tab href="/schedule/days/friday">Friday</paper-tab>
-							<paper-tab href="/schedule/days/saturday">Saturday</paper-tab>
-							<paper-tab href="/schedule/days/sunday">Sunday</paper-tab>
-						</paper-tabs>
-						<a is="pushstate-anchor" href="/schedule/sessions/format">
-							<paper-button class="session-format-button" raised>
-								What's the Session Format?
-							</paper-button>
-						</a>
+					<div horizontal justified layout wrap>
+						<h1 site-font="display1">Schedule</h1>
 					</div>
+					<paper-tabs valueattr="href" selected="{{currentPath}}" on-core-activate="{{changeTab}}" scrollable="{{globals.isSmallPhoneSize}}" hideScrollButton="true">
+						<paper-tab href="/schedule">Agenda</paper-tab>
+						<paper-tab href="/schedule/leisure">Leisure</paper-tab>
+						<paper-tab href="/schedule/days/thursday">Thursday</paper-tab>
+						<paper-tab href="/schedule/days/friday">Friday</paper-tab>
+						<paper-tab href="/schedule/days/saturday">Saturday</paper-tab>
+						<paper-tab href="/schedule/days/sunday">Sunday</paper-tab>
+					</paper-tabs>
 				</div>
 			</div>
 		</header>
@@ -105,6 +113,15 @@
 				</div>
 			</div>
 		</main>
+		<section class="session-format bg-medium-blue">
+			<div class="container" horizontal center layout>
+				<a is="pushstate-anchor" href="/schedule/sessions/format">
+					<paper-button class="session-format-button" raised>
+						What's the Session Format?
+					</paper-button>
+				</a>
+			</div>
+		</section>
 		<app-router mode="pushstate" trailingSlash="ignore">
 			<app-route path="/schedule/sessions/format" import="{{globals.assetRootPath}}/pages/session-format.html" element="session-format"></app-route>
 			<app-route path="/schedule/sessions/:sessionId" import="{{globals.assetRootPath}}/pages/schedule-show.html" element="schedule-show"></app-route>

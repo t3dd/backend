@@ -8,7 +8,12 @@
 			}
 
 			core-icon {
-				margin-right: 40px;
+				margin-right: 16px;
+			}
+			@media (min-width: 640px) {
+				core-icon {
+					margin-right: 40px;
+				}
 			}
 
 			.item-row {
@@ -25,7 +30,15 @@
 			.item-row__time span {
 				display: inline-block;
 				min-width: 36px;
-				text-align: center;
+				text-align: left;
+			}
+			@media (min-width: 640px) {
+				.item-row__time span {
+					text-align: center;
+				}
+			}
+			a {
+				border-bottom: none;
 			}
 		</style>
 		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/ovuj0hh/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>
@@ -41,12 +54,12 @@
 					<core-icon icon="schedule"></core-icon>
 					<div flex>
 						<template repeat="{{item in timeBlock.items}}">
-							<div class="item-row" layout horizontal>
+							<div class="item-row {{ {'item-row--highlight':item.highlight == 1} | tokenList }}" horizontal?="{{!globals.isSmallPhoneSize}}" vertical?="{{globals.isSmallPhoneSize}}" reverse?="{{!globals.isSmallPhoneSize}}" layout>
+								<div class="item-row__title" flex?="{{!globals.isSmallPhoneSize}}" flex>
+									{{item.title}}
+								</div>
 								<div class="item-row__time">
 									<span>{{item.begin}}</span>{{item.end | dashIfAny}}<span>{{item.end}}</span>
-								</div>
-								<div flex>
-									{{item.title}}
 								</div>
 							</div>
 						</template>

@@ -8,7 +8,12 @@
 			}
 
 			core-icon, site-vote {
-				margin-right: 40px;
+				margin-right: 16px;
+			}
+			@media (min-width: 640px) {
+				core-icon, site-vote {
+					margin-right: 40px;
+				}
 			}
 
 			site-vote {
@@ -16,7 +21,7 @@
 			}
 
 			.item-row {
-				margin-bottom: 8px;
+				margin-bottom: 16px;
 			}
 			.item-row--highlight {
 				font-weight: bold;
@@ -32,7 +37,12 @@
 			.item-row__time span {
 				display: inline-block;
 				min-width: 36px;
-				text-align: center;
+				text-align: left;
+			}
+			@media (min-width: 640px) {
+				.item-row__time span {
+					text-align: center;
+				}
 			}
 			a {
 				border-bottom: none;
@@ -49,13 +59,15 @@
 				</div>
 				<div class="card__content">
 					<template repeat="{{item in timeBlock.items}}">
-						<div class="item-row {{ {'item-row--highlight':item.highlight == 1} | tokenList }}" horizontal center layout>
+						<div class="item-row {{ {'item-row--highlight':item.highlight == 1} | tokenList }}" horizontal center?="{{!globals.isSmallPhoneSize}}" layout>
 							<site-vote sessionResource="{{item.id}}"></site-vote>
-							<div class="item-row__time">
-								<span>{{item.lightning ? item.lightning : item.begin}}</span>
-							</div>
-							<div flex>
-								<a is="pushstate-anchor" href="/schedule/sessions/{{item.id}}">{{item.title}}</a>
+							<div horizontal?="{{!globals.isSmallPhoneSize}}" vertical?="{{globals.isSmallPhoneSize}}" reverse?="{{!globals.isSmallPhoneSize}}" layout>
+								<div class="item-row__title" flex?="{{!globals.isSmallPhoneSize}}" flex>
+									<a is="pushstate-anchor" href="/schedule/sessions/{{item.id}}">{{item.title}}</a>
+								</div>
+								<div class="item-row__time">
+									<span>{{item.lightning ? item.lightning : item.begin}}</span>
+								</div>
 							</div>
 						</div>
 					</template>
