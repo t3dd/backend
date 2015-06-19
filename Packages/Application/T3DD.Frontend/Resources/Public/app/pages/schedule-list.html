@@ -54,6 +54,14 @@
 			paper-tab {
 				text-transform: uppercase;
 			}
+
+			paper-tabs::shadow #selectionBar {
+			  background-color: #fff;
+			}
+
+			paper-tabs paper-tab::shadow #ink {
+			  color: #fff;
+			}
 		</style>
 		<!-- Leisure -->
 		<!--<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/o6kf8lr/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>-->
@@ -67,6 +75,7 @@
 			<div class="masthead container" layout horizontal end>
 				<div class="masthead__content">
 					<h1 site-font="display1">Schedule</h1>
+
 					<div horizontal justified layout>
 						<paper-tabs valueattr="href" selected="{{currentPath}}" on-core-activate="{{changeTab}}">
 							<paper-tab href="/schedule">Agenda</paper-tab>
@@ -89,9 +98,9 @@
 			<div class="container">
 				<div class="card__container">
 					<app-router id="scheduleRouter" mode="pushstate" trailingSlash="ignore" on-state-change="{{interceptRouting}}">
-						<app-route path="/schedule" import="{{globals.assetRootPath}}/pages/schedule-agenda.html" element="schedule-agenda" onUrlChange="noop" ></app-route>
-						<app-route path="/schedule/leisure" import="{{globals.assetRootPath}}/pages/schedule-leisure.html" element="schedule-leisure" onUrlChange="noop" ></app-route>
-						<app-route path="/schedule/days/:dayId" import="{{globals.assetRootPath}}/pages/schedule-day.html" element="schedule-day" onUrlChange="updateModel" ></app-route>
+						<app-route path="/schedule" import="{{globals.assetRootPath}}/pages/schedule-agenda.html" element="schedule-agenda" onUrlChange="noop"></app-route>
+						<app-route path="/schedule/leisure" import="{{globals.assetRootPath}}/pages/schedule-leisure.html" element="schedule-leisure" onUrlChange="noop"></app-route>
+						<app-route path="/schedule/days/:dayId" import="{{globals.assetRootPath}}/pages/schedule-day.html" element="schedule-day" onUrlChange="updateModel"></app-route>
 					</app-router>
 				</div>
 			</div>
@@ -119,7 +128,7 @@
 				this.router.go(event.detail.item.getAttribute('href'));
 			},
 			interceptRouting: function(event) {
-				if (event.detail.path.substring(0, 19) === '/schedule/sessions/') {
+				if(event.detail.path.substring(0, 19) === '/schedule/sessions/') {
 					event.preventDefault();
 				}
 			},
@@ -127,7 +136,7 @@
 				this.currentPath = '/schedule/days/' + event.detail.day.toLowerCase();
 			},
 			unselectSession: function() {
-				if (this.currentPath === '/schedule/sessions/format') {
+				if(this.currentPath === '/schedule/sessions/format') {
 					this.currentPath = '/schedule';
 				}
 				this.router.go(this.currentPath);

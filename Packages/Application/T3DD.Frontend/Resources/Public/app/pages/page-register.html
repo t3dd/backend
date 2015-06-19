@@ -158,20 +158,25 @@
 		<header class="bg-dark-grey">
 			<div class="masthead container" layout horizontal?="{{!globals.isPhoneSize}}" end>
 				<div flex>
-					<h1 site-font="display1">Register today!</h1>
+					<h1 site-font="display1">Registration</h1>
 				</div>
-				<site-registration-status registrationResource="{{pendingRegistration}}"></site-registration-status>
 			</div>
 		</header>
 		<main>
 			<div id="headCard" class="container">
 				<div class="card__container">
 					<div class="card">
-						<registration-new registrationResource="{{pendingRegistration}}"></registration-new>
+						<div class="card__content">
+							<h3 site-font="title">Registration phase completed</h3>
+							<p site-font="subhead">
+								The registration is closed now. We thank all of our participants and are looking forward
+								to see you soon.
+							</p>
+						</div>
 					</div>
 				</div>
 			</div>
-			<section>
+			<!--<section>
 				<div class="container" id="registration-process">
 					<h2 site-font="display1">Registration Process</h2>
 					<p site-font="subhead">
@@ -207,7 +212,7 @@
 						<a href="mailto:t3dd@typo3.org">t3dd@typo3.org</a>.
 					</p>
 				</div>
-			</section>
+			</section>-->
 			<section class="container">
 				<div class="card__container">
 					<div class="card">

@@ -100,8 +100,6 @@
 					<app-route path="/lodging" import="pages/page-lodging.html" element="page-lodging"></app-route>
 					<app-route path="/\/schedule.*/" regex import="pages/schedule-list.html" onUrlChange="noop" bindRouter element="schedule-list"></app-route>
 					<app-route path="/register" import="pages/page-register.html" element="page-register"></app-route>
-					<app-route path="/registration/success" import="pages/registration-success.html" element="registration-success"></app-route>
-					<app-route path="/registration/:registrationId" import="pages/registration-edit.html" element="registration-edit"></app-route>
 					<app-route path="/participant/success" import="pages/participant-success.html" element="participant-success"></app-route>
 					<app-route path="/participant/:participantId" import="pages/participant-edit.html" element="participant-edit" forceLogin?="{{!globals.user}}"></app-route>
 					<app-route path="/sponsoring" import="pages/page-sponsoring.html" element="page-sponsoring"></app-route>

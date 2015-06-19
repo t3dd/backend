@@ -2,45 +2,45 @@
 # Default routes configuration for the T3DD.Backend package              #
 #                                                                        #
 
--
-  name: 'Registration pending'
-  uriPattern: 'registration/status'
-  defaults:
-    '@package':    'T3DD.Backend'
-    '@controller': 'Registration'
-    '@action':     'status'
-  appendExceedingArguments: TRUE
-  httpMethods: ['HEAD', 'GET']
-
--
-  name: 'Registration pending'
-  uriPattern: 'registration/pending'
-  defaults:
-    '@package':    'T3DD.Backend'
-    '@controller': 'Registration'
-    '@action':     'pending'
-  appendExceedingArguments: TRUE
-  httpMethods: ['HEAD', 'GET']
-
--
-  name: 'Single Registration'
-  uriPattern: 'registration/{registration}'
-  defaults:
-    '@package':    'T3DD.Backend'
-    '@controller': 'Registration'
-    '@action':     'index'
-  appendExceedingArguments: TRUE
-  httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
-
--
-  name: 'Registration list'
-  uriPattern: 'registration'
-  defaults:
-    '@package':    'T3DD.Backend'
-    '@controller': 'Registration'
-    '@action':     'index'
-  appendExceedingArguments: TRUE
-  httpMethods: ['HEAD', 'GET', 'POST']
+#-
+#  name: 'Registration pending'
+#  uriPattern: 'registration/status'
+#  defaults:
+#    '@package':    'T3DD.Backend'
+#    '@controller': 'Registration'
+#    '@action':     'status'
+#  appendExceedingArguments: TRUE
+#  httpMethods: ['HEAD', 'GET']
+#
+#-
+#  name: 'Registration pending'
+#  uriPattern: 'registration/pending'
+#  defaults:
+#    '@package':    'T3DD.Backend'
+#    '@controller': 'Registration'
+#    '@action':     'pending'
+#  appendExceedingArguments: TRUE
+#  httpMethods: ['HEAD', 'GET']
+#
+#-
+#  name: 'Single Registration'
+#  uriPattern: 'registration/{registration}'
+#  defaults:
+#    '@package':    'T3DD.Backend'
+#    '@controller': 'Registration'
+#    '@action':     'index'
+#  appendExceedingArguments: TRUE
+#  httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
+#
+#-
+#  name: 'Registration list'
+#  uriPattern: 'registration'
+#  defaults:
+#    '@package':    'T3DD.Backend'
+#    '@controller': 'Registration'
+#    '@action':     'index'
+#  appendExceedingArguments: TRUE
+#  httpMethods: ['HEAD', 'GET', 'POST']
 
 -
   name: 'Single Participant'
@@ -52,40 +52,40 @@
   appendExceedingArguments: TRUE
   httpMethods: ['GET', 'PUT']
 
--
-  name: 'Single Session'
-  uriPattern: 'sessions/{session}'
-  defaults:
-    '@package':    'T3DD.Backend'
-    '@controller': 'Session'
-    '@action':     'index'
-  appendExceedingArguments: TRUE
-  httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
-  routeParts:
-    session:
-      objectType: T3DD\Backend\Domain\Model\Session
--
-  name: 'Single Session'
-  uriPattern: 'sessions/edit/{session}'
-  defaults:
-    '@package':    'T3DD.Backend'
-    '@controller': 'Session'
-    '@action':     'edit'
-  appendExceedingArguments: TRUE
-  httpMethods: ['HEAD', 'GET']
-  routeParts:
-    session:
-      objectType: T3DD\Backend\Domain\Model\Session
-
--
-  name: 'Session list'
-  uriPattern: 'sessions'
-  defaults:
-    '@package':    'T3DD.Backend'
-    '@controller': 'Session'
-    '@action':     'index'
-  appendExceedingArguments: TRUE
-  httpMethods: ['HEAD', 'GET', 'POST']
+#-
+#  name: 'Single Session'
+#  uriPattern: 'sessions/{session}'
+#  defaults:
+#    '@package':    'T3DD.Backend'
+#    '@controller': 'Session'
+#    '@action':     'index'
+#  appendExceedingArguments: TRUE
+#  httpMethods: ['HEAD', 'GET', 'PUT', 'DELETE']
+#  routeParts:
+#    session:
+#      objectType: T3DD\Backend\Domain\Model\Session
+#-
+#  name: 'Single Session'
+#  uriPattern: 'sessions/edit/{session}'
+#  defaults:
+#    '@package':    'T3DD.Backend'
+#    '@controller': 'Session'
+#    '@action':     'edit'
+#  appendExceedingArguments: TRUE
+#  httpMethods: ['HEAD', 'GET']
+#  routeParts:
+#    session:
+#      objectType: T3DD\Backend\Domain\Model\Session
+#
+#-
+#  name: 'Session list'
+#  uriPattern: 'sessions'
+#  defaults:
+#    '@package':    'T3DD.Backend'
+#    '@controller': 'Session'
+#    '@action':     'index'
+#  appendExceedingArguments: TRUE
+#  httpMethods: ['HEAD', 'GET', 'POST']
 
 -
   name: 'My votes'
