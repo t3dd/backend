@@ -49,11 +49,6 @@
 							offer more than enough space to cope with next-to-all topics that might come up.
 						</p>
 					</div>
-					<div class="card__content card__buttons">
-						<paper-button on-tap="{{changeToSessionNew}}">
-							Propose a new session
-						</paper-button>
-					</div>
 				</div>
 			</div>
 		</site-overlay>
@@ -62,14 +57,10 @@
 		Polymer({
 			ready: function () {
 				this.$.overlay.opened = true;
-			},
-			changePageToAfterClose: '/sessions',
-			changeToSessionNew: function() {
-				this.changePageToAfterClose = '/sessions/new';
-				this.$.overlay.opened = false;
+				this.fire('session-open');
 			},
 			onClose: function() {
-				document.getElementById('router').go(this.changePageToAfterClose);
+				this.fire('session-close');
 			}
 		});
 	</script>

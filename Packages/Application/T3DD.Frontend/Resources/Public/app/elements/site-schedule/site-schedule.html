@@ -24,7 +24,7 @@
 			filterSheetData: function(event) {
 				var name = event.detail.response.feed.title.$t.toLowerCase();
 				var entries = event.detail.response.feed.entry;
-				entries = entries.slice(1).map(function(entry) {
+				entries = entries.map(function(entry) {
 					var newEntry = {};
 					for(var property in entry) {
 						if(property.substr(0, 4) === 'gsx$') {

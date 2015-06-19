@@ -3,7 +3,7 @@
 		<pvc-globals values="{{globals}}"></pvc-globals>
 		<core-style id="session-show">
 			:host .title {
-				margin-bottom: 0;
+				margin-bottom: 8px;
 			}
 
 			#spinner {
@@ -29,6 +29,9 @@
 				}
 				.card__content {
 					padding: 16px 32px;
+				}
+				.card__content:last-child {
+					padding-bottom: 32px;
 				}
 			}
 
@@ -77,29 +80,46 @@
 			dt {
 				font-weight: 700;
 			}
-			.session-time {
-				min-width: 112px;
-				margin-right: 16px;
+			.session__subhead {
 				color: #515151;
 			}
 
-			.session-time span {
-				display: inline-block;
-				min-width: 36px;
-				text-align: center;
+			.session__subhead span {
+				margin-right: 16px;
 			}
 
-			.session__speaker {
-				width: 33.333%;
+			.session__subhead core-icon {
+				color: #000;
+			}
+
+			.session-speaker {
 				margin-top: 12px;
 			}
 
-			.session__speaker__image {
-				width: 45px;
-				height: 45px;
+			.session-speaker__subhead {
+				color: #515151;
+			}
+
+			.session-speaker__image {
+				width: 72px;
+				height: 72px;
 				border-radius: 50%;
 				vertical-align: middle;
-				margin: 0 8px 0 0;
+				margin: 0 16px 0 0;
+			}
+
+			.session-speaker__bio {
+				display: block;
+				margin-top: 12px;
+				color: #515151;
+			}
+
+			marked-element *:last-child {
+				margin-bottom: 0;
+			}
+
+			core-icon {
+				margin-right: 4px;
 			}
 		</core-style>
 		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/od6/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
@@ -113,30 +133,37 @@
 					<paper-spinner id="spinner" active?="{{!session}}" hidden?="{{sessions}}"></paper-spinner>
 					<div id="header" class="card__content" relative>
 						<core-icon-button icon="clear" core-overlay-toggle></core-icon-button>
-						<template if="{{sessions}}">
-							<h1 class="title" site-font="headline">{{sessions.title}} - asdasd</h1>
-							<div class="session-time">
-								<core-icon icon="today"></core-icon> <span>{{sessions.begin}}</span>{{sessions.end | dashIfAny}}<span>{{sessions.end}}</span>
-								<template if="{{sessions.room}}">
-									in room {{sessions.room}}
+						<template if="{{sessions}}" bind="{{sessions}}">
+							<h1 class="title" site-font="headline">{{title}}</h1>
+							<div class="session__subhead" site-font="subheader" horizontal layout>
+								<span horizontal center layout><core-icon icon="today"></core-icon> {{day}}</span>
+								<template if="{{lightning && !room}}">
+									<span horizontal center layout><core-icon icon="schedule"></core-icon> {{lightning}}</span>
+									<span horizontal center layout><core-icon icon="room"></core-icon> jweiland.net hall</span>
+									<span horizontal center layout><core-icon icon="subject"></core-icon> Lightning Talk at first, Session afterwards</span>
+								</template>
+								<template if="{{room}}">
+									<span horizontal center layout><core-icon icon="schedule"></core-icon> {{begin}}{{end ? ' – ' : ''}}{{end}}</span>
+									<span horizontal center layout><core-icon icon="room"></core-icon> {{room}}</span>
+									<span horizontal center layout><core-icon icon="subject"></core-icon> Session</span>
 								</template>
 							</div>
-							<template if="{{sessions.type}}">
+							<template if="{{type}}">
 								<dl site-font="caption">
 									<dt>Type:</dt>
-									<dd>{{sessions.type}}</dd>
+									<dd>{{type}}</dd>
 								</dl>
 							</template>
-							<template if="{{sessions.themes.length}}">
+							<template if="{{themes.length}}">
 								<dl site-font="caption">
 									<dt>Theme:</dt>
-									<dd>{{sessions.themes | joinThemes}}</dd>
+									<dd>{{themes | joinThemes}}</dd>
 								</dl>
 							</template>
-							<template if="{{sessions.expertiseLevel}}">
+							<template if="{{expertiseLevel}}">
 								<dl site-font="caption">
 									<dt>Knowledge:</dt>
-									<dd>{{sessions.expertiseLevel}}</dd>
+									<dd>{{expertiseLevel}}</dd>
 								</dl>
 							</template>
 						</template>
@@ -145,33 +172,35 @@
 						<marked-element text="{{abstracts.abstract}}"></marked-element>
 					</div>
 					<div class="card__content session__speakers">
-						<h4>Speakers:</h4>
-						<div layout horizontal wrap>
-							<template if="{{sessions.speaker1 && speakers}}">
-								<div class="session__speaker" layout horizontal center>
-									<core-image class="session__speaker__image" src="{{sessions.speaker1 | getSpeakerImage}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
-									{{sessions.speaker1}}
-								</div>
-							</template>
-							<template if="{{sessions.speaker2 && speakers}}">
-								<div class="session__speaker" layout horizontal center>
-									<core-image class="session__speaker__image" src="{{sessions.speaker2 | getSpeakerImage}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
-									{{sessions.speaker2}}
-								</div>
-							</template>
-							<template if="{{sessions.speaker3 && speakers}}">
-								<div class="session__speaker" layout horizontal center>
-									<core-image class="session__speaker__image" src="{{sessions.speaker3 | getSpeakerImage}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
-									{{sessions.speaker1}}
-								</div>
+						<h4 site-font="title">Speaker{{sessions.speaker1 && sessions.speaker2 ? 's' : ''}}</h4>
+						<div layout horizontal>
+							<template if="{{sessions && speakers}}">
+								<template repeat="{{i in [1,2,3]}}">
+									<template bind="{{i | speakerDetails}}">
+										<template if="{{id}}">
+											<div class="session-speaker" flex>
+												<div layout horizontal center>
+													<core-image class="session-speaker__image" src="{{profile}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
+													<div vertical layout>
+														<h3 site-font="title">{{id}}</h3>
+														<h5 class="session-speaker__subhead" site-font="subhead">{{companyname}}{{companyname ? ', ' : ''}}{{country}}</h5>
+													</div>
+												</div>
+												<template if="{{bio}}">
+													<marked-element class="session-speaker__bio" text="{{bio}}"></marked-element>
+												</template>
+											</div>
+										</template>
+									</template>
+								</template>
 							</template>
 						</div>
 					</div>
-					<div class="card__content">
-						<template if="{{$.overlay.opened && session}}">
-							<site-comments pageTitle="{{sessions.title}}" pageUri="schedule/sessions/{{session.id}}" identifier="{{session.id}}"></site-comments>
+					<!--<div class="card__content">
+						<template if="{{$.overlay.opened && sessions}}">
+							<site-comments pageTitle="{{sessions.title}}" pageUri="schedule/sessions/{{sessions.id}}" identifier="{{sessions.id}}"></site-comments>
 						</template>
-					</div>
+					</div>-->
 				</div>
 			</div>
 		</site-overlay>
@@ -184,21 +213,20 @@
 			ready: function() {
 				this.$.overlay.opened = true;
 			},
-			logFilter: function(value) {
+			log: function(value) {
 				console.log(value);
 			},
-			dashIfAny: function(end) {
-				if (end) {
-					return ' – ';
-				}
-				return '';
-			},
-			getSpeakerImage: function(value) {
-				return typeof this.speakers[value] === 'object' ? this.speakers[value].profile : '';
+			speakerDetails: function(i) {
+				var name = this.sessions['speaker' + i];
+				return typeof this.speakers[name] === 'object' ? this.speakers[name] : {};
 			},
 			filterSheetData: function(event) {
 				var name = event.detail.response.feed.title.$t.toLowerCase();
 				var entries = event.detail.response.feed.entry;
+
+				if (!entries) {
+					return;
+				}
 
 				entries = name === 'speakers' ? entries : entries.slice(0, 1);
 

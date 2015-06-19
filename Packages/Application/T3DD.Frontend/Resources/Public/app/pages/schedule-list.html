@@ -25,6 +25,18 @@
 				padding: 0 16px;
 			}
 
+			.masthead__content {
+				width: 100%;
+			}
+
+			.masthead__content a {
+				border-bottom: none;
+			}
+
+			.session-format-button {
+				background-color: #fff;
+			}
+
 			@media (min-width: 768px) {
 				.masthead {
 					padding: 0 32px 128px;
@@ -53,16 +65,23 @@
 		<!--<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/ob7m5j0/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>-->
 		<header class="bg-light-blue">
 			<div class="masthead container" layout horizontal end>
-				<div>
+				<div class="masthead__content">
 					<h1 site-font="display1">Schedule</h1>
-					<paper-tabs valueattr="href" selected="{{currentPath}}" on-core-activate="{{changeTab}}">
-						<paper-tab href="/schedule">Agenda</paper-tab>
-						<paper-tab href="/schedule/leisure">Leisure</paper-tab>
-						<paper-tab href="/schedule/days/thursday">Thursday</paper-tab>
-						<paper-tab href="/schedule/days/friday">Friday</paper-tab>
-						<paper-tab href="/schedule/days/saturday">Saturday</paper-tab>
-						<paper-tab href="/schedule/days/sunday">Sunday</paper-tab>
-					</paper-tabs>
+					<div horizontal justified layout>
+						<paper-tabs valueattr="href" selected="{{currentPath}}" on-core-activate="{{changeTab}}">
+							<paper-tab href="/schedule">Agenda</paper-tab>
+							<paper-tab href="/schedule/leisure">Leisure</paper-tab>
+							<paper-tab href="/schedule/days/thursday">Thursday</paper-tab>
+							<paper-tab href="/schedule/days/friday">Friday</paper-tab>
+							<paper-tab href="/schedule/days/saturday">Saturday</paper-tab>
+							<paper-tab href="/schedule/days/sunday">Sunday</paper-tab>
+						</paper-tabs>
+						<a is="pushstate-anchor" href="/schedule/sessions/format">
+							<paper-button class="session-format-button" raised>
+								What's the Session Format?
+							</paper-button>
+						</a>
+					</div>
 				</div>
 			</div>
 		</header>
@@ -78,6 +97,7 @@
 			</div>
 		</main>
 		<app-router mode="pushstate" trailingSlash="ignore">
+			<app-route path="/schedule/sessions/format" import="{{globals.assetRootPath}}/pages/session-format.html" element="session-format"></app-route>
 			<app-route path="/schedule/sessions/:sessionId" import="{{globals.assetRootPath}}/pages/schedule-show.html" element="schedule-show"></app-route>
 		</app-router>
 	</template>
@@ -107,6 +127,9 @@
 				this.currentPath = '/schedule/days/' + event.detail.day.toLowerCase();
 			},
 			unselectSession: function() {
+				if (this.currentPath === '/schedule/sessions/format') {
+					this.currentPath = '/schedule';
+				}
 				this.router.go(this.currentPath);
 			},
 			selectSession: function(event, detail) {
