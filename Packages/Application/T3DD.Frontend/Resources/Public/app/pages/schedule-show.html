@@ -123,7 +123,7 @@
 				margin-right: 4px;
 			}
 		</core-style>
-		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/od6/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
+		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/odi5zyk/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
 		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/ob7m5j0/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
 		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/oow7509/public/full?alt=json" on-core-response="{{filterSheetData}}"></site-ajax>
 		<site-overlay id="overlay" backdrop layered on-core-overlay-close-completed="{{onClose}}" transition="core-transition-center">
@@ -131,10 +131,10 @@
 			<core-style ref="session-show"></core-style>
 			<div class="card__container container">
 				<div class="card">
-					<paper-spinner id="spinner" active?="{{!session}}" hidden?="{{sessions}}"></paper-spinner>
+					<paper-spinner id="spinner" active?="{{!session}}" hidden?="{{session}}"></paper-spinner>
 					<div id="header" class="card__content" relative>
 						<core-icon-button icon="clear" core-overlay-toggle></core-icon-button>
-						<template if="{{sessions}}" bind="{{sessions}}">
+						<template if="{{session}}" bind="{{session}}">
 							<h1 class="title" site-font="headline">{{title}}</h1>
 							<div class="session__subhead" site-font="subheader" horizontal layout wrap>
 								<span horizontal center layout><core-icon icon="today"></core-icon> {{day}}</span>
@@ -146,7 +146,7 @@
 								<template if="{{room}}">
 									<span horizontal center layout><core-icon icon="schedule"></core-icon> {{begin}}{{end ? ' – ' : ''}}{{end}}</span>
 									<span horizontal center layout><core-icon icon="room"></core-icon> {{room}}</span>
-									<span horizontal center layout><core-icon icon="subject"></core-icon> Session</span>
+									<span horizontal center layout><core-icon icon="{{category == 'session' ? 'subject' : 'social:mood'}}"></core-icon> {{category == 'session' ? 'Session' : 'Leisure Activity'}}</span>
 								</template>
 							</div>
 							<template if="{{type}}">
@@ -172,31 +172,33 @@
 					<div class="card__content" hidden?="{{!abstracts.abstract}}" vertical layout>
 						<marked-element text="{{abstracts.abstract}}"></marked-element>
 					</div>
-					<div class="card__content session__speakers">
-						<h4 site-font="title">Speaker{{sessions.speaker1 && sessions.speaker2 ? 's' : ''}}</h4>
-						<div layout horizontal>
-							<template if="{{sessions && speakers}}">
-								<template repeat="{{i in [1,2,3]}}">
-									<template bind="{{i | speakerDetails}}">
-										<template if="{{id}}">
-											<div class="session-speaker" flex>
-												<div layout horizontal center>
-													<core-image class="session-speaker__image" src="{{profile}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
-													<div vertical layout>
-														<h3 site-font="title">{{id}}</h3>
-														<h5 class="session-speaker__subhead" site-font="subhead">{{companyname}}{{companyname ? ', ' : ''}}{{country}}</h5>
+					<template if="{{session.speaker1}}">
+						<div class="card__content session__speakers">
+							<h4 site-font="title">{{session.category === 'session' ? 'Speaker' : 'Head'}}{{session.speaker1 && session.speaker2 ? 's' : ''}}</h4>
+							<div layout horizontal>
+								<template if="{{session && speakers}}">
+									<template repeat="{{i in [1,2,3]}}">
+										<template bind="{{i | speakerDetails}}">
+											<template if="{{id}}">
+												<div class="session-speaker" flex>
+													<div layout horizontal center>
+														<core-image class="session-speaker__image" src="{{profile}}" sizing="cover" preload fade hidden?="{{globals.isSmallPhoneSize}}"></core-image>
+														<div vertical layout>
+															<h3 site-font="title">{{id}}</h3>
+															<h5 class="session-speaker__subhead" site-font="subhead">{{companyname}}{{companyname ? ', ' : ''}}{{country}}</h5>
+														</div>
 													</div>
+													<template if="{{bio}}">
+														<marked-element class="session-speaker__bio" text="{{bio}}"></marked-element>
+													</template>
 												</div>
-												<template if="{{bio}}">
-													<marked-element class="session-speaker__bio" text="{{bio}}"></marked-element>
-												</template>
-											</div>
+											</template>
 										</template>
 									</template>
 								</template>
-							</template>
+							</div>
 						</div>
-					</div>
+					</template>
 					<!--<div class="card__content">
 						<template if="{{$.overlay.opened && sessions}}">
 							<site-comments pageTitle="{{sessions.title}}" pageUri="schedule/sessions/{{sessions.id}}" identifier="{{sessions.id}}"></site-comments>
@@ -208,7 +210,7 @@
 	</template>
 	<script>
 		Polymer({
-			sessions: null,
+			session: null,
 			abstracts: null,
 			speakers: null,
 			ready: function() {
@@ -218,7 +220,7 @@
 				console.log(value);
 			},
 			speakerDetails: function(i) {
-				var name = this.sessions['speaker' + i];
+				var name = this.session['speaker' + i];
 				return typeof this.speakers[name] === 'object' ? this.speakers[name] : {};
 			},
 			filterSheetData: function(event) {
@@ -256,14 +258,18 @@
 					entries['abstract'] = entries['abstract'].replace(/↵/g, "\n");
 				}
 
+				if (name == 'all') {
+					name = 'session';
+				}
+
 				this[name] = entries;
 
-				if (name === 'sessions') {
-					this.fire('session-open', this.sessions);
+				if (name === 'session') {
+					this.fire('session-open', this.session);
 				}
 			},
 			onClose: function() {
-				this.sessions = null;
+				this.session = null;
 				this.abstracts = null;
 				this.speakers = null;
 				this.fire('session-close');

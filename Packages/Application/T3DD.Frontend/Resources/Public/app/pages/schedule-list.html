@@ -124,7 +124,7 @@
 		</section>
 		<app-router mode="pushstate" trailingSlash="ignore">
 			<app-route path="/schedule/sessions/format" import="{{globals.assetRootPath}}/pages/session-format.html" element="session-format"></app-route>
-			<app-route path="/schedule/sessions/:sessionId" import="{{globals.assetRootPath}}/pages/schedule-show.html" element="schedule-show"></app-route>
+			<app-route path="/schedule/sessions/:sessionId" import="{{globals.assetRootPath}}/pages/schedule-show.html" element="schedule-show" bindRouter></app-route>
 		</app-router>
 	</template>
 	<script>
@@ -150,7 +150,12 @@
 				}
 			},
 			focusOpenSession: function(event) {
-				this.currentPath = '/schedule/days/' + event.detail.day.toLowerCase();
+				var category = event.detail.category;
+				if (category === 'session') {
+					this.currentPath = '/schedule/days/' + event.detail.day.toLowerCase();
+				} else if (category === 'leisure') {
+					this.currentPath = '/schedule/leisure';
+				}
 			},
 			unselectSession: function() {
 				if(this.currentPath === '/schedule/sessions/format') {
