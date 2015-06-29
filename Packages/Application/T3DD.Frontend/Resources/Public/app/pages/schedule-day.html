@@ -61,7 +61,7 @@
 					<template repeat="{{item in timeBlock.items}}">
 						<div class="item-row {{ {'item-row--highlight':item.highlight == 1} | tokenList }}" horizontal center?="{{!globals.isSmallPhoneSize}}" layout>
 							<site-vote sessionResource="{{item.id}}"></site-vote>
-							<div horizontal?="{{!globals.isSmallPhoneSize}}" vertical?="{{globals.isSmallPhoneSize}}" reverse?="{{!globals.isSmallPhoneSize}}" layout>
+							<div horizontal?="{{!globals.isSmallPhoneSize}}" vertical?="{{globals.isSmallPhoneSize}}" reverse?="{{!globals.isSmallPhoneSize}}" layout flex>
 								<div class="item-row__title" flex?="{{!globals.isSmallPhoneSize}}" flex>
 									<a is="pushstate-anchor" href="/schedule/sessions/{{item.id}}">{{item.title}}</a>
 								</div>
