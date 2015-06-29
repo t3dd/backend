@@ -35,7 +35,7 @@ class RequestHandler extends \TYPO3\Flow\Http\RequestHandler {
 
 		$this->response->send();
 
-		$this->bootstrap->shutdown(Bootstrap::RUNLEVEL_RUNTIME);
+		$this->bootstrap->shutdown(\TYPO3\Flow\Core\Bootstrap::RUNLEVEL_RUNTIME);
 		$this->exit->__invoke();
 	}
 
