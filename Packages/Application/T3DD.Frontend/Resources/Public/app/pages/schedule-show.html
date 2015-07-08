@@ -122,6 +122,10 @@
 			core-icon {
 				margin-right: 4px;
 			}
+
+			marked-element img {
+				max-width: 100%;
+			}
 		</core-style>
 		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/odi5zyk/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
 		<site-ajax url="https://spreadsheets.google.com/feeds/list/1-T0NAIjAVqTS15l_fwAr9p6lWL4LbduplvFXfp6BIxg/ob7m5j0/public/full?alt=json&sq=id%3D{{sessionId}}" on-core-response="{{filterSheetData}}"></site-ajax>
