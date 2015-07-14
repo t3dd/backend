@@ -104,6 +104,7 @@
 					<app-route path="/participant/:participantId" import="pages/participant-edit.html" element="participant-edit" forceLogin?="{{!globals.user}}"></app-route>
 					<app-route path="/sponsoring" import="pages/page-sponsoring.html" element="page-sponsoring"></app-route>
 					<app-route path="/legal" import="pages/page-legal-info.html" element="page-legal-info"></app-route>
+					<app-route path="/code-of-conduct" import="pages/page-code-of-conduct.html" element="page-code-of-conduct"></app-route>
 				</app-router>
 				<site-overlay id="loginInterceptor" backdrop layered>
 					<core-style ref="main"></core-style>
@@ -149,6 +150,8 @@
 					</div>
 					<div horizontal reverse layout end>
 						<div>
+							<a is="pushstate-anchor" href="/code-of-conduct" class="legal-notice">Code of Conduct</a>
+							<span>|</span>
 							<a is="pushstate-anchor" href="/legal" class="legal-notice">Legal</a>
 						</div>
 						<div flex vertical layout site-font="body1" class="builders">
